@@ -1,0 +1,40 @@
+{
+    "Total Turnover (Rs)": 13128554963.68,
+    "Total Volume (Shares)": 30376054,
+    "Total Transactions": 142234,
+    "Top 5 Stocks by Turnover": {
+        "NRN": 942749816.9,
+        "SYPNL": 711172749.4,
+        "NHPC": 461707096.1,
+        "RIDI": 450495469.2,
+        "NGPL": 408102878.4
+    },
+    "Top 5 Stocks by Volume": {
+        "NHPC": 1478091,
+        "KBL": 1376978,
+        "RIDI": 1219773,
+        "HIDCLP": 904048,
+        "API": 885434
+    },
+    "Top 5 Stocks by Transactions": {
+        "SOHL": 22166,
+        "SABBL": 8018,
+        "SYPNL": 5800,
+        "NHPC": 3039,
+        "KBL": 2634
+    },
+    "Top 5 Buyer Brokers by Amount": {
+        "Naasa Securities Co. Ltd.": 1256191525.46,
+        "Vision Securities Pvt. Ltd": 519867627.7,
+        "Sani Securities Company Ltd.": 491281649.46,
+        "Imperial Securities Company Pvt. Ltd.": 442136451.6,
+        "Nabil Stock Dealer Ltd.": 424154240.4
+    },
+    "Top 5 Seller Brokers by Amount": {
+        "Naasa Securities Co. Ltd.": 1206121312.03,
+        "Imperial Securities Company Pvt. Ltd.": 500753166.2,
+        "Online Securities Pvt. Ltd.": 477909143.6,
+        "Vision Securities Pvt. Ltd": 402186719.3,
+        "Sani Securities Company Ltd.": 383966835.2
+    }
+}

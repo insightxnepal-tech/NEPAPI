@@ -1,0 +1,41 @@
+name: Daily NEPSE Portfolio Report
+
+on:
+  schedule:
+    # 10:45 AM UTC is 4:30 PM Nepal Time (NST)
+    # Market runs Sun-Thu. 0=Sun, 4=Thu.
+    - cron: '45 10 * * 0-4'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  run-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas matplotlib requests openpyxl tqdm
+          pip install git+https://github.com/basic-bgnr/NepseUnofficialApi.git@dev
+
+      - name: Fetch Latest Floorsheet
+        run: python fetch_floorsheet_csv.py
+
+      - name: Run Portfolio Intelligence Report
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python daily_portfolio_report.py
+
+      - name: Run Portfolio Whale Alert
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python portfolio_whale_alert.py
