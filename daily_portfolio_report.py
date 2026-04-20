@@ -93,7 +93,8 @@ def run_daily_report():
     # Actually, I'll just call the external generate script and then send the file it creates
     # But it's cleaner to have it here. 
     # Actually, the chart script should also be updated to use relative paths
-    os.system("python3 generate_portfolio_chart.py")
+    import sys
+    os.system(f"{sys.executable} generate_portfolio_chart.py")
     
     chart_path = ARTIFACT_DIR / "portfolio_sentiment_chart.png"
     if chart_path.exists():
