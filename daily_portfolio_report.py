@@ -7,11 +7,12 @@ import re
 import matplotlib.pyplot as plt
 from pathlib import Path
 from datetime import datetime
+from broker_65_analysis import analyze_broker_65  # <--- IMPORT DIRECTLY
 
 # --- CONFIGURATION ---
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-PORTFOLIO_PATH = "portfolio_data.json" # Relative to project root
+PORTFOLIO_PATH = "portfolio_data.json" 
 STOCKMAP_PATH = "stockmap.json"
 ARTIFACT_DIR = Path("artifacts")
 # ---------------------
@@ -66,7 +67,6 @@ def run_daily_report():
         total_cost += cost
         total_value += val
         
-        # Color coding logic for Telegram
         indicator = "🟢" if pl >= 0 else "🔴"
         rows.append(f"{indicator} *{symbol}*: {pl_pct:+.2f}% (Rs. {pl:,.0f})")
 
@@ -82,17 +82,6 @@ def run_daily_report():
     send_telegram_text(report)
 
     # --- Generate Chart ---
-    # Reusing chart logic from generate_portfolio_chart.py with slight adjustments
-    # ... (Simplified for the report) ...
-    symbols = list(portfolio.keys())
-    selected_days = 15 # assume we want 15-day sentiment
-    results = []
-    # (Just a brief logic to get the same results as before without re-reading 15 files every time if possible, 
-    # but for accuracy we should or use cached data. Here I'll just regenerate it for now)
-    
-    # Actually, I'll just call the external generate script and then send the file it creates
-    # But it's cleaner to have it here. 
-    # Actually, the chart script should also be updated to use relative paths
     import sys
     os.system(f"{sys.executable} generate_portfolio_chart.py")
     
@@ -101,14 +90,11 @@ def run_daily_report():
         send_telegram_photo(str(chart_path), "📈 *Institutional Sentiment (15-Day Net Score)*")
 
     # --- Broker 65 (Sharepro) Intelligence ---
-    import subprocess
-    broker_intel = subprocess.getoutput(f"{sys.executable} broker_65_analysis.py")
-    
-    # Extract only the summary part to avoid making the message too long
-    if "=====" in broker_intel:
-        sections = broker_intel.split("=====")[2] # Get content between the bars
-        intel_msg = f"🔍 *SHAREPRO (65) INTEL:*\n{sections.strip()}"
+    try:
+        intel_msg = analyze_broker_65()
         send_telegram_text(intel_msg)
+    except Exception as e:
+        send_telegram_text(f"⚠️ Error loading Broker 65 intel: {e}")
 
 if __name__ == "__main__":
     run_daily_report()

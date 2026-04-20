@@ -8,7 +8,7 @@ from datetime import datetime
 
 # --- CONFIGURATION ---
 BROKER_ID = 65
-DAYS_TO_SCAN = 15 # 2-3 weeks of data
+DAYS_TO_SCAN = 15 
 # ---------------------
 
 def get_date_from_filename(filename):
@@ -17,12 +17,7 @@ def get_date_from_filename(filename):
     return None
 
 def analyze_broker_65():
-    paths = [
-        "/Users/sanishtamang/NEPAPI/floorsheet*.csv",
-        "/Users/sanishtamang/Downloads/floorsheet/floorsheet*.csv",
-        "/Users/sanishtamang/Downloads/floorsheet/floorsheet*.xlsx"
-    ]
-    
+    paths = ["floorsheet*.csv"] # Relative for cloud/local
     all_files = []
     for p in paths: all_files.extend(glob.glob(p))
     
@@ -40,30 +35,21 @@ def analyze_broker_65():
             if f.endswith('.csv'): unique_files[dt] = f
 
     selected_dates = sorted(unique_files.keys(), reverse=True)[:DAYS_TO_SCAN]
-    print(f"Analyzing Broker {BROKER_ID} activity over the last {len(selected_dates)} trading sessions...")
     
     broker_trades = []
-    
     for dt in selected_dates:
         f = unique_files[dt]
         try:
-            if f.endswith('.csv'): df = pd.read_csv(f)
-            else: df = pd.read_excel(f, engine='openpyxl')
-            
-            # Filter for Broker 65 trades
+            df = pd.read_csv(f)
             df_b = df[(df['buyerMemberId'] == BROKER_ID) | (df['sellerMemberId'] == BROKER_ID)].copy()
             df_b['date'] = dt
             broker_trades.append(df_b)
-        except Exception as e:
-            print(f"Error loading {dt}: {e}")
+        except: pass
 
     if not broker_trades:
-        print("No trades found.")
-        return
+        return "No recent trades found for Sharepro (65)."
 
     df_all = pd.concat(broker_trades)
-    
-    # Calculate Net Positions per Stock
     results = []
     symbols = df_all['stockSymbol'].unique()
     
@@ -73,7 +59,7 @@ def analyze_broker_65():
         sold = df_sym[df_sym['sellerMemberId'] == BROKER_ID]['contractQuantity'].sum()
         net = bought - sold
         
-        # Calculate daily trend (is it a sudden shift?)
+        # Trend check
         daily_nets = []
         for dt in selected_dates:
             df_day = df_sym[df_sym['date'] == dt]
@@ -81,49 +67,44 @@ def analyze_broker_65():
             s = df_day[df_day['sellerMemberId'] == BROKER_ID]['contractQuantity'].sum()
             daily_nets.append({'date': dt, 'net': b - s})
             
-        results.append({
-            'Symbol': sym,
-            'Bought': bought,
-            'Sold': sold,
-            'Net': net,
-            'Total_Trades': len(df_sym),
-            'Daily_History': daily_nets
-        })
+        results.append({'Symbol': sym, 'Bought': bought, 'Sold': sold, 'Net': net, 'Total_Trades': len(df_sym), 'Daily_History': daily_nets})
         
     df_results = pd.DataFrame(results)
     
-    print("\n" + "="*80)
-    print(f"{'BROKER 65 (SHAREPRO) - INSTITUTIONAL ACTIVITY REPORT':^80}")
-    print("="*80)
+    output = "🔍 *SHAREPRO (65) INTEL:*\n"
     
-    # Identify UNUSUAL ACTIVITY
-    print("\n🚨 UNUSUAL ACCUMULATION (High Concentration):")
-    top_acc = df_results.sort_values('Net', ascending=False).head(5)
+    # Accumulation
+    top_acc = df_results.sort_values('Net', ascending=False).head(3)
+    output += "\n*Top Accumulation:*\n"
     for _, row in top_acc.iterrows():
-        if row['Net'] > 5000:
-            print(f"  {row['Symbol']:<8}: Net Buy +{int(row['Net']):,} units across {row['Total_Trades']} trades.")
+        if row['Net'] > 0:
+            output += f"• {row['Symbol']}: +{int(row['Net']):,} units\n"
 
-    print("\n🚨 UNUSUAL DISTRIBUTION (High Selling):")
-    top_dist = df_results.sort_values('Net', ascending=True).head(5)
+    # Distribution
+    top_dist = df_results.sort_values('Net', ascending=True).head(3)
+    output += "\n*Top Distribution:*\n"
     for _, row in top_dist.iterrows():
-        if row['Net'] < -5000:
-            print(f"  {row['Symbol']:<8}: Net Sell {int(row['Net']):,} units across {row['Total_Trades']} trades.")
+        if row['Net'] < 0:
+            output += f"• {row['Symbol']}: {int(row['Net']):,} units\n"
 
-    print("\n🚨 SUDDEN ACTIVITY SHIFTS (Last 3 Days):")
+    # Shifts
+    output += "\n*Recent Sudden Shifts:*\n"
+    found_shift = False
     for _, row in df_results.iterrows():
         history = row['Daily_History']
         if len(history) < 5: continue
-        
         recent_net = sum(d['net'] for d in history[:3])
         past_net = sum(d['net'] for d in history[3:10])
-        
-        # If they were neutral/selling and suddenly bought 20k+ in 3 days
-        if recent_net > 20000 and past_net <= 0:
-            print(f"  {row['Symbol']:<8}: SUDDEN BUYING! {int(recent_net):+,} units in last 3 days.")
-        elif recent_net < -20000 and past_net >= 0:
-            print(f"  {row['Symbol']:<8}: SUDDEN SELLING! {int(recent_net):+,} units in last 3 days.")
-
-    print("\n" + "="*80)
+        if recent_net > 15000 and past_net <= 0:
+            output += f"• {row['Symbol']}: Sudden Buy! ({int(recent_net):+,})\n"
+            found_shift = True
+        elif recent_net < -15000 and past_net >= 0:
+            output += f"• {row['Symbol']}: Sudden Sell! ({int(recent_net):+,})\n"
+            found_shift = True
+    
+    if not found_shift: output += "No major shifts detected."
+    
+    return output
 
 if __name__ == "__main__":
-    analyze_broker_65()
+    print(analyze_broker_65())
