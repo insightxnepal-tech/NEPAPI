@@ -93,7 +93,7 @@ def analyze_broker_65():
     df_results = pd.DataFrame(results)
     
     print("\n" + "="*80)
-    print(f"{'BROKER 65 (NAASA) - INSTITUTIONAL ACTIVITY REPORT':^80}")
+    print(f"{'BROKER 65 (SHAREPRO) - INSTITUTIONAL ACTIVITY REPORT':^80}")
     print("="*80)
     
     # Identify UNUSUAL ACTIVITY

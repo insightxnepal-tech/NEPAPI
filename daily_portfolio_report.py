@@ -100,5 +100,15 @@ def run_daily_report():
     if chart_path.exists():
         send_telegram_photo(str(chart_path), "📈 *Institutional Sentiment (15-Day Net Score)*")
 
+    # --- Broker 65 (Sharepro) Intelligence ---
+    import subprocess
+    broker_intel = subprocess.getoutput(f"{sys.executable} broker_65_analysis.py")
+    
+    # Extract only the summary part to avoid making the message too long
+    if "=====" in broker_intel:
+        sections = broker_intel.split("=====")[2] # Get content between the bars
+        intel_msg = f"🔍 *SHAREPRO (65) INTEL:*\n{sections.strip()}"
+        send_telegram_text(intel_msg)
+
 if __name__ == "__main__":
     run_daily_report()
