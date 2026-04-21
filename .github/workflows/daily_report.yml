@@ -6,6 +6,12 @@ on:
     # Market runs Sun-Thu. 0=Sun, 4=Thu.
     - cron: '45 10 * * 0-4'
   workflow_dispatch: # Allows manual trigger
+    inputs:
+      scan_all:
+        description: 'Scan All NEPSE Stocks (Market-Wide)?'
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   run-report:
@@ -24,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas matplotlib requests openpyxl tqdm
+          pip install pandas matplotlib requests openpyxl tqdm pywasm httpx
           pip install git+https://github.com/basic-bgnr/NepseUnofficialApi.git@dev
 
       - name: Fetch Latest Floorsheet
@@ -35,6 +41,17 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python daily_portfolio_report.py
+
+      - name: Run Portfolio Sniper Scanner
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ github.event.inputs.scan_all }}" == "true" ]; then
+            python sniper_scanner.py --all
+          else
+            python sniper_scanner.py
+          fi
 
       - name: Run Portfolio Whale Alert
         env:

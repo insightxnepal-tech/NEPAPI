@@ -51,81 +51,55 @@ def calculate_indicators(df):
         'rsi': rsi.iloc[-1], 'vol_ma20': vol_ma20.iloc[-1], 'vol_ma50': vol_ma50.iloc[-1]
     }
 
-async def fetch_accurate_history(symbol):
-    """
-    NEPSE often limits responses to 11-20 days per page. 
-    We will try to fetch multiple pages to reach 100+ days.
-    """
+def main(scan_all=False):
     n = Nepse()
-    # We'll use the raw request method to handle pagination
-    end_date = date.today()
-    start_date = end_date - timedelta(days=200)
-    company_id_map = await n.getSecurityIDKeyMap()
-    if symbol not in company_id_map: return []
+    print(f"🎯 Initiating {'MARKET-WIDE' if scan_all else 'PORTFOLIO'} Sniper Scan...")
     
-    cid = company_id_map[symbol]
-    all_history = []
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U")
+    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "8563709547")
     
-    for page in range(0, 5): # Try up to 5 pages
-        url = f"/api/nots/market/history/security/{cid}?&size=200&startDate={start_date}&endDate={end_date}&page={page}"
-        response = n.requestGETAPI(url)
-        if not response or 'content' not in response or not response['content']:
-            break
-        all_history.extend(response['content'])
-        if len(response['content']) < 200: # No more data on next page
-            break
-            
-    return all_history
-
-def main():
-    n = Nepse()
-    print("🎯 Initiating Deep-Scan for Sniper Setup...")
-    
-    with open("portfolio_data.json", "r") as f:
-        portfolio = json.load(f)
+    if scan_all:
+        print("  Fetching full security list...")
+        securities = n.getSecurityList()
+        # Filter for active stocks (Equity only, skip mutual funds if needed)
+        symbols = [s['symbol'] for s in securities if s['securityName'].find('Mutual Fund') == -1]
+    else:
+        with open("portfolio_data.json", "r") as f:
+            portfolio = json.load(f)
+        symbols = list(portfolio.keys())
     
     results = []
+    print(f"  Scanning {len(symbols)} symbols. This may take a few minutes...")
     
-    for symbol in portfolio.keys():
-        print(f"  Fetching deep history for {symbol}...", end="", flush=True)
+    for i, symbol in enumerate(symbols):
+        if i % 10 == 0 and i > 0: print(f"    Progress: {i}/{len(symbols)} stocks...")
+        
         try:
-            # We need to compute symbol IDs
-            # But getSecurityIDKeyMap is async in the library's design? 
-            # No, in Nepse(sync) it's sync.
             cid_map = n.getSecurityIDKeyMap()
             cid = cid_map.get(symbol)
-            if not cid:
-                print(" [ERROR: Symbol Map Missing]")
-                continue
+            if not cid: continue
             
-            end_date = date.today()
-            start_date = end_date - timedelta(days=300) # Go back even further
-            
-            # Fetch with pagination manually
+            # Fetch History
+            # For speed in market-wide scan, we use 3 pages instead of 8 to get ~100+ days
             full_history = []
-            for p in range(0, 8): # Fetch up to 8 pages of ~20-50 trades
-                url = f"/api/nots/market/history/security/{cid}?&size=500&startDate={start_date}&endDate={end_date}&page={p}"
+            for p in range(0, 4):
+                end_date = date.today()
+                start_date = end_date - timedelta(days=200)
+                url = f"/api/nots/market/history/security/{cid}?&size=200&startDate={start_date}&endDate={end_date}&page={p}"
                 res = n.requestGETAPI(url)
-                if not res or 'content' not in res or not res['content']:
-                    break
+                if not res or 'content' not in res or not res['content']: break
                 full_history.extend(res['content'])
-                if len(res['content']) < 10: # Likely last page
-                    break
+                if len(res['content']) < 15: break
             
-            if len(full_history) < 50:
-                print(f" [SKIP: Only {len(full_history)} days]")
-                continue
+            if len(full_history) < 50: continue
             
             df = pd.DataFrame(full_history).sort_values('businessDate')
             stats = calculate_indicators(df)
-            
-            if not stats:
-                print(" [SKIP: Math Error]")
-                continue
+            if not stats: continue
 
+            # Sniper Logic
             rule1 = stats['price'] > stats['ema20'] and stats['price'] > stats['ema50']
             rule2 = stats['rsi'] > 60
-            # Rule 3: Volume MA20 > Vol MA50
             rule3 = stats['vol_ma20'] > stats['vol_ma50']
             
             buy_signal = rule1 and rule2 and rule3
@@ -135,32 +109,46 @@ def main():
             status = "NEUTRAL"
             if buy_signal:
                 if dead_zone: status = "💤 DEAD ZONE"
-                elif overextended: status = "⚠️ OVEREXTENDED"
+                elif overextended: status = "⚠️ BUY (OVEREXTENDED)"
                 else: status = "🚀 BUY SIGNAL"
             elif stats['rsi'] >= 80: status = "💰 TAKE PROFIT"
             elif stats['price'] < stats['ema20']: status = "🛑 EXIT"
             
-            results.append({'Symbol': symbol, 'Status': status, 'Price': stats['price'], 'RSI': stats['rsi']})
-            print(f" [DONE: {len(full_history)} days -> {status}]")
-            time.sleep(0.5)
-        except Exception as e:
-            print(f" [ERROR: {e}]")
+            # For Market-Wide, only store ACTIONS
+            if scan_all:
+                if status != "NEUTRAL":
+                    results.append({'Symbol': symbol, 'Status': status, 'Price': stats['price'], 'RSI': stats['rsi']})
+            else:
+                results.append({'Symbol': symbol, 'Status': status, 'Price': stats['price'], 'RSI': stats['rsi']})
+            
+            time.sleep(0.3) # Faster sleep for market-wide
+        except:
+            continue
 
-    print("\n✅ Deep-Scan Finished.")
+    print("\n✅ Scan Finished.")
     
-    # Telegram Message
-    msg = "🎯 *THE SNIPER SETUP: LIVE SCAN*\n"
-    found_action = False
-    for r in results:
-        if r['Status'] != "NEUTRAL":
-            found_action = True
-            msg += f"• *{r['Symbol']}*: {r['Status']} (Rs. {r['Price']})\n"
-    
-    if not found_action:
-        msg += "\nPortfolio Status: *NEUTRAL* 😴"
+    # Telegram
+    header = "🎯 *MARKET SNIPER: BUY/SELL SIGNALS*" if scan_all else "🎯 *THE SNIPER SETUP: PORTFOLIO*"
+    msg = f"{header}\n\n"
+    if results:
+        for r in results:
+            if scan_all and "BUY" not in r['Status'] and "PROFIT" not in r['Status']: continue
+            msg += f"• *{r['Symbol']}*: {r['Status']}\n"
+            msg += f"  Price: Rs. {r['Price']} | RSI: {r['RSI']:.1f}\n"
+    else:
+        msg += "All stocks are currently *NEUTRAL* 💤"
 
-    url = f"https://api.telegram.org/bot{os.getenv('TELEGRAM_TOKEN', '8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U')}/sendMessage"
-    requests.post(url, json={"chat_id": os.getenv("TELEGRAM_CHAT_ID", "8563709547"), "text": msg, "parse_mode": "Markdown"})
+    # Split message if it's too long
+    if len(msg) > 4000: msg = msg[:4000] + "\n...(truncated)"
+    
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    requests.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"})
 
 if __name__ == "__main__":
-    main()
+    # If explicitly asked for all, or via env
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--all', action='store_true')
+    args = parser.parse_args()
+    
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
