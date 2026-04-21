@@ -108,3 +108,12 @@
 2025-07-02 12:23:42,806 - INFO - Update completed successfully!
 2025-07-02 12:23:42,806 - DEBUG - close.started
 2025-07-02 12:23:42,806 - DEBUG - close.complete
+2026-04-18 20:56:22,697 - INFO - === NEPSE Stock Map Updater ===
+2026-04-18 20:56:22,697 - INFO - API URL: http://localhost:8000
+2026-04-18 20:56:22,697 - INFO - Target file: stockmap.json
+2026-04-18 20:56:22,779 - INFO - Checking API server health...
+2026-04-18 20:56:22,788 - DEBUG - connect_tcp.started host='localhost' port=8000 local_address=None timeout=30.0 socket_options=None
+2026-04-18 20:56:22,790 - DEBUG - connect_tcp.failed exception=ConnectError(OSError('All connection attempts failed'))
+2026-04-18 20:56:22,791 - ERROR - Server health check failed: All connection attempts failed
+2026-04-18 20:56:22,791 - ERROR - API server is not responding. Please start the server first.
+2026-04-18 20:56:22,791 - ERROR - Update failed!
