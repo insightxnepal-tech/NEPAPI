@@ -759,6 +759,11 @@
     "sector": "Finance",
     "internalSector": "Finance Index"
   },
+  "ICFCD89": {
+    "name": "8% ICFC Finance Limited Debenture 2089",
+    "sector": "Finance",
+    "internalSector": "Finance Index"
+  },
   "IGIPO": {
     "name": "IGI Prudential insurance Limited Promoter Share",
     "sector": "Promoter Share",
@@ -876,6 +881,11 @@
   },
   "KSBBLD87": {
     "name": "9% Kamana Sewa Bikas Bank Limited Debenture 2087",
+    "sector": "Development Banks",
+    "internalSector": "Development Bank Ind."
+  },
+  "KSBBLPNP": {
+    "name": "KSBBL 9% Perpetual Non Cumulative Preference Share",
     "sector": "Development Banks",
     "internalSector": "Development Bank Ind."
   },
@@ -1291,6 +1301,11 @@
   },
   "NABILD2089": {
     "name": "7% Nabil Debenture 2089",
+    "sector": "Commercial Banks",
+    "internalSector": "Banking SubIndex"
+  },
+  "NABILPNP": {
+    "name": "Nabil 8% Perpetual Non Cumulative Preference Share",
     "sector": "Commercial Banks",
     "internalSector": "Banking SubIndex"
   },
@@ -1733,6 +1748,11 @@
     "name": "Oriental Hotels Limited",
     "sector": "Hotels And Tourism",
     "internalSector": "Hotels And Tourism"
+  },
+  "PCIL": {
+    "name": "Palpa Cement Industries Limited",
+    "sector": "Manufacturing And Processing",
+    "internalSector": "Manufacturing And Pr."
   },
   "PMHPL": {
     "name": "Panchakanya Mai Hydropower Ltd",
@@ -2184,6 +2204,11 @@
     "sector": "Promoter Share",
     "internalSector": "Promoter Share"
   },
+  "SIPD": {
+    "name": "Shikhar power Development Limited",
+    "sector": "Hydro Power",
+    "internalSector": "HydroPower Index"
+  },
   "SHINED": {
     "name": "Shine Resunga Debenture",
     "sector": "Development Banks",
@@ -2398,6 +2423,11 @@
     "name": "SuryaJyoti Life Insurance Company Limited",
     "sector": "Life Insurance",
     "internalSector": "Life Insurance"
+  },
+  "SKHEL": {
+    "name": "Suryakunda Hydro Electric Limited",
+    "sector": "Hydro Power",
+    "internalSector": "HydroPower Index"
   },
   "SWMFPO": {
     "name": "Suryodaya Womi Laghubitta Bittiya Sanstha Limited Promoter",
