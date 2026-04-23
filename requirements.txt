@@ -10,6 +10,7 @@ tqdm>=4.66.2
 pywasm>=1.0.8
 
 # MCP Server dependencies
+flask>=2.3.2
 fastmcp==2.10.1
 
 # Floorsheet analysis script

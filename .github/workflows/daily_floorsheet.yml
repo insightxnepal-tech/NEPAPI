@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -28,11 +30,18 @@ jobs:
 
       - name: Run floorsheet fetcher
         run: |
+          echo "Starting fetcher..."
           python fetch_today.py
+          echo "Fetcher finished."
 
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add floorsheet*.csv
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Automated: Floorsheet Update $(date +'%Y-%m-%d')" && git push)
+          # Only try to add and commit if CSV files exist
+          if ls floorsheet*.csv 1> /dev/null 2>&1; then
+            git add floorsheet*.csv
+            git diff --quiet && git diff --staged --quiet || (git commit -m "Automated: Floorsheet Update $(date +'%Y-%m-%d')" && git push)
+          else
+            echo "No floorsheet files found to commit."
+          fi
