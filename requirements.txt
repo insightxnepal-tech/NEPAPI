@@ -5,6 +5,9 @@ uvicorn==0.34.0
 websockets==14.1
 uvloop; sys_platform != 'win32'  # Install uvloop only on non-Windows platforms
 httptools>=0.6.4
+httpx[http2]>=0.27.0
+tqdm>=4.66.2
+pywasm>=1.0.8
 
 # MCP Server dependencies
 fastmcp==2.10.1
