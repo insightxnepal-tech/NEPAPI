@@ -148,12 +148,34 @@ class TokenManager(_TokenManager):
 
 class TokenParser:
     def __init__(self):
-        self.runtime = pywasm.load(
-            f"{pathlib.Path(__file__).parent}/data/css.wasm"
-        )
+        # Determine the runtime and module loading method
+        self._use_legacy = True
+        try:
+            if hasattr(pywasm, 'load'):
+                self.runtime = pywasm.load(f"{pathlib.Path(__file__).parent}/data/css.wasm")
+            else:
+                # Modern pywasm API
+                self.core_runtime = pywasm.Runtime()
+                self.wasm_module = self.core_runtime.instance_from_file(f"{pathlib.Path(__file__).parent}/data/css.wasm")
+                self._use_legacy = False
+        except Exception as e:
+            # Last ditch effort for other variations
+            try:
+                self.runtime = pywasm.load(f"{pathlib.Path(__file__).parent}/data/css.wasm")
+            except:
+                # print(f"pywasm init error: {e}") # Debugging
+                raise ImportError(f"Could not initialize pywasm. Error: {e}")
+
+    def _exec_wasm(self, func_name, args):
+        if self._use_legacy:
+            return self.runtime.exec(func_name, args)
+        else:
+            result = self.core_runtime.invocate(self.wasm_module, func_name, args)
+            # invocate returns a list of results, we usually want the first one
+            return result[0] if isinstance(result, (list, tuple)) else result
 
     def parse_token_response(self, token_response):
-        n = self.runtime.exec(
+        n = self._exec_wasm(
             "cdx",
             [
                 token_response["salt1"],
@@ -163,7 +185,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        l = self.runtime.exec(
+        l = self._exec_wasm(
             "rdx",
             [
                 token_response["salt1"],
@@ -173,7 +195,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        o = self.runtime.exec(
+        o = self._exec_wasm(
             "bdx",
             [
                 token_response["salt1"],
@@ -183,7 +205,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        p = self.runtime.exec(
+        p = self._exec_wasm(
             "ndx",
             [
                 token_response["salt1"],
@@ -193,7 +215,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        q = self.runtime.exec(
+        q = self._exec_wasm(
             "mdx",
             [
                 token_response["salt1"],
@@ -203,8 +225,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-
-        a = self.runtime.exec(
+        a = self._exec_wasm(
             "cdx",
             [
                 token_response["salt2"],
@@ -214,7 +235,7 @@ class TokenParser:
                 token_response["salt4"],
             ],
         )
-        b = self.runtime.exec(
+        b = self._exec_wasm(
             "rdx",
             [
                 token_response["salt2"],
@@ -224,7 +245,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        c = self.runtime.exec(
+        c = self._exec_wasm(
             "bdx",
             [
                 token_response["salt2"],
@@ -234,7 +255,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        d = self.runtime.exec(
+        d = self._exec_wasm(
             "ndx",
             [
                 token_response["salt2"],
@@ -244,7 +265,7 @@ class TokenParser:
                 token_response["salt5"],
             ],
         )
-        e = self.runtime.exec(
+        e = self._exec_wasm(
             "mdx",
             [
                 token_response["salt2"],
