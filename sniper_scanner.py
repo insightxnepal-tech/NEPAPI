@@ -38,7 +38,7 @@ def calculate_indicators(df):
     close = df['closePrice']
     high = df['highPrice']
     low = df['lowPrice']
-    open_price = df['openPrice']
+    open_price = close.shift(1).fillna(close)
     vol = df['totalTradedQuantity']
 
     ema9 = close.ewm(span=9, adjust=False).mean()
