@@ -1,0 +1,16 @@
+S.N.,Contract ID,Stock Symbol,Security Name,Buyer Member ID,Seller Member ID,Buyer Broker,Seller Broker,Quantity,Rate (NPR),Amount (NPR),Business Date,Trade Time,Trade Book ID,Stock ID
+1,1001,NABIL,Nabil Bank Limited,12,28,Sunrise Capital,Siddhartha Capital,500,1285.0,642500.0,2026-04-15,2026-04-15 11:05:12,9001,101
+2,1002,NABIL,Nabil Bank Limited,35,12,Nepal SBI,Sunrise Capital,300,1287.0,386100.0,2026-04-15,2026-04-15 11:08:44,9001,101
+3,1003,SCB,Standard Chartered Bank,07,44,Arun Securities,Laxmi Securities,1200,620.5,744600.0,2026-04-15,2026-04-15 11:12:03,9002,105
+4,1004,NICA,NIC Asia Bank,19,07,Siddhartha Capital,Arun Securities,800,910.0,728000.0,2026-04-15,2026-04-15 11:15:30,9003,112
+5,1005,SANIMA,Sanima Bank,44,19,Laxmi Securities,Siddhartha Capital,600,755.0,453000.0,2026-04-15,2026-04-15 11:19:55,9004,118
+6,1006,HBL,Himalayan Bank,28,35,Siddhartha Capital,Nepal SBI,450,1100.0,495000.0,2026-04-15,2026-04-15 11:23:10,9005,123
+7,1007,EBL,Everest Bank,07,28,Arun Securities,Siddhartha Capital,700,1050.0,735000.0,2026-04-15,2026-04-15 11:27:40,9006,127
+8,1008,GBIME,Global IME Bank,12,07,Sunrise Capital,Arun Securities,950,480.0,456000.0,2026-04-15,2026-04-15 11:31:05,9007,133
+9,1009,MBL,Machhapuchchhre Bank,35,12,Nepal SBI,Sunrise Capital,1100,430.0,473000.0,2026-04-15,2026-04-15 11:34:22,9008,138
+10,1010,PRVU,Prabhu Bank,19,35,Siddhartha Capital,Nepal SBI,400,395.0,158000.0,2026-04-15,2026-04-15 11:38:50,9009,145
+11,1011,NABIL,Nabil Bank Limited,44,19,Laxmi Securities,Siddhartha Capital,200,1290.0,258000.0,2026-04-15,2026-04-15 11:42:17,9001,101
+12,1012,SCB,Standard Chartered Bank,28,44,Siddhartha Capital,Laxmi Securities,500,622.0,311000.0,2026-04-15,2026-04-15 11:46:33,9002,105
+13,1013,NICA,NIC Asia Bank,07,28,Arun Securities,Siddhartha Capital,1500,912.0,1368000.0,2026-04-15,2026-04-15 11:50:08,9003,112
+14,1014,KBL,Kumari Bank,12,07,Sunrise Capital,Arun Securities,850,360.0,306000.0,2026-04-15,2026-04-15 11:53:45,9010,151
+15,1015,MEGA,Mega Bank Nepal,35,12,Nepal SBI,Sunrise Capital,620,310.0,192200.0,2026-04-15,2026-04-15 11:57:10,9011,157
