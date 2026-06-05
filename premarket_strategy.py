@@ -465,28 +465,8 @@ def generate_report(data_dir="."):
 
 # ═══════════════════════════════════════════════════════════════════
 # ═══════════════════════════════════════════════════════════════════
-if __name__ == "__main__":
-    data_dir = sys.argv[1] if len(sys.argv) > 1 else "."
-    report   = generate_report(data_dir)
-    today    = date.today().strftime("%Y-%m-%d")
-    out      = os.path.join(data_dir, f"strategy_{today}.md")
-    with open(out, "w") as f:
-        f.write(report)
-    print(report)
-    print(f"\n✅ Saved → {out}")
-
-    # Send to Telegram if credentials available
-    token   = os.getenv("TELEGRAM_TOKEN",   "8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID", "8563709547")
-    if token and chat_id:
-        send_telegram(report, token, chat_id)
-    else:
-        print("⚠️  TELEGRAM_TOKEN or TELEGRAM_CHAT_ID not set — skipping Telegram.")
 
 
-# ═══════════════════════════════════════════════════════════════════
-# TELEGRAM SENDER
-# ═══════════════════════════════════════════════════════════════════
 def send_telegram(report_text, token, chat_id):
     """Send pre-market strategy summary to Telegram (splits into chunks if needed)."""
     import urllib.request, json, re
@@ -583,3 +563,20 @@ def send_telegram(report_text, token, chat_id):
                     print(f"❌ Telegram error: {result}")
         except Exception as e:
             print(f"❌ Telegram send failed: {e}")
+
+
+
+if __name__ == "__main__":
+    data_dir = sys.argv[1] if len(sys.argv) > 1 else "."
+    report   = generate_report(data_dir)
+    today    = date.today().strftime("%Y-%m-%d")
+    out      = os.path.join(data_dir, f"strategy_{today}.md")
+    with open(out, "w") as f:
+        f.write(report)
+    print(report)
+    print(f"\n✅ Saved → {out}")
+
+    # Send to Telegram
+    token   = os.getenv("TELEGRAM_TOKEN",   "8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID", "8563709547")
+    send_telegram(report, token, chat_id)
