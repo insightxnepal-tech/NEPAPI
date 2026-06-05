@@ -464,6 +464,7 @@ def generate_report(data_dir="."):
     return "\n".join(lines)
 
 # ═══════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     data_dir = sys.argv[1] if len(sys.argv) > 1 else "."
     report   = generate_report(data_dir)
@@ -473,3 +474,112 @@ if __name__ == "__main__":
         f.write(report)
     print(report)
     print(f"\n✅ Saved → {out}")
+
+    # Send to Telegram if credentials available
+    token   = os.getenv("TELEGRAM_TOKEN",   "8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID", "8563709547")
+    if token and chat_id:
+        send_telegram(report, token, chat_id)
+    else:
+        print("⚠️  TELEGRAM_TOKEN or TELEGRAM_CHAT_ID not set — skipping Telegram.")
+
+
+# ═══════════════════════════════════════════════════════════════════
+# TELEGRAM SENDER
+# ═══════════════════════════════════════════════════════════════════
+def send_telegram(report_text, token, chat_id):
+    """Send pre-market strategy summary to Telegram (splits into chunks if needed)."""
+    import urllib.request, json, re
+
+    # Extract concise summary from full report
+    lines      = report_text.split("\n")
+    date_line  = next((l for l in lines if "Date:" in l), "")
+    bias_line  = next((l for l in lines if "Market Bias:" in l), "")
+    buy_line   = next((l for l in lines if "Sniper BUY entries:" in l), "")
+    near_line  = next((l for l in lines if "Near-Buy watchlist:" in l), "")
+    exit_line  = next((l for l in lines if "Exit / avoid:" in l), "")
+    mom_line   = next((l for l in lines if "Momentum scrips:" in l), "")
+    smart_line = next((l for l in lines if "Smart money buying:" in l), "")
+    sell_line  = next((l for l in lines if "Selling pressure:" in l), "")
+
+    # Sniper BUY table rows
+    buy_rows = []
+    in_buy   = False
+    for l in lines:
+        if "SNIPER BUY SIGNALS" in l:
+            in_buy = True
+        elif in_buy and l.startswith("| **"):
+            parts = [p.strip() for p in l.split("|") if p.strip()]
+            if len(parts) >= 8:
+                buy_rows.append(f"  • *{parts[0].replace('**','')}*  Entry:{parts[2]}  SL:{parts[3]}  T1:{parts[4]}  T2:{parts[5]}  R:R {parts[6]}")
+        elif in_buy and l.startswith("###"):
+            break
+
+    # Near-buy rows
+    near_rows = []
+    in_near   = False
+    for l in lines:
+        if "NEAR BUY SETUPS" in l:
+            in_near = True
+        elif in_near and l.startswith("| **"):
+            parts = [p.strip() for p in l.split("|") if p.strip()]
+            if len(parts) >= 7:
+                near_rows.append(f"  • *{parts[0].replace('**','')}*  Rs {parts[1]}  Missing:{parts[2]}")
+        elif in_near and l.startswith("---"):
+            break
+
+    msg  = "🎯 *NEPSE PRE-MARKET STRATEGY*\n"
+    msg += f"_{date_line.replace('**','').strip()}_\n\n"
+    msg += f"{bias_line.replace('**','').strip()}\n\n"
+
+    msg += "━━━━━━━━━━━━━━━━━━━\n"
+    msg += "🚀 *SNIPER BUY SIGNALS*\n"
+    if buy_rows:
+        msg += "\n".join(buy_rows) + "\n"
+    else:
+        msg += "  None today — market not ready\n"
+
+    msg += "\n👀 *NEAR BUY (watch)*\n"
+    if near_rows:
+        msg += "\n".join(near_rows[:5]) + "\n"
+    else:
+        msg += "  None\n"
+
+    msg += "\n━━━━━━━━━━━━━━━━━━━\n"
+    msg += f"🔥 {mom_line.replace('**','').strip()}\n"
+    msg += f"🟢 {smart_line.replace('**','').strip()}\n"
+    msg += f"🔴 {sell_line.replace('**','').strip()}\n"
+    msg += f"🛑 {exit_line.replace('**','').strip()}\n"
+
+    # Strategy tip
+    if "BULLISH" in bias_line:
+        msg += "\n💡 *Tip:* Take sniper BUYs with full size. Trail SL at 1.5× ATR.\n"
+    else:
+        msg += "\n💡 *Tip:* Cautious market. 50% size only. Wait for volume confirmation.\n"
+
+    msg += "\n_Not financial advice. DYOR._"
+
+    # Send (split if > 4096 chars)
+    api_url = f"https://api.telegram.org/bot{token}/sendMessage"
+    chunks  = [msg[i:i+4000] for i in range(0, len(msg), 4000)]
+    for chunk in chunks:
+        payload = json.dumps({
+            "chat_id":    chat_id,
+            "text":       chunk,
+            "parse_mode": "Markdown"
+        }).encode()
+        req = urllib.request.Request(
+            api_url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                result = json.loads(resp.read())
+                if result.get("ok"):
+                    print(f"✅ Telegram message sent.")
+                else:
+                    print(f"❌ Telegram error: {result}")
+        except Exception as e:
+            print(f"❌ Telegram send failed: {e}")
