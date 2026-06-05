@@ -1,0 +1,47 @@
+name: Daily Pre-Market Strategy Report
+
+on:
+  schedule:
+    # 9:45 AM NPT = 4:00 AM UTC
+    - cron: '0 4 * * 0-4'  # Sun-Thu (NEPSE trading days)
+  workflow_dispatch:
+
+jobs:
+  generate-strategy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas
+
+      - name: Run pre-market strategy
+        run: |
+          echo "Generating pre-market strategy report..."
+          python premarket_strategy.py .
+          echo "Done."
+
+      - name: Commit and push report
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if ls strategy_*.md 1> /dev/null 2>&1; then
+            git add strategy_*.md
+            git diff --quiet && git diff --staged --quiet || \
+              (git commit -m "📊 Pre-Market Strategy Report $(date +'%Y-%m-%d')" && git push)
+          else
+            echo "No strategy file found."
+          fi
