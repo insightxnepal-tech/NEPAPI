@@ -3,7 +3,6 @@ services:
     name: nepse-bot
     runtime: python
     plan: free
-    region: singapore
     buildCommand: pip install -r requirements_bot.txt
     startCommand: uvicorn telegram_bot:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -13,4 +12,3 @@ services:
         sync: false
       - key: DATA_DIR
         value: /opt/render/project/src
-    pythonVersion: "3.11.0"
