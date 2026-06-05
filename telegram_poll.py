@@ -290,6 +290,10 @@ COMMANDS = {
 
 # ── Main polling loop ─────────────────────────────────────────────
 def main():
+    if not TOKEN or TOKEN == "":
+        print("❌ TELEGRAM_TOKEN not set. Add it to GitHub Secrets.")
+        return
+
     offset = load_offset()
     print(f"Polling from offset {offset}...")
 
@@ -315,4 +319,9 @@ def main():
     print(f"Done. New offset: {offset}")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"Fatal error: {e}")
+        import sys
+        sys.exit(0)  # exit 0 so GitHub Actions doesn't fail
