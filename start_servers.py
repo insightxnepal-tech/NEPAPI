@@ -58,6 +58,15 @@ class ServerManager:
         self.processes.append(process)
         return process
 
+    def start_telegram_bot(self):
+        """Start the Telegram Bot"""
+        print("Starting Telegram Bot...")
+        process = subprocess.Popen([
+            sys.executable, "telegram_bot.py"
+        ])
+        self.processes.append(process)
+        return process
+
     def run(self):
         """Run all servers"""
         # Set up signal handlers
@@ -83,6 +92,9 @@ class ServerManager:
             # Start MCP server
             mcp_process = self.start_mcp_server()
 
+            # Start Telegram Bot
+            telegram_bot_process = self.start_telegram_bot()
+
             # Wait a moment for WebSocket server to start
             time.sleep(2)
 
@@ -99,6 +111,7 @@ class ServerManager:
             print("  - Main page: http://localhost:8000/")
             print("  - WebSocket: ws://localhost:5555")
             print("  - MCP server: http://0.0.0.0:9000/mcp")
+            print("  - Telegram Bot: Polling active")
 
             print("\nServers are running. Press Ctrl+C to stop.")
 
@@ -117,6 +130,10 @@ class ServerManager:
 
                 if mcp_process.poll() is not None:
                     print("MCP server stopped unexpectedly")
+                    break
+
+                if telegram_bot_process.poll() is not None:
+                    print("Telegram Bot stopped unexpectedly")
                     break
 
         except KeyboardInterrupt:

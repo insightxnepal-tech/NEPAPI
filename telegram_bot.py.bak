@@ -1,0 +1,345 @@
+#!/usr/bin/env python3
+import os
+import sys
+import asyncio
+import glob
+import re
+import json
+import logging
+import httpx
+import pandas as pd
+from datetime import date, datetime
+from pathlib import Path
+from nepse import AsyncNepse
+from broker_65_analysis import analyze_broker_65
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Config
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U")
+PORTFOLIO_PATH = "portfolio_data.json"
+STOCKMAP_PATH = "stockmap.json"
+ARTIFACT_DIR = Path("artifacts")
+
+def fmt_npr(amount: float) -> str:
+    """Format large numbers into Crore (Cr) / Lakh (L) / plain NPR."""
+    if amount >= 1_00_00_000:
+        return f"Rs. {amount / 1_00_00_000:.2f} Cr"
+    if amount >= 1_00_000:
+        return f"Rs. {amount / 1_00_000:.2f} L"
+    return f"Rs. {amount:,.0f}"
+
+def get_latest_floorsheet() -> str:
+    """Finds the most recent floorsheet CSV in the current directory."""
+    paths = ["floorsheet*.csv"]
+    all_files = []
+    for p in paths:
+        all_files.extend(glob.glob(p))
+    if not all_files:
+        return None
+    def extract_date(f):
+        match = re.search(r'(\d{4})[_-](\d{2})[_-](\d{2})', f)
+        return "-".join(match.groups()) if match else "0000-00-00"
+    all_files.sort(key=extract_date, reverse=True)
+    return all_files[0]
+
+async def send_message(chat_id: int, text: str):
+    """Sends a markdown text message to Telegram, splitting it if it exceeds limits."""
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        if len(text) > 4000:
+            parts = [text[i:i+4000] for i in range(0, len(text), 4000)]
+            for part in parts:
+                await client.post(url, json={"chat_id": chat_id, "text": part, "parse_mode": "Markdown"})
+        else:
+            await client.post(url, json={"chat_id": chat_id, "text": text, "parse_mode": "Markdown"})
+
+async def send_photo(chat_id: int, photo_path: str, caption: str = None):
+    """Sends a photo to Telegram."""
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendPhoto"
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        with open(photo_path, 'rb') as f:
+            files = {'photo': f}
+            data = {'chat_id': chat_id}
+            if caption:
+                data['caption'] = caption
+                data['parse_mode'] = 'Markdown'
+            await client.post(url, data=data, files=files)
+
+async def send_document(chat_id: int, file_path: str, caption: str = None):
+    """Sends a document/file to Telegram."""
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        with open(file_path, 'rb') as f:
+            files = {'document': f}
+            data = {'chat_id': chat_id}
+            if caption:
+                data['caption'] = caption
+                data['parse_mode'] = 'Markdown'
+            await client.post(url, data=data, files=files)
+
+async def handle_floorsheet(chat_id: int):
+    """Fetches today's floorsheet if missing, analyzes it, and sends CSV + summary."""
+    await send_message(chat_id, "⏳ Fetching and preparing today's floorsheet data from NEPSE... This may take a moment.")
+    
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            sys.executable, "fetch_floorsheet_csv.py"
+        )
+        await proc.wait()
+    except Exception as e:
+        logger.error(f"Error running fetch_floorsheet_csv.py: {e}")
+        
+    latest_file = get_latest_floorsheet()
+    if not latest_file:
+        await send_message(chat_id, "❌ No floorsheet CSV files found.")
+        return
+        
+    date_match = re.search(r'(\d{4})[_-](\d{2})[_-](\d{2})', os.path.basename(latest_file))
+    file_date = date_match.group(0) if date_match else "Unknown Date"
+    
+    try:
+        df = pd.read_csv(latest_file)
+        if df.empty:
+            await send_message(chat_id, f"❌ Floorsheet file `{os.path.basename(latest_file)}` is empty.")
+            return
+            
+        total_contracts = len(df)
+        qty_col = 'contractQuantity' if 'contractQuantity' in df.columns else 'quantity'
+        amt_col = 'contractAmount' if 'contractAmount' in df.columns else 'amount'
+        sym_col = 'stockSymbol' if 'stockSymbol' in df.columns else 'symbol'
+        
+        total_volume = df[qty_col].sum() if qty_col in df.columns else 0
+        total_turnover = df[amt_col].sum() if amt_col in df.columns else 0
+        unique_scrips = df[sym_col].nunique() if sym_col in df.columns else 0
+        
+        msg = f"📊 *NEPSE Floorsheet Summary ({file_date})*\n\n"
+        msg += f"• *Total Contracts:* {total_contracts:,}\n"
+        msg += f"• *Traded Volume:* {total_volume:,.0f} shares\n"
+        msg += f"• *Total Turnover:* {fmt_npr(total_turnover)}\n"
+        msg += f"• *Unique Scrips:* {unique_scrips}\n\n"
+        
+        if sym_col in df.columns and amt_col in df.columns:
+            top_turnover = df.groupby(sym_col)[amt_col].sum().sort_values(ascending=False).head(3)
+            msg += "*Top 3 Scrips by Turnover:*\n"
+            for sym, val in top_turnover.items():
+                msg += f"• *{sym}*: {fmt_npr(val)}\n"
+                
+        await send_message(chat_id, msg)
+        await send_document(chat_id, latest_file, caption=f"📄 NEPSE Floorsheet - {file_date}")
+        
+    except Exception as e:
+        logger.error(f"Error parsing floorsheet file: {e}")
+        await send_message(chat_id, f"⚠️ Error parsing floorsheet: {str(e)}")
+
+async def handle_strategy(chat_id: int):
+    """Generates portfolio report, sentiment chart, and runs Broker 65 intel."""
+    await send_message(chat_id, "📊 Generating today's portfolio analysis and institutional sentiment report...")
+    
+    has_portfolio = os.path.exists(PORTFOLIO_PATH)
+    has_stockmap = os.path.exists(STOCKMAP_PATH)
+    latest_file = get_latest_floorsheet()
+    
+    if has_portfolio and has_stockmap and latest_file:
+        try:
+            with open(PORTFOLIO_PATH, "r") as f:
+                portfolio = json.load(f)
+            with open(STOCKMAP_PATH, "r") as f:
+                stock_map = json.load(f)
+                
+            df_fs = pd.read_csv(latest_file)
+            df_fs = df_fs.sort_values('contractId', ascending=False)
+            latest_prices = df_fs.groupby('stockSymbol')['contractRate'].first().to_dict()
+            
+            total_cost = 0
+            total_value = 0
+            rows = []
+            
+            for symbol, data in portfolio.items():
+                qty = data['qty']
+                avg_rate = data['rate']
+                ltp = latest_prices.get(symbol, 0)
+                cost = qty * avg_rate
+                val = qty * ltp
+                pl = val - cost
+                pl_pct = (pl / cost * 100) if cost > 0 else 0
+                
+                total_cost += cost
+                total_value += val
+                
+                indicator = "🟢" if pl >= 0 else "🔴"
+                rows.append(f"{indicator} *{symbol}*: {pl_pct:+.2f}% (Rs. {pl:,.0f})")
+                
+            total_pl = total_value - total_cost
+            total_pl_pct = (total_pl / total_cost * 100) if total_cost > 0 else 0
+            
+            report = f"📊 *DAILY PORTFOLIO REPORT*\nDate: {datetime.now().strftime('%Y-%m-%d')}\n"
+            report += f"Total Investment: Rs. {total_cost:,.2f}\n"
+            report += f"Current Value: Rs. {total_value:,.2f}\n"
+            report += f"Overall P/L: *{total_pl_pct:+.2f}%* (Rs. {total_pl:,.2f})\n\n"
+            report += "\n".join(rows)
+            
+            await send_message(chat_id, report)
+        except Exception as e:
+            logger.error(f"Error parsing portfolio: {e}")
+            await send_message(chat_id, f"⚠️ Error parsing portfolio: {e}")
+    else:
+        await send_message(chat_id, "⚠️ Portfolio config (`portfolio_data.json`) or floorsheet file is missing. Skipping portfolio stats.")
+
+    # Generate Sentiment Chart
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            sys.executable, "generate_portfolio_chart.py"
+        )
+        await proc.wait()
+        
+        chart_paths = [
+            ARTIFACT_DIR / "portfolio_sentiment_chart.png",
+            Path("portfolio_sentiment_chart.png"),
+            Path("artifacts/portfolio_sentiment_chart.png")
+        ]
+        
+        chart_sent = False
+        for cp in chart_paths:
+            if cp.exists():
+                await send_photo(chat_id, str(cp), "📈 *Institutional Sentiment (15-Day Net Score)*")
+                chart_sent = True
+                break
+        if not chart_sent:
+            logger.warn("Portfolio sentiment chart not found after generation attempt.")
+    except Exception as e:
+        logger.error(f"Error generating sentiment chart: {e}")
+        await send_message(chat_id, f"⚠️ Error generating sentiment chart: {e}")
+        
+    # Broker 65 Intel
+    try:
+        intel = analyze_broker_65()
+        await send_message(chat_id, intel)
+    except Exception as e:
+        logger.error(f"Error running Broker 65 intel: {e}")
+        await send_message(chat_id, f"⚠️ Error loading Broker 65 intel: {e}")
+
+async def handle_sniper(chat_id: int):
+    """Runs a market-wide sniper scan and alerts the user."""
+    await send_message(chat_id, "🎯 Running Market-Wide Sniper Scan (SNIPER SHOT PRO v2). This will take about a minute. Please wait...")
+    try:
+        env = os.environ.copy()
+        env["TELEGRAM_CHAT_ID"] = str(chat_id)
+        env["TELEGRAM_TOKEN"] = TELEGRAM_TOKEN
+        env["SCAN_ALL_MARKET"] = "true"
+        
+        proc = await asyncio.create_subprocess_exec(
+            sys.executable, "sniper_scanner.py", "--all",
+            env=env
+        )
+        await proc.wait()
+    except Exception as e:
+        logger.error(f"Error running sniper scanner: {e}")
+        await send_message(chat_id, f"⚠️ Error running sniper scan: {e}")
+
+async def handle_top5(chat_id: int):
+    """Fetches real-time top 5 traded stocks by turnover and volume."""
+    try:
+        nepse = AsyncNepse()
+        nepse.setTLSVerification(False)
+        
+        top_turnover = await nepse.getTopTenTurnoverScrips()
+        top_volume = await nepse.getTopTenTradeScrips()
+        
+        if not top_turnover and not top_volume:
+            await send_message(chat_id, "📭 No live market data available. (Market might be closed or API offline)")
+            return
+            
+        msg = "🔥 *TOP 5 TRADED STOCKS RIGHT NOW*\n\n"
+        
+        if top_turnover:
+            msg += "💰 *Top 5 by Turnover (Value):*\n"
+            for i, item in enumerate(top_turnover[:5]):
+                sym = item.get("symbol", "N/A")
+                turnover = item.get("turnover", 0)
+                ltp = item.get("closingPrice", 0)
+                msg += f"{i+1}. *{sym}*: {fmt_npr(turnover)} | LTP: Rs. {ltp:,.2f}\n"
+        else:
+            msg += "💰 *Top 5 by Turnover:* Data unavailable\n"
+            
+        if top_volume:
+            msg += "\n📈 *Top 5 by Traded Shares (Volume):*\n"
+            for i, item in enumerate(top_volume[:5]):
+                sym = item.get("symbol", "N/A")
+                qty = item.get("shareTraded", 0)
+                ltp = item.get("closingPrice", 0)
+                msg += f"{i+1}. *{sym}*: {qty:,} shares | LTP: Rs. {ltp:,.2f}\n"
+        else:
+            msg += "\n📈 *Top 5 by Traded Shares:* Data unavailable\n"
+            
+        await send_message(chat_id, msg)
+    except Exception as e:
+        logger.error(f"Error fetching top 5: {e}")
+        await send_message(chat_id, f"⚠️ Error fetching top 5 traded stocks: {e}")
+
+async def handle_message(chat_id: int, text: str):
+    """Router for incoming messages/commands."""
+    text = text.strip()
+    cmd = text.split()[0].lower() if text else ""
+    
+    if cmd in ("/start", "/help"):
+        help_msg = (
+            "🤖 *NEPSE API Telegram Bot*\n\n"
+            "Use these commands to interact with NEPSE data:\n"
+            "• `/floorsheet` - Get today's floorsheet CSV and summary\n"
+            "• `/strategy` - Get today's portfolio report & Broker 65 intel\n"
+            "• `/sniper` - Run current sniper signals scan (market-wide)\n"
+            "• `/top5` - Get top 5 traded stocks right now (turnover & volume)\n"
+        )
+        await send_message(chat_id, help_msg)
+        
+    elif cmd == "/floorsheet":
+        await handle_floorsheet(chat_id)
+        
+    elif cmd == "/strategy":
+        await handle_strategy(chat_id)
+        
+    elif cmd == "/sniper":
+        await handle_sniper(chat_id)
+        
+    elif cmd == "/top5":
+        await handle_top5(chat_id)
+    else:
+        if cmd.startswith("/"):
+            await send_message(chat_id, f"❓ Unknown command: {cmd}\nUse `/help` to see available commands.")
+
+async def poll_bot():
+    """Main long-polling loop for Telegram updates."""
+    offset = 0
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/getUpdates"
+    
+    logger.info("Telegram Bot Polling started...")
+    
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        while True:
+            try:
+                response = await client.get(url, params={"offset": offset, "timeout": 20})
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("ok"):
+                        for update in data.get("result", []):
+                            offset = update["update_id"] + 1
+                            message = update.get("message", {})
+                            chat = message.get("chat", {})
+                            chat_id = chat.get("id")
+                            text = message.get("text", "")
+                            
+                            if chat_id and text:
+                                asyncio.create_task(handle_message(chat_id, text))
+                else:
+                    logger.error(f"Telegram API returned status: {response.status_code}")
+            except Exception as e:
+                logger.error(f"Error in bot polling loop: {e}")
+            await asyncio.sleep(1)
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(poll_bot())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user.")

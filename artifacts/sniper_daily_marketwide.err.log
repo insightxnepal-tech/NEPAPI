@@ -1,0 +1,781 @@
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: divide by zero encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: divide by zero encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: divide by zero encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+/Users/sanishtamang/NEPAPI/sniper_scanner.py:149: RuntimeWarning: invalid value encountered in scalar divide
+  emas_flat = (ema_max - ema_min) / stats['price'] < 0.01
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/util/connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/adapters.py", line 645, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U/sendMessage (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 214, in main
+    res = requests.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"}); print(res.text)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/adapters.py", line 678, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U/sendMessage (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/util/connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/adapters.py", line 645, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U/sendMessage (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 214, in main
+    res = requests.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"}); print(res.text)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/adapters.py", line 678, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U/sendMessage (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 92, in main
+    n = Nepse()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 498, in __init__
+    self.init_client(tls_verify=self._tls_verify)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 537, in init_client
+    self.client = httpx.Client(verify=tls_verify, http2=True, timeout=100)
+                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 688, in __init__
+    self._transport = self._init_transport(
+                      ~~~~~~~~~~~~~~~~~~~~^
+        verify=verify,
+        ^^^^^^^^^^^^^^
+    ...<5 lines>...
+        transport=transport,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 731, in _init_transport
+    return HTTPTransport(
+        verify=verify,
+    ...<4 lines>...
+        limits=limits,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_transports/default.py", line 150, in __init__
+    import httpcore
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpcore/__init__.py", line 1, in <module>
+    from ._api import request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpcore/_api.py", line 7, in <module>
+    from ._sync.connection_pool import ConnectionPool
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpcore/_sync/__init__.py", line 1, in <module>
+    from .connection import HTTPConnection
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpcore/_sync/connection.py", line 14, in <module>
+    from .._synchronization import Lock
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpcore/_synchronization.py", line 12, in <module>
+    import trio
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/trio/__init__.py", line 22, in <module>
+    from ._core import TASK_STATUS_IGNORED as TASK_STATUS_IGNORED  # isort: split
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/trio/_core/__init__.py", line 22, in <module>
+    from ._local import RunVar, RunVarToken
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/trio/_core/_local.py", line 9, in <module>
+    from . import _run
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/trio/_core/_run.py", line 338, in <module>
+    class CancelStatus:
+    ...<176 lines>...
+            return min(self._scope.deadline, self._parent.effective_deadline())
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/trio/_core/_run.py", line 370, in CancelStatus
+    _scope: CancelScope = attrs.field(alias="scope")
+                          ~~~~~~~~~~~^^^^^^^^^^^^^^^
+TypeError: field() got an unexpected keyword argument 'alias'
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 12, in <module>
+    from nepse import Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/__init__.py", line 3, in <module>
+    from nepse.NepseLib import AsyncNepse, Nepse
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 7, in <module>
+    import httpx
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/httpx/_models.py", line 1, in <module>
+    import cgi
+ModuleNotFoundError: No module named 'cgi'
