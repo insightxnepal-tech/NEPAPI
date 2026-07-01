@@ -49,6 +49,13 @@ try:
 except ImportError:
     HAS_TQDM = False
 
+# Optional pandas for XLSX export
+try:
+    import pandas as pd
+    HAS_PANDAS = True
+except ImportError:
+    HAS_PANDAS = False
+
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 def _today_str() -> str:
@@ -59,6 +66,14 @@ def _default_csv_name(date_str: str, symbol: Optional[str]) -> str:
     if symbol:
         return f"floorsheet_{symbol.upper()}_{date_str}.csv"
     return f"floorsheet_{date_str}.csv"
+
+def _default_xlsx_path(date_str: str, symbol: Optional[str]) -> Path:
+    """Return the full Path where the XLSX file should be saved.
+    Files are stored under ~/Downloads/floorsheet/ with a name
+    matching the CSV (but with .xlsx extension)."""
+    base_name = _default_csv_name(date_str, symbol).replace('.csv', '.xlsx')
+    download_dir = Path.home() / 'Downloads' / 'floorsheet'
+    return download_dir / base_name
 
 
 def _print(msg: str) -> None:
@@ -173,11 +188,16 @@ async def main(args: argparse.Namespace) -> int:
 
     date_label = business_date or _today_str()
 
-    # Resolve output path
+    # Resolve CSV output path (original behavior retained for backward compatibility)
     if out_path:
         csv_path = Path(out_path)
     else:
         csv_path = Path(_default_csv_name(date_label, symbol))
+
+    # Resolve XLSX path (always save here)
+    xlsx_path = _default_xlsx_path(date_label, symbol)
+    # Ensure the download directory exists
+    xlsx_path.parent.mkdir(parents=True, exist_ok=True)
 
     # ── Init NEPSE client ────────────────────────────────────────────────────
     _print("Initialising AsyncNepse client …")
@@ -208,6 +228,17 @@ async def main(args: argparse.Namespace) -> int:
 
     # ── Write CSV ────────────────────────────────────────────────────────────
     _write_csv(records, csv_path)
+
+    # ── Write XLSX (always) ─────────────────────────────────────────────────────
+    if HAS_PANDAS:
+        try:
+            df = pd.DataFrame(records)
+            df.to_excel(xlsx_path, index=False)
+            _print(f"XLSX saved → {xlsx_path} ({len(records):,} rows)")
+        except Exception as exc:
+            _print(f"[WARNING] Failed to write XLSX: {exc}")
+    else:
+        _print("[WARNING] pandas not installed – XLSX not saved.")
 
     # ── Optionally write JSON ────────────────────────────────────────────────
     if save_json:
