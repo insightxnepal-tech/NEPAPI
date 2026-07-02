@@ -39,11 +39,10 @@ PORT = int(os.environ.get("PORT", 9000))
 
 mcp = FastMCP(
     name="nepseapi-mcp-server",
-    on_duplicate_tools="error",
-    on_duplicate_resources="warn",
-    on_duplicate_prompts="replace",
-    stateless_http=True
+    on_duplicate="error",
 )
+
+app = mcp.http_app()
 
 # --- Rate Limiting Middleware ---
 mcp.add_middleware(RateLimitingMiddleware(

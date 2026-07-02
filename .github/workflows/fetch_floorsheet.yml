@@ -1,0 +1,58 @@
+name: Fetch Floorsheet Data
+
+on:
+  schedule:
+    # Nepal Time (NPT) is UTC+05:45.
+    # 10:00 AM NPT = 04:15 AM UTC.
+    # The cron format is: Minute Hour Day Month DayOfWeek
+    # 1-5 represents Monday to Friday.
+    - cron: '15 4 * * 1-5'
+    
+  workflow_dispatch: # This allows you to run it manually from the Actions tab anytime!
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # This gives the action permission to commit back to your repo
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas tqdm
+          pip install git+https://github.com/basic-bgnr/NepseUnofficialApi.git
+          
+      - name: Run script to fetch floorsheet
+        run: |
+          # Run the script. It will create the CSV in the current directory.
+          python fetch_floorsheet_csv.py
+          
+          # Create a 'data' folder to keep things organized
+          mkdir -p data
+          
+          # Move the generated CSV into the data folder
+          mv floorsheet_*.csv data/ 2>/dev/null || true
+          
+          # The script saves XLSX files to the home directory by default. 
+          # We'll copy them to the data folder so they get committed too.
+          cp ~/Downloads/floorsheet/*.xlsx data/ 2>/dev/null || true
+          
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Stage the files in the data directory
+          git add data/
+          
+          # Commit and push if there are any new files/changes. If not, do nothing.
+          git diff --staged --quiet || (git commit -m "Automated fetch of floorsheet data" && git push)

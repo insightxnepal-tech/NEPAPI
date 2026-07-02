@@ -18,7 +18,8 @@ warnings.filterwarnings('ignore')
 def load_floorsheets(data_dir="."):
     files = sorted(glob.glob(os.path.join(data_dir, "floorsheet_2026-*.csv")))
     files = [f for f in files if "dividend" not in f]
-    files = files[-15:]
+    # Use all available floorsheet files (no slicing to recent days)
+    # files = files[-15:]  # removed to include all data CSV files found.
     if not files:
         raise FileNotFoundError("No floorsheet CSV files found.")
     dfs = [pd.read_csv(f) for f in files]

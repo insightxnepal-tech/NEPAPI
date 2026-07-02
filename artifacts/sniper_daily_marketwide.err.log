@@ -1043,3 +1043,31 @@ Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/requests/adapters.py", line 678, in send
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U/sendMessage (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+Traceback (most recent call last):
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 223, in <module>
+    main(scan_all=args.all or os.getenv("SCAN_ALL_MARKET") == "true")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 100, in main
+    securities = n.getSecurityList()
+  File "/Users/sanishtamang/NEPAPI/nepse/NepseLib.py", line 580, in getSecurityList
+    self.security_list = self.requestGETAPI(
+                         ~~~~~~~~~~~~~~~~~~^
+        url=self.api_end_points["security_list_url"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/sanishtamang/NEPAPI/sniper_scanner.py", line 22, in patched_request_get
+    access_token = self.token_manager.getAccessToken()
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 107, in getAccessToken
+    else self.update() or self.access_token
+         ~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 118, in update
+    self._setToken()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 128, in _setToken
+    ) = self._getValidTokenFromJSON(json_response)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/sanishtamang/NEPAPI/nepse/TokenUtils.py", line 139, in _getValidTokenFromJSON
+    val = int(token_response[f"salt{salt_index}"])
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'salt1'
