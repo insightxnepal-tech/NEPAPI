@@ -286,7 +286,7 @@ def send_report(df, ohlc, csv_path, strategy_path=None):
         mom_line = next((l for l in lines if "Momentum scrips:" in l), "")
         send(
             f"📋 *PRE-MARKET STRATEGY*\n"
-            f"_{esc(Path(strategy_path).stem)}_\n\n"
+            f"`{Path(strategy_path).stem}`\n\n"
             f"{esc(bias_line.strip())}\n\n"
             f"🚀 {esc(buy_line.strip())}\n"
             f"👀 {esc(near_line.strip())}\n"

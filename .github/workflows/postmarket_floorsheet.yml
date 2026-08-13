@@ -5,11 +5,6 @@ on:
     # 4:20 PM NPT = 10:35 AM UTC, after daily floorsheet fetch (10:15 UTC)
     - cron: '35 10 * * 0-4'
   workflow_dispatch:
-  # First-run delivery: sending this new workflow file triggers the report now
-  push:
-    paths:
-      - '.github/workflows/postmarket_floorsheet.yml'
-      - 'postmarket_floorsheet_report.py'
 
 jobs:
   report:
