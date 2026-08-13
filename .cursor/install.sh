@@ -21,4 +21,16 @@ fi
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -r requirements.txt
 
-echo "NEPSE API environment ready. Activate with: source .venv/bin/activate"
+# Dedicated virtualenv for the MCP server (mcp_server.py). It targets FastMCP v3,
+# whose starlette>=1.6 requirement conflicts with the pinned fastapi in the main
+# venv, so it must live in its own environment. See .cursor/requirements-mcp.txt.
+if [ ! -x ".venv-mcp/bin/python" ]; then
+  python3 -m venv .venv-mcp
+fi
+
+.venv-mcp/bin/python -m pip install --upgrade pip
+.venv-mcp/bin/python -m pip install -r .cursor/requirements-mcp.txt
+
+echo "NEPSE API environment ready."
+echo "  REST/WebSocket venv: .venv    (source .venv/bin/activate)"
+echo "  MCP server venv:     .venv-mcp"

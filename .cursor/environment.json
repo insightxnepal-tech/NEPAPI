@@ -12,10 +12,16 @@
       "name": "websocket",
       "command": ".venv/bin/python socketServer.py",
       "description": "WebSocket server streaming NEPSE data on ws://localhost:5555."
+    },
+    {
+      "name": "mcp",
+      "command": "BASE_URL=http://localhost:8000 PORT=9000 .venv-mcp/bin/python mcp_server.py",
+      "description": "FastMCP v3 server exposing NEPSE tools over MCP at http://localhost:9000/mcp/. Runs from the dedicated .venv-mcp and proxies the REST API on port 8000."
     }
   ],
   "ports": [
     { "name": "rest-api", "port": 8000 },
-    { "name": "websocket", "port": 5555 }
+    { "name": "websocket", "port": 5555 },
+    { "name": "mcp", "port": 9000 }
   ]
 }
