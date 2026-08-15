@@ -94,6 +94,14 @@ def company_deep_dive(symbol: str) -> PromptMessage:
     return PromptMessage(role="user", content=TextContent(type="text", text=f"Give me a detailed report for {symbol}, including profile, price history, and recent trades."))
 
 @mcp.prompt(
+    name="financial-reports-lookup",
+    description="Get the latest quarterly and annual financial reports for a NEPSE listed stock."
+)
+def financial_reports_lookup(symbol: str) -> PromptMessage:
+    """Get the latest quarterly and annual financial reports for a NEPSE listed stock."""
+    return PromptMessage(role="user", content=TextContent(type="text", text=f"Show the latest quarterly and annual financial reports for {symbol}, including EPS, P/E, profit, net worth per share, and document links."))
+
+@mcp.prompt(
     name="live-market-watchlist",
     description="Monitor live prices and volumes for a custom list of stocks."
 )
@@ -486,7 +494,7 @@ _endpoint_cache = {}
 _endpoint_cache_lock = threading.Lock()
 _ENDPOINT_CACHE_TTL = 600  # 10 minutes
 
-def fetch_nepse_api(endpoint: str) -> Dict[str, Any]:
+def fetch_nepse_api(endpoint: str, timeout: float = 30.0) -> Dict[str, Any]:
     """Fetch data from the NEPSE API and return parsed JSON, with endpoint-level caching."""
     now = time.time()
     cache_key = endpoint
@@ -499,7 +507,7 @@ def fetch_nepse_api(endpoint: str) -> Dict[str, Any]:
             else:
                 del _endpoint_cache[cache_key]
     url = f"{BASE_URL}{endpoint}"
-    response = httpx.get(url, timeout=30.0)
+    response = httpx.get(url, timeout=timeout)
     response.raise_for_status()
     data = response.json()
     with _endpoint_cache_lock:
@@ -1335,6 +1343,68 @@ def get_company_name_from_symbol(symbol: str) -> Dict:
         return {"search_result": result}
     except Exception as e:
         logger.error(f"Error finding company name for symbol {symbol}: {e}")
+        return {"error": str(e)}
+
+@mcp.tool()
+def get_financial_reports(symbol: str) -> Dict:
+    """
+    Get quarterly and annual financial reports for a NEPSE listed stock.
+    Args:
+        symbol: Stock symbol, for example NABIL.
+    Returns:
+        Dict with:
+            - symbol, companyName, securityName, sector, reportCount
+            - latestQuarterly: latest quarterly filing (EPS, P/E, profit, net worth, documents)
+            - latestAnnual: latest annual filing
+            - reports: historical compact reports, newest first
+    Use this tool to inspect a company's latest NEPSE financial filings.
+    """
+    try:
+        validation_result = validate_stock_symbol(symbol)
+        if not validation_result["valid"]:
+            return {"error": validation_result["error"]}
+        validated_symbol = validation_result["symbol"]
+        return fetch_nepse_api(f"/FinancialReports?symbol={validated_symbol}")
+    except Exception as e:
+        logger.error(f"Error fetching financial reports for {symbol}: {e}")
+        return {"error": str(e)}
+
+@mcp.tool()
+def get_latest_financial_reports(symbol: str = "", sector: str = "") -> Dict:
+    """
+    Get the latest quarterly and annual financial reports for NEPSE listed stocks.
+    Args:
+        symbol: (optional) Limit to one stock symbol. Leave empty for all active equity listings.
+        sector: (optional) Limit to a sector name such as Commercial Banks or Hydro Power.
+    Returns:
+        Dict with:
+            - count: Number of companies returned
+            - cached: Whether the full-market snapshot was served from cache
+            - results: List of companies, each with latestQuarterly and latestAnnual summaries
+    Full-market fetches are slower on the first call and then cached. Prefer a symbol when you only need one company.
+    """
+    try:
+        if symbol in ("None", "null", "", "undefined", None):
+            symbol = None
+        if sector in ("None", "null", "", "undefined", None):
+            sector = None
+
+        params = []
+        timeout = 30.0
+        if symbol:
+            validation_result = validate_stock_symbol(symbol)
+            if not validation_result["valid"]:
+                return {"error": validation_result["error"]}
+            params.append(f"symbol={validation_result['symbol']}")
+        else:
+            timeout = 180.0
+        if sector:
+            from urllib.parse import quote
+            params.append(f"sector={quote(sector)}")
+        query = f"?{'&'.join(params)}" if params else ""
+        return fetch_nepse_api(f"/LatestFinancialReports{query}", timeout=timeout)
+    except Exception as e:
+        logger.error(f"Error fetching latest financial reports: {e}")
         return {"error": str(e)}
 
 @mcp.custom_route("/health", methods=["GET"])

@@ -54,6 +54,8 @@ Here is a list of all the tools available on the MCP server:
 - `get_top_ten_traded_by_transactions`
 - `get_supply_and_demand`
 - `get_company_info`
+- `get_financial_reports`
+- `get_latest_financial_reports`
 - `get_floorsheet`
 - `get_historical_data`
 - `get_market_depth`
@@ -240,6 +242,19 @@ These tools return time-series data for various indices.
 - **Parameters**:
     - `symbol` (str): The stock symbol.
 - **Output**: A `CompanyInfo` object.
+
+#### `get_financial_reports`
+- **Description**: Get compact quarterly and annual financial reports for a listed stock, including EPS, P/E, profit, net worth per share, and NEPSE document links.
+- **Parameters**:
+    - `symbol` (str): The stock symbol.
+- **Output**: A dictionary with `latestQuarterly`, `latestAnnual`, and `reports`.
+
+#### `get_latest_financial_reports`
+- **Description**: Get the latest quarterly and annual filings for one stock, one sector, or all active NEPSE equity listings.
+- **Parameters**:
+    - `symbol` (optional, str): Limit to one stock.
+    - `sector` (optional, str): Limit to one sector name.
+- **Output**: A dictionary with `count` and `results`.
 
 #### `get_historical_data`
 - **Description**: Get historical trade data for a stock.

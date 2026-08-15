@@ -448,6 +448,8 @@ Base URL: `http://localhost:8000`
 | `/NepseIndex`  | Get NEPSE index data       | ✅ |
 | `/Floorsheet`  | Get floorsheet data        | ✅ |
 | `/SupplyDemand`| Get market supply/demand data | ✅ |
+| `/FinancialReports` | Quarterly and annual reports for one stock (`?symbol=NABIL`) | ✅ |
+| `/LatestFinancialReports` | Latest quarterly/annual report for listed equity stocks (`?symbol=`, `?sector=`) | ✅ |
 
 ### Validation Endpoints
 
@@ -626,6 +628,8 @@ The MCP server provides the following tools for AI integration, with endpoint-le
 | `get_index_suggestions`| Get suggestions for an index name | `index_name: str` |
 | `get_validation_stats` | Get validation statistics | None |
 | `get_company_details` | Get details for a specific company | `symbol: str` |
+| `get_financial_reports` | Quarterly and annual financial reports for a stock | `symbol: str` |
+| `get_latest_financial_reports` | Latest filings for one stock, a sector, or all listed equities | `symbol: str` (optional), `sector: str` (optional) |
 | `get_sector_data` | Get data for a specific sector | `sector: str` |
 | `get_sub_indices` | Get data for all sub-indices | None |
 | `get_top_stocks_by_turnover`| Get top stocks by turnover | None |

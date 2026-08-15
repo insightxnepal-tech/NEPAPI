@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException, Response, Request
 from fastapi.responses import JSONResponse
 from nepse import AsyncNepse
+from financial_reports import build_symbol_report, fetch_latest_listed_reports
 import logging
 import time
+from typing import Optional
 
 # Import validation utilities
 from validator import validate_stock_symbol, validate_index_name, validator
@@ -125,11 +127,18 @@ routes = {
     "DailyNonLifeInsuranceSubindexGraph": "/DailyNonLifeInsuranceSubindexGraph",
     "DailyOthersSubindexGraph": "/DailyOthersSubindexGraph",
     "DailyTradingSubindexGraph": "/DailyTradingSubindexGraph",
+    "FinancialReports": "/FinancialReports",
+    "LatestFinancialReports": "/LatestFinancialReports",
 }
 
 HEADERS = {
     "Access-Control-Allow-Origin": "*",
     "Cache-Control": "public, max-age=30"
+}
+
+FINANCIAL_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Cache-Control": "public, max-age=3600"
 }
 
 @app.get("/health")
@@ -380,6 +389,35 @@ async def get_company_details(symbol: str):
     validated_symbol = validate_stock_or_raise(symbol)
     data = await nepseAsync.getCompanyDetails(validated_symbol)
     return JSONResponse(content=data, headers=HEADERS)
+
+
+@app.get(routes["FinancialReports"])
+async def get_financial_reports(symbol: str):
+    """Latest and historical quarterly/annual reports for one listed stock."""
+    validated_symbol = validate_stock_or_raise(symbol)
+    data = await build_symbol_report(nepseAsync, validated_symbol, include_reports=True)
+    return JSONResponse(content=data, headers=FINANCIAL_HEADERS)
+
+
+@app.get(routes["LatestFinancialReports"])
+async def get_latest_financial_reports(
+    symbol: Optional[str] = None,
+    sector: Optional[str] = None,
+    force_refresh: bool = False,
+):
+    """
+    Latest quarterly and annual report for listed equity stocks.
+
+    Omit `symbol` to return every active equity listing (cached for 6 hours).
+    """
+    symbols = [validate_stock_or_raise(symbol)] if symbol else None
+    data = await fetch_latest_listed_reports(
+        nepseAsync,
+        symbols=symbols,
+        sector=sector,
+        force_refresh=force_refresh,
+    )
+    return JSONResponse(content=data, headers=FINANCIAL_HEADERS)
 
 
 @app.get(routes["PriceVolume"])
