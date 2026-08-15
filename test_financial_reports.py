@@ -122,5 +122,35 @@ class LiveNepseReportsTest(unittest.TestCase):
         self.assertIn("fileLocation=", latest["documents"][0]["url"])
 
 
+class RestFinancialReportsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from fastapi.testclient import TestClient
+        from server import app
+
+        cls.client = TestClient(app)
+
+    def test_financial_reports_requires_valid_symbol(self):
+        response = self.client.get("/FinancialReports", params={"symbol": "NOTASTOCK"})
+        self.assertEqual(response.status_code, 400)
+
+    def test_financial_reports_nabil(self):
+        response = self.client.get("/FinancialReports", params={"symbol": "NABIL"})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["symbol"], "NABIL")
+        self.assertGreater(data["reportCount"], 0)
+        self.assertEqual(data["latestQuarterly"]["reportType"], "Quarterly Report")
+        self.assertIn("eps", data["latestQuarterly"])
+
+    def test_latest_financial_reports_single_symbol(self):
+        response = self.client.get("/LatestFinancialReports", params={"symbol": "NABIL"})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["symbol"], "NABIL")
+        self.assertIsNotNone(data["results"][0]["latestQuarterly"])
+
+
 if __name__ == "__main__":
     unittest.main()
