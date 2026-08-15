@@ -451,6 +451,22 @@ Base URL: `http://localhost:8000`
 | `/FinancialReports` | Quarterly and annual reports for one stock (`?symbol=NABIL`) | ✅ |
 | `/LatestFinancialReports` | Latest quarterly/annual report for listed equity stocks (`?symbol=`, `?sector=`) | ✅ |
 
+### Financial Report Exports
+
+Generate a printable market-wide report (HTML plus PDF) from the latest filings:
+
+```bash
+# Fetch fresh filings from NEPSE and build the report
+python build_financial_report.py --fetch --output-dir reports
+
+# Or build from a saved /LatestFinancialReports snapshot
+python build_financial_report.py --input latest_listed_financial_reports.json
+```
+
+The PDF includes sector aggregates, profit and EPS leader boards, loss-making
+companies, a commercial bank table, and an appendix covering every listed equity.
+PDF rendering uses a headless Chrome or Chromium binary if one is installed.
+
 ### Validation Endpoints
 
 | Endpoint | Description | Parameters |
