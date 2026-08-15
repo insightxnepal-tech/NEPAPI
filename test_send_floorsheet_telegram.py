@@ -73,6 +73,41 @@ class SummaryTests(unittest.TestCase):
             self.assertIn(path.name, msg)
 
 
+class CredentialTests(unittest.TestCase):
+    def test_missing_token_fails_real_send(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "floorsheet_2026-08-14.csv"
+            write_csv(path, SAMPLE_ROWS)
+            env = {"TELEGRAM_TOKEN": "", "TELEGRAM_CHAT_ID": "123"}
+            with patch.dict("os.environ", env, clear=False):
+                # ensure empty even if the parent shell has a token
+                with patch.object(sender, "get_token", return_value=""), patch.object(
+                    sender, "get_chat_id", return_value="123"
+                ):
+                    rc = sender.send_floorsheet(path, dry_run=False)
+            self.assertEqual(rc, 1)
+
+    def test_check_auth_without_token(self):
+        with patch.object(sender, "get_token", return_value=""), patch.object(
+            sender, "get_chat_id", return_value="123"
+        ):
+            rc = sender.main(["--check-auth"])
+        self.assertEqual(rc, 1)
+
+    def test_401_is_explained(self):
+        exc = sender.urllib.error.HTTPError(
+            "https://api.telegram.org/botx/getMe",
+            401,
+            "Unauthorized",
+            hdrs=None,
+            fp=__import__("io").BytesIO(b'{"ok":false,"error_code":401,"description":"Unauthorized"}'),
+        )
+        msg = sender.format_telegram_http_error(exc)
+        self.assertIn("401", msg)
+        self.assertIn("invalid or revoked", msg)
+        self.assertIn("secrets.TELEGRAM_TOKEN", msg)
+
+
 class SendTests(unittest.TestCase):
     def test_dry_run_does_not_call_telegram(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -121,8 +156,9 @@ class SendTests(unittest.TestCase):
                 captured["content_type"] = req.headers.get("Content-type") or req.headers.get("Content-Type")
                 return FakeResponse()
 
-            with patch("urllib.request.urlopen", side_effect=fake_urlopen):
-                resp = sender.send_document("123", path, caption="test caption")
+            with patch.dict("os.environ", {"TELEGRAM_TOKEN": "123:abc", "TELEGRAM_CHAT_ID": "1"}):
+                with patch("urllib.request.urlopen", side_effect=fake_urlopen):
+                    resp = sender.send_document("123", path, caption="test caption")
 
             self.assertTrue(resp["ok"])
             self.assertIn("sendDocument", captured["url"])

@@ -3,11 +3,13 @@
 Send the latest NEPSE floorsheet CSV to Telegram.
 
 Used by the daily floorsheet GitHub Action after fetch_today.py.
-Can also be run locally:
+Requires TELEGRAM_TOKEN and TELEGRAM_CHAT_ID from the environment
+(GitHub Actions secrets). There is no hardcoded bot token.
 
   python send_floorsheet_telegram.py
   python send_floorsheet_telegram.py --csv floorsheet_2026-08-14.csv
   python send_floorsheet_telegram.py --dry-run
+  python send_floorsheet_telegram.py --check-auth
 """
 
 from __future__ import annotations
@@ -25,13 +27,25 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-TOKEN = os.getenv("TELEGRAM_TOKEN") or "8618135314:AAHoDrHGP2sncP1HxEGLDj0OKtIpSLeuD0U"
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID") or "8563709547"
-API = f"https://api.telegram.org/bot{TOKEN}"
 DATA_DIR = os.getenv("DATA_DIR", ".")
 DATED_CSV_RE = re.compile(r"^floorsheet_(\d{4}-\d{2}-\d{2})\.csv$")
 TELEGRAM_DOC_MAX_BYTES = 50 * 1024 * 1024
 SEND_TIMEOUT_SEC = 180
+
+
+def get_token() -> str:
+    return (os.getenv("TELEGRAM_TOKEN") or "").strip()
+
+
+def get_chat_id() -> str:
+    return (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+
+
+def telegram_api(token: Optional[str] = None) -> str:
+    token = (token or get_token()).strip()
+    if not token:
+        raise ValueError("TELEGRAM_TOKEN is not set")
+    return f"https://api.telegram.org/bot{token}"
 
 
 def find_latest_floorsheet(data_dir: str = DATA_DIR) -> Optional[Path]:
@@ -101,15 +115,32 @@ def format_summary_message(summary: dict, filename: str) -> str:
     )
 
 
-def _telegram_json(method: str, payload: dict, timeout: int = 30) -> dict:
-    data = json.dumps(payload).encode()
+def format_telegram_http_error(exc: urllib.error.HTTPError) -> str:
+    body = exc.read().decode("utf-8", errors="replace")
+    if exc.code == 401:
+        return (
+            "❌ Telegram HTTP 401 Unauthorized. TELEGRAM_TOKEN is invalid or revoked.\n"
+            "Set a current bot token from @BotFather as TELEGRAM_TOKEN. "
+            "GitHub Actions must use secrets.TELEGRAM_TOKEN (do not hardcode a token)."
+        )
+    return f"❌ Telegram HTTP {exc.code}: {body}"
+
+
+def _telegram_json(method: str, payload: Optional[dict] = None, timeout: int = 30) -> dict:
+    url = f"{telegram_api()}/{method}"
+    data = json.dumps(payload).encode() if payload is not None else None
     req = urllib.request.Request(
-        f"{API}/{method}",
+        url,
         data=data,
-        headers={"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json"} if data is not None else {},
+        method="POST" if data is not None else "GET",
     )
     with urllib.request.urlopen(req, timeout=timeout) as response:
         return json.loads(response.read())
+
+
+def get_me() -> dict:
+    return _telegram_json("getMe", payload=None)
 
 
 def send_message(chat_id: str, text: str) -> dict:
@@ -142,7 +173,7 @@ def send_document(chat_id: str, filepath: Path, caption: str = "") -> dict:
     ).encode() + file_data + f"\r\n--{boundary}--\r\n".encode()
 
     req = urllib.request.Request(
-        f"{API}/sendDocument",
+        f"{telegram_api()}/sendDocument",
         data=body,
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
     )
@@ -150,17 +181,48 @@ def send_document(chat_id: str, filepath: Path, caption: str = "") -> dict:
         return json.loads(response.read())
 
 
-def send_floorsheet(csv_path: Path, chat_id: str = CHAT_ID, dry_run: bool = False) -> int:
+def require_credentials() -> Optional[str]:
+    """Return an error message if Telegram credentials are missing."""
+    if not get_token():
+        return (
+            "❌ TELEGRAM_TOKEN is not set.\n"
+            "Export it or add GitHub Actions secret TELEGRAM_TOKEN."
+        )
+    if not get_chat_id():
+        return (
+            "❌ TELEGRAM_CHAT_ID is not set.\n"
+            "Export it or add GitHub Actions secret TELEGRAM_CHAT_ID."
+        )
+    return None
+
+
+def check_auth() -> int:
+    err = require_credentials()
+    if err:
+        print(err)
+        return 1
+    try:
+        resp = get_me()
+    except urllib.error.HTTPError as exc:
+        print(format_telegram_http_error(exc))
+        return 1
+    except Exception as exc:
+        print(f"❌ Telegram getMe failed: {exc}")
+        return 1
+    if not resp.get("ok"):
+        print(f"❌ Telegram getMe failed: {resp}")
+        return 1
+    username = (resp.get("result") or {}).get("username") or "unknown"
+    print(f"Telegram auth ok (@{username})")
+    return 0
+
+
+def send_floorsheet(csv_path: Path, chat_id: Optional[str] = None, dry_run: bool = False) -> int:
     if not csv_path.exists():
         print(f"❌ Floorsheet not found: {csv_path}")
         return 1
-    if not TOKEN:
-        print("❌ TELEGRAM_TOKEN is not set.")
-        return 1
-    if not chat_id:
-        print("❌ TELEGRAM_CHAT_ID is not set.")
-        return 1
 
+    chat_id = (chat_id or get_chat_id()).strip()
     summary = summarize_csv(csv_path)
     message = format_summary_message(summary, csv_path.name)
     caption = f"NEPSE Floorsheet {summary['label']}"
@@ -173,7 +235,19 @@ def send_floorsheet(csv_path: Path, chat_id: str = CHAT_ID, dry_run: bool = Fals
         print(f"Would send document with caption: {caption}")
         return 0
 
+    err = require_credentials()
+    if err:
+        print(err)
+        return 1
+    if not chat_id:
+        print("❌ TELEGRAM_CHAT_ID is not set.")
+        return 1
+
     try:
+        auth_rc = check_auth()
+        if auth_rc != 0:
+            return auth_rc
+
         msg_resp = send_message(chat_id, message)
         if not msg_resp.get("ok"):
             print(f"❌ Telegram sendMessage failed: {msg_resp}")
@@ -187,8 +261,7 @@ def send_floorsheet(csv_path: Path, chat_id: str = CHAT_ID, dry_run: bool = Fals
         print(f"Sent CSV to Telegram chat {chat_id}.")
         return 0
     except urllib.error.HTTPError as exc:
-        body = exc.read().decode("utf-8", errors="replace")
-        print(f"❌ Telegram HTTP {exc.code}: {body}")
+        print(format_telegram_http_error(exc))
         return 1
     except Exception as exc:
         print(f"❌ Failed to send floorsheet: {exc}")
@@ -200,11 +273,14 @@ def parse_args(argv: Optional[list] = None) -> argparse.Namespace:
     parser.add_argument("--csv", metavar="PATH", help="CSV file to send (default: latest dated floorsheet)")
     parser.add_argument("--data-dir", default=DATA_DIR, help="Directory to search for floorsheet_YYYY-MM-DD.csv")
     parser.add_argument("--dry-run", action="store_true", help="Print summary without calling Telegram")
+    parser.add_argument("--check-auth", action="store_true", help="Validate TELEGRAM_TOKEN via getMe and exit")
     return parser.parse_args(argv)
 
 
 def main(argv: Optional[list] = None) -> int:
     args = parse_args(argv)
+    if args.check_auth:
+        return check_auth()
     if args.csv:
         csv_path = Path(args.csv)
     else:
