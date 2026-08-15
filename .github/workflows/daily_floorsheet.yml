@@ -34,15 +34,6 @@ jobs:
           python fetch_today.py
           echo "Fetcher finished."
 
-      - name: Send floorsheet CSV to Telegram
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DATA_DIR: ${{ github.workspace }}
-        run: |
-          echo "Sending latest floorsheet CSV to Telegram..."
-          python send_floorsheet_telegram.py
-
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -54,3 +45,12 @@ jobs:
           else
             echo "No floorsheet files found to commit."
           fi
+
+      - name: Send floorsheet CSV to Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DATA_DIR: ${{ github.workspace }}
+        run: |
+          echo "Sending latest floorsheet CSV to Telegram..."
+          python send_floorsheet_telegram.py
