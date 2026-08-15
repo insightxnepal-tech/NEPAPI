@@ -423,6 +423,13 @@ class AsyncNepse(_Nepse):
             payload_generator=self.getPOSTPayloadIDForScrips,
         )
 
+    async def getCompanyReports(self, symbol):
+        symbol = symbol.upper()
+        company_id = (await self.getSecurityIDKeyMap())[symbol]
+        return await self.requestGETAPI(
+            url=f"{self.api_end_points['company_reports']}{company_id}"
+        )
+
     async def getFloorSheet(self, show_progress=False):
 
         url = f"{self.api_end_points['floor_sheet']}?&size={self.floor_sheet_size}&sort=contractId,desc"
@@ -643,6 +650,13 @@ class Nepse(_Nepse):
         return self.requestPOSTAPI(
             url=f"{self.api_end_points['company_details']}{company_id}",
             payload_generator=self.getPOSTPayloadIDForScrips,
+        )
+
+    def getCompanyReports(self, symbol):
+        symbol = symbol.upper()
+        company_id = self.getSecurityIDKeyMap()[symbol]
+        return self.requestGETAPI(
+            url=f"{self.api_end_points['company_reports']}{company_id}"
         )
 
     def getFloorSheet(self, show_progress=False):

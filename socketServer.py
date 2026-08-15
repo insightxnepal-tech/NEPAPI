@@ -1,6 +1,7 @@
 import asyncio
 import websockets
 from nepse import AsyncNepse
+from financial_reports import build_symbol_report, fetch_latest_listed_reports
 import json
 import logging
 
@@ -142,7 +143,13 @@ async def _get_trade_turnover_transaction_subindices():
 # WebSocket handler
 async def handle_route(route: str, params: dict):
     # Routes that require symbol validation
-    symbol_routes = ["DailyScripPriceGraph", "CompanyDetails", "PriceVolumeHistory", "FloorsheetOf"]
+    symbol_routes = [
+        "DailyScripPriceGraph",
+        "CompanyDetails",
+        "PriceVolumeHistory",
+        "FloorsheetOf",
+        "FinancialReports",
+    ]
 
     # Validate symbol if route requires it
     if route in symbol_routes:
@@ -151,6 +158,11 @@ async def handle_route(route: str, params: dict):
         if "error" in validation_result:
             return validation_result
         # Update params with validated symbol
+        params = {**params, "symbol": validation_result["symbol"]}
+    elif route == "LatestFinancialReports" and params.get("symbol"):
+        validation_result = validate_stock_or_return_error(params.get("symbol"))
+        if "error" in validation_result:
+            return validation_result
         params = {**params, "symbol": validation_result["symbol"]}
 
     route_handlers = {
@@ -191,7 +203,16 @@ async def handle_route(route: str, params: dict):
         "SecurityList": lambda: nepseAsync.getSecurityList(),
         "TradeTurnoverTransactionSubindices": lambda: _get_trade_turnover_transaction_subindices(),
         "SupplyDemand": lambda: nepseAsync.getSupplyDemand(),
-        "NepseSubIndices": lambda: _get_nepse_subindices()
+        "NepseSubIndices": lambda: _get_nepse_subindices(),
+        "FinancialReports": lambda: build_symbol_report(
+            nepseAsync, params.get("symbol"), include_reports=True
+        ),
+        "LatestFinancialReports": lambda: fetch_latest_listed_reports(
+            nepseAsync,
+            symbols=[params["symbol"]] if params.get("symbol") else None,
+            sector=params.get("sector"),
+            force_refresh=bool(params.get("force_refresh")),
+        ),
     }
 
     handler = route_handlers.get(route)
