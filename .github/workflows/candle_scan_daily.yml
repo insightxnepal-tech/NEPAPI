@@ -1,0 +1,62 @@
+name: Daily Candle Scan (Entry / Exit Telegram)
+
+on:
+  schedule:
+    # 4:45 PM Nepal Time (Asia/Kathmandu = UTC+5:45) => 11:00 UTC
+    # NEPSE trades Sun–Thu; daily candle is complete after close.
+    - cron: '0 11 * * 0-4'
+  workflow_dispatch:
+    inputs:
+      scan_all:
+        description: 'Scan all ordinary NEPSE equities (not just portfolio)?'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  candle-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests
+          pip install git+https://github.com/basic-bgnr/NepseUnofficialApi.git@dev
+
+      - name: Run Daily Candle Scanner
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          SCAN_ALL="${{ github.event.inputs.scan_all }}"
+          if [ -z "$SCAN_ALL" ] || [ "$SCAN_ALL" = "true" ]; then
+            python candle_scanner.py --all
+          else
+            python candle_scanner.py
+          fi
+
+      - name: Commit position state
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add candle_positions.json candle_scan_latest.json
+          if git diff --staged --quiet; then
+            echo "No position/state change."
+          else
+            git commit -m "🕯️ Candle scan state $(date +'%Y-%m-%d')"
+            git push
+          fi
