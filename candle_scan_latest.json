@@ -1,0 +1,69 @@
+{
+  "as_of": "2026-08-14",
+  "generated_at": "2026-08-17T11:33:59Z",
+  "scanned": 356,
+  "skipped": 38,
+  "entries": [
+    {
+      "symbol": "API",
+      "date": "2026-08-14",
+      "open": 331.6,
+      "high": 336.8,
+      "low": 328.5,
+      "close": 332.9,
+      "volume": 194581.0,
+      "ema20": 333.22,
+      "ema200": 324.37,
+      "rsi": 48.2,
+      "vol_ma20": 172699.0,
+      "atr": 6.8,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (333.22)"
+      ]
+    },
+    {
+      "symbol": "NBL",
+      "date": "2026-08-14",
+      "open": 268.7,
+      "high": 271.0,
+      "low": 263.0,
+      "close": 269.8,
+      "volume": 78599.0,
+      "ema20": 268.31,
+      "ema200": 261.78,
+      "rsi": 54.2,
+      "vol_ma20": 55950.0,
+      "atr": 7.44,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
+    }
+  ],
+  "exits": [],
+  "open_positions": {
+    "API": {
+      "entry_date": "2026-08-14",
+      "entry_price": 332.9,
+      "ema20": 333.22,
+      "ema200": 324.37,
+      "rsi": 48.2
+    },
+    "NBL": {
+      "entry_date": "2026-08-14",
+      "entry_price": 269.8,
+      "ema20": 268.31,
+      "ema200": 261.78,
+      "rsi": 54.2
+    }
+  },
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-14*\n\n\ud83d\udfe2 *ENTRY FOUND (2)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *API* @ Rs 332.90\n  200 EMA 324.37 | 20 EMA 333.22 | RSI 48.2\n  Vol 1.1\u00d7 MA20 | O 331.60 H 336.80 L 328.50\n\n\u2022 *NBL* @ Rs 269.80\n  200 EMA 261.78 | 20 EMA 268.31 | RSI 54.2\n  Vol 1.4\u00d7 MA20 | O 268.70 H 271.00 L 263.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "telegram_ok": true
+}
