@@ -136,6 +136,7 @@ async def cmd_start(chat_id):
         "/floorsheet — Today's summary + CSV file\n"
         "/strategy   — Pre-market strategy report\n"
         "/sniper     — Sniper BUY/SELL signals\n"
+        "/candle     — Daily 200/20 EMA entry & exit\n"
         "/top5       — Top 5 stocks by turnover\n"
         "/whale      — Largest block trades\n"
         "/broker     — Smart money positions\n"
@@ -252,6 +253,36 @@ async def cmd_broker(chat_id):
         msg += f"• {str(b)[:35]}\n  *Rs {r['net']/1e6:.1f}M*\n"
     await send_message(chat_id, msg)
 
+async def cmd_candle(chat_id):
+    path = os.path.join(DATA_DIR, "candle_scan_latest.json")
+    if not os.path.exists(path):
+        await send_message(
+            chat_id,
+            "🕯️ *Daily Candle Scan*\n\n"
+            "No scan yet. After market close the job Telegrams "
+            "🟢 ENTRY FOUND / 🛑 EXIT FOUND automatically.",
+        )
+        return
+    try:
+        with open(path) as f:
+            latest = json.load(f)
+    except Exception as e:
+        await send_message(chat_id, f"❌ Could not read last candle scan: {e}")
+        return
+    msg = latest.get("message")
+    if msg:
+        await send_message(chat_id, msg)
+        return
+    as_of = latest.get("as_of", "?")
+    n_entry = len(latest.get("entries") or [])
+    n_exit = len(latest.get("exits") or [])
+    await send_message(
+        chat_id,
+        f"🕯️ *Daily Candle Scan — {as_of}*\n\n"
+        f"🟢 ENTRY FOUND: {n_entry}\n"
+        f"🛑 EXIT FOUND: {n_exit}",
+    )
+
 # ── Router ────────────────────────────────────────────────────────
 COMMANDS = {
     "/start":      cmd_start,
@@ -259,6 +290,7 @@ COMMANDS = {
     "/floorsheet": cmd_floorsheet,
     "/strategy":   cmd_strategy,
     "/sniper":     cmd_sniper,
+    "/candle":     cmd_candle,
     "/top5":       cmd_top5,
     "/whale":      cmd_whale,
     "/broker":     cmd_broker,

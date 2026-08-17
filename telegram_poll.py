@@ -161,6 +161,7 @@ def handle_start(chat_id):
         "/floorsheet — Today's summary + CSV\n"
         "/strategy   — Pre-market strategy report\n"
         "/sniper     — Sniper BUY/SELL signals\n"
+        "/candle     — Daily 200/20 EMA entry & exit\n"
         "/top5       — Top 5 stocks by turnover\n"
         "/whale      — Largest block trades\n"
         "/broker     — Smart money positions\n"
@@ -277,12 +278,45 @@ def handle_broker(chat_id):
         msg += f"• {str(b)[:35]}\n  *Rs {r['net']/1e6:.1f}M*\n"
     send(chat_id, msg)
 
+def handle_candle(chat_id):
+    """Replay the latest daily 200/20 EMA candle scan from disk."""
+    path = os.path.join(DATA_DIR, "candle_scan_latest.json")
+    if not os.path.exists(path):
+        send(
+            chat_id,
+            "🕯️ *Daily Candle Scan*\n\n"
+            "No scan yet. The job runs after market close (Sun–Thu) and "
+            "Telegrams 🟢 ENTRY FOUND / 🛑 EXIT FOUND automatically.",
+        )
+        return
+    try:
+        with open(path) as f:
+            latest = json.load(f)
+    except Exception as e:
+        send(chat_id, f"❌ Could not read last candle scan: {e}")
+        return
+    msg = latest.get("message")
+    if msg:
+        send(chat_id, msg)
+        return
+    as_of = latest.get("as_of", "?")
+    n_entry = len(latest.get("entries") or [])
+    n_exit = len(latest.get("exits") or [])
+    send(
+        chat_id,
+        f"🕯️ *Daily Candle Scan — {as_of}*\n\n"
+        f"🟢 ENTRY FOUND: {n_entry}\n"
+        f"🛑 EXIT FOUND: {n_exit}",
+    )
+
+
 COMMANDS = {
     "/start":      handle_start,
     "/help":       handle_start,
     "/floorsheet": handle_floorsheet,
     "/strategy":   handle_strategy,
     "/sniper":     handle_sniper,
+    "/candle":     handle_candle,
     "/top5":       handle_top5,
     "/whale":      handle_whale,
     "/broker":     handle_broker,
