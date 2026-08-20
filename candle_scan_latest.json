@@ -1,73 +1,10 @@
 {
-  "as_of": "2026-08-18",
-  "generated_at": "2026-08-19T11:32:37Z",
+  "as_of": "2026-08-20",
+  "generated_at": "2026-08-20T11:35:30Z",
   "scanned": 356,
   "skipped": 38,
   "entries": [],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "LUK",
-        "date": "2026-08-18",
-        "open": 10.6,
-        "high": 10.29,
-        "low": 9.99,
-        "close": 9.99,
-        "volume": 300.0,
-        "ema20": 10.25,
-        "ema200": 9.92,
-        "rsi": 47.0,
-        "vol_ma20": 14535.0,
-        "atr": 0.44,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (10.25)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-08-17",
-        "entry_price": 10.6,
-        "ema20": 10.28,
-        "ema200": 10.17,
-        "rsi": 54.3
-      }
-    },
-    {
-      "signal": {
-        "symbol": "MBL",
-        "date": "2026-08-18",
-        "open": 250.0,
-        "high": 250.0,
-        "low": 245.1,
-        "close": 247.6,
-        "volume": 69046.0,
-        "ema20": 252.91,
-        "ema200": 245.01,
-        "rsi": 41.4,
-        "vol_ma20": 94677.0,
-        "atr": 7.61,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (252.91)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-08-17",
-        "entry_price": 250.0,
-        "ema20": 253.47,
-        "ema200": 245.26,
-        "rsi": 44.8
-      }
-    }
-  ],
+  "exits": [],
   "open_positions": {
     "NBL": {
       "entry_date": "2026-08-14",
@@ -84,6 +21,6 @@
       "rsi": 47.8
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-18*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *LUK* @ Rs 9.99 | P/L -5.8%\n  Entered Rs 10.6 on 2026-08-17\n  Reason: Close below 20 EMA (10.25)\n\n\u2022 *MBL* @ Rs 247.60 | P/L -1.0%\n  Entered Rs 250.0 on 2026-08-17\n  Reason: Close below 20 EMA (252.91)\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-20*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
