@@ -45,3 +45,20 @@ jobs:
           else
             echo "No floorsheet files found to commit."
           fi
+
+      - name: Send floorsheet CSV to Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DATA_DIR: ${{ github.workspace }}
+        run: |
+          if [ -z "$TELEGRAM_TOKEN" ]; then
+            echo "TELEGRAM_TOKEN secret is missing"
+            exit 1
+          fi
+          if [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "TELEGRAM_CHAT_ID secret is missing"
+            exit 1
+          fi
+          echo "Sending latest floorsheet CSV to Telegram..."
+          python send_floorsheet_telegram.py
