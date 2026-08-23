@@ -10,5 +10,11 @@
     "entry_price": 511.0,
     "supertrend": 471.2,
     "atr": 11.82
+  },
+  "PMHPL": {
+    "entry_date": "2026-08-21",
+    "entry_price": 345.9,
+    "supertrend": 294.21,
+    "atr": 14.36
   }
 }
