@@ -1,6 +1,6 @@
 # SuperTrend Backtest Report
 
-Generated: 2026-08-23T16:06:48Z · ATR 10 · multiplier 3.0 · window ~730 calendar days
+Generated: 2026-08-23T16:12:56Z · ATR 10 · multiplier 3.0 · window ~730 calendar days
 
 ## Aggregate
 
