@@ -1,52 +1,9 @@
 {
-  "as_of": "2026-08-21",
-  "generated_at": "2026-08-23T11:28:08Z",
+  "as_of": "2026-08-24",
+  "generated_at": "2026-08-24T11:36:26Z",
   "scanned": 356,
   "skipped": 38,
-  "entries": [
-    {
-      "symbol": "H8020",
-      "date": "2026-08-21",
-      "open": 11.8,
-      "high": 12.36,
-      "low": 11.75,
-      "close": 12.0,
-      "volume": 10300.0,
-      "ema20": 11.9,
-      "ema200": 11.63,
-      "rsi": 52.4,
-      "vol_ma20": 5232.0,
-      "atr": 0.32,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": []
-    },
-    {
-      "symbol": "PSF",
-      "date": "2026-08-21",
-      "open": 11.87,
-      "high": 11.9,
-      "low": 11.83,
-      "close": 11.9,
-      "volume": 16500.0,
-      "ema20": 11.92,
-      "ema200": 11.65,
-      "rsi": 49.2,
-      "vol_ma20": 8864.0,
-      "atr": 0.17,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": [
-        "Close below 20 EMA (11.92)"
-      ]
-    }
-  ],
+  "entries": [],
   "exits": [],
   "open_positions": {
     "NBL": {
@@ -78,6 +35,6 @@
       "rsi": 49.2
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-21*\n\n\ud83d\udfe2 *ENTRY FOUND (2)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *H8020* @ Rs 12.00\n  200 EMA 11.63 | 20 EMA 11.90 | RSI 52.4\n  Vol 2.0\u00d7 MA20 | O 11.80 H 12.36 L 11.75\n\n\u2022 *PSF* @ Rs 11.90\n  200 EMA 11.65 | 20 EMA 11.92 | RSI 49.2\n  Vol 1.9\u00d7 MA20 | O 11.87 H 11.90 L 11.83\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-24*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
