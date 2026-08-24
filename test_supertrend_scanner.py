@@ -211,6 +211,47 @@ class TestTelegram(unittest.TestCase):
         self.assertIn("EXIT FOUND:* none", msg)
 
 
+class TestLiveBar(unittest.TestCase):
+    def _live_row(self, ltp=110.0, date="2026-08-24"):
+        return {
+            "symbol": "NABIL",
+            "openPrice": 105.0,
+            "highPrice": 112.0,
+            "lowPrice": 104.0,
+            "lastTradedPrice": ltp,
+            "totalTradeQuantity": 4200,
+            "lastUpdatedDateTime": f"{date} 12:30:00.000000",
+        }
+
+    def test_appends_new_bar(self):
+        df = make_ohlcv(n=60)
+        before = len(df)
+        out = st.append_live_bar(df, self._live_row())
+        self.assertEqual(len(out), before + 1)
+        last = out.iloc[-1]
+        self.assertEqual(float(last["close"]), 110.0)
+        self.assertEqual(float(last["high"]), 112.0)
+        self.assertEqual(float(last["volume"]), 4200.0)
+        self.assertEqual(str(last["businessDate"])[:10], "2026-08-24")
+
+    def test_skips_if_date_already_present(self):
+        df = make_ohlcv(n=60)
+        last_date = str(df["businessDate"].iloc[-1])[:10]
+        out = st.append_live_bar(df, self._live_row(date=last_date))
+        self.assertEqual(len(out), len(df))
+
+    def test_skips_if_no_trades(self):
+        df = make_ohlcv(n=60)
+        out = st.append_live_bar(df, self._live_row(ltp=0))
+        self.assertEqual(len(out), len(df))
+
+    def test_live_bar_feeds_supertrend(self):
+        df = make_ohlcv(n=80)
+        out = st.append_live_bar(df, self._live_row())
+        ind = st.compute_supertrend(out)
+        self.assertFalse(pd.isna(ind["supertrend"].iloc[-1]))
+
+
 class TestPersistence(unittest.TestCase):
     def test_load_save_positions(self):
         with tempfile.TemporaryDirectory() as tmp:

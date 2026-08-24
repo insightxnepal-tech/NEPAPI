@@ -223,6 +223,39 @@ def load_positions() -> dict:
     return data if isinstance(data, dict) else {}
 
 
+def append_live_bar(df: pd.DataFrame, live_row: dict) -> pd.DataFrame:
+    """
+    Append today's in-progress OHLC (from the live market feed) to a
+    daily history frame, so SuperTrend can be evaluated intraday.
+
+    live_row keys: openPrice, highPrice, lowPrice, lastTradedPrice,
+    totalTradeQuantity, lastUpdatedDateTime.
+    Skips the append if the history already contains today's bar or the
+    live row has no trades yet.
+    """
+    if df is None or df.empty or not live_row:
+        return df
+    ltp = live_row.get("lastTradedPrice") or 0
+    if not ltp:
+        return df
+    ts = str(live_row.get("lastUpdatedDateTime") or "")[:10]
+    if not ts:
+        return df
+    live_date = pd.to_datetime(ts)
+    if df["businessDate"].iloc[-1] >= live_date:
+        return df
+    prev_close = float(df["close"].iloc[-1])
+    bar = {
+        "businessDate": live_date,
+        "open": float(live_row.get("openPrice") or prev_close),
+        "high": float(live_row.get("highPrice") or ltp),
+        "low": float(live_row.get("lowPrice") or ltp),
+        "close": float(ltp),
+        "volume": float(live_row.get("totalTradeQuantity") or 0),
+    }
+    return pd.concat([df, pd.DataFrame([bar])], ignore_index=True)
+
+
 def format_telegram(
     entries: list[SuperTrendSignal],
     exits: list[tuple[SuperTrendSignal, dict]],
@@ -230,12 +263,16 @@ def format_telegram(
     as_of: str,
     skipped: int = 0,
     uptrend: Optional[list[SuperTrendSignal]] = None,
+    live: bool = False,
 ) -> str:
+    title = "SuperTrend LIVE Scan" if live else "SuperTrend Scan"
     lines = [
-        f"📡 *SuperTrend Scan — {as_of}*",
+        f"📡 *{title} — {as_of}*",
         f"_ATR {ATR_LEN} · multiplier {MULT}_",
-        "",
     ]
+    if live:
+        lines.append("_🔴 Intraday prices — signals provisional until close_")
+    lines.append("")
 
     if entries:
         lines.append(f"🟢 *ENTRY FOUND ({len(entries)})*")
@@ -342,6 +379,7 @@ def run_scan(
     symbols: Optional[list[str]] = None,
     send: bool = True,
     persist: bool = True,
+    live: bool = False,
 ) -> dict:
     sys.setrecursionlimit(10000)
     from nepse import Nepse
@@ -350,14 +388,27 @@ def run_scan(
     n = Nepse()
     n.setTLSVerification(False)
 
+    live_by_symbol: dict[str, dict] = {}
+    if live:
+        # One snapshot covers every traded symbol; positions are never
+        # persisted from a live scan (intraday flips can still reverse).
+        persist = False
+        status = n.getMarketStatus() or {}
+        print(f"Market status: {status.get('isOpen', '?')} as of {status.get('asOf', '?')}")
+        live_by_symbol = {
+            r["symbol"]: r for r in (n.getLiveMarket() or []) if r.get("symbol")
+        }
+        print(f"Live snapshot: {len(live_by_symbol)} symbols traded today")
+
     positions = load_positions()
     universe = cs.resolve_symbols(n, scan_all=scan_all, only=symbols)
     for held in positions:
         if held not in universe:
             universe.append(held)
 
+    mode = "LIVE" if live else "daily"
     print(
-        f"📡 SuperTrend scan: {len(universe)} symbols, "
+        f"📡 SuperTrend {mode} scan: {len(universe)} symbols, "
         f"{len(positions)} open positions (ATR {ATR_LEN}, mult {MULT})"
     )
     cid_map = n.getSecurityIDKeyMap() or {}
@@ -374,7 +425,10 @@ def run_scan(
             rows = cs.fetch_symbol_history(n, cid)
             if not rows:
                 continue
-            ohlcv_by_symbol[symbol] = cs.history_to_ohlcv(rows)
+            df = cs.history_to_ohlcv(rows)
+            if live:
+                df = append_live_bar(df, live_by_symbol.get(symbol, {}))
+            ohlcv_by_symbol[symbol] = df
         except Exception as e:
             print(f"  {symbol}: history error {e}")
         time.sleep(SLEEP_BETWEEN_SYMBOLS)
@@ -398,10 +452,12 @@ def run_scan(
         as_of=as_of,
         skipped=skipped,
         uptrend=uptrend,
+        live=live,
     )
     print("\n" + msg)
 
     payload = {
+        "live": live,
         "as_of": as_of,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "atr_len": ATR_LEN,
@@ -455,6 +511,12 @@ def main(argv: Optional[list[str]] = None) -> int:
         action="store_true",
         help="Do not write position / latest JSON files",
     )
+    parser.add_argument(
+        "--live",
+        action="store_true",
+        help="Include today's in-progress prices from the live market feed "
+        "(never persists positions)",
+    )
     args = parser.parse_args(argv)
 
     only = [s for s in args.symbols.split(",") if s.strip()] or None
@@ -463,6 +525,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         symbols=only,
         send=not args.no_telegram,
         persist=not args.no_persist,
+        live=args.live,
     )
     if not args.no_telegram and not payload.get("telegram_ok", False):
         print("Telegram delivery failed.")
