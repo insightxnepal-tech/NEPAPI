@@ -1,10 +1,109 @@
 {
   "as_of": "2026-08-24",
-  "generated_at": "2026-08-24T11:36:26Z",
+  "generated_at": "2026-08-25T11:35:51Z",
   "scanned": 356,
   "skipped": 38,
-  "entries": [],
-  "exits": [],
+  "entries": [
+    {
+      "symbol": "SAGF",
+      "date": "2026-08-24",
+      "open": 9.99,
+      "high": 10.0,
+      "low": 9.72,
+      "close": 10.0,
+      "volume": 31600.0,
+      "ema20": 10.09,
+      "ema200": 9.98,
+      "rsi": 46.1,
+      "vol_ma20": 4656.0,
+      "atr": 0.16,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (10.09)"
+      ]
+    },
+    {
+      "symbol": "SFEF",
+      "date": "2026-08-24",
+      "open": 9.8,
+      "high": 9.86,
+      "low": 9.56,
+      "close": 9.86,
+      "volume": 21700.0,
+      "ema20": 9.89,
+      "ema200": 9.81,
+      "rsi": 47.4,
+      "vol_ma20": 10561.0,
+      "atr": 0.16,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (9.89)"
+      ]
+    },
+    {
+      "symbol": "UNL",
+      "date": "2026-08-24",
+      "open": 46600.0,
+      "high": 47200.0,
+      "low": 47200.0,
+      "close": 47200.0,
+      "volume": 10.0,
+      "ema20": 47369.57,
+      "ema200": 47160.51,
+      "rsi": 47.3,
+      "vol_ma20": 10.0,
+      "atr": 300.0,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (47369.57)"
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "PRSF",
+        "date": "2026-08-24",
+        "open": 12.95,
+        "high": 12.91,
+        "low": 12.58,
+        "close": 12.73,
+        "volume": 205100.0,
+        "ema20": 12.83,
+        "ema200": 12.16,
+        "rsi": 46.2,
+        "vol_ma20": 78162.0,
+        "atr": 0.18,
+        "above_200": true,
+        "rsi_dip": true,
+        "green_near_20": false,
+        "volume_ok": true,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (12.83)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-08-17",
+        "entry_price": 12.75,
+        "ema20": 12.81,
+        "ema200": 12.11,
+        "rsi": 47.8
+      }
+    }
+  ],
   "open_positions": {
     "NBL": {
       "entry_date": "2026-08-14",
@@ -12,13 +111,6 @@
       "ema20": 268.31,
       "ema200": 261.78,
       "rsi": 54.2
-    },
-    "PRSF": {
-      "entry_date": "2026-08-17",
-      "entry_price": 12.75,
-      "ema20": 12.81,
-      "ema200": 12.11,
-      "rsi": 47.8
     },
     "H8020": {
       "entry_date": "2026-08-21",
@@ -33,8 +125,29 @@
       "ema20": 11.92,
       "ema200": 11.65,
       "rsi": 49.2
+    },
+    "SAGF": {
+      "entry_date": "2026-08-24",
+      "entry_price": 10.0,
+      "ema20": 10.09,
+      "ema200": 9.98,
+      "rsi": 46.1
+    },
+    "SFEF": {
+      "entry_date": "2026-08-24",
+      "entry_price": 9.86,
+      "ema20": 9.89,
+      "ema200": 9.81,
+      "rsi": 47.4
+    },
+    "UNL": {
+      "entry_date": "2026-08-24",
+      "entry_price": 47200.0,
+      "ema20": 47369.57,
+      "ema200": 47160.51,
+      "rsi": 47.3
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-24*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-24*\n\n\ud83d\udfe2 *ENTRY FOUND (3)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *SAGF* @ Rs 10.00\n  200 EMA 9.98 | 20 EMA 10.09 | RSI 46.1\n  Vol 6.8\u00d7 MA20 | O 9.99 H 10.00 L 9.72\n\n\u2022 *SFEF* @ Rs 9.86\n  200 EMA 9.81 | 20 EMA 9.89 | RSI 47.4\n  Vol 2.1\u00d7 MA20 | O 9.80 H 9.86 L 9.56\n\n\u2022 *UNL* @ Rs 47200.00\n  200 EMA 47160.51 | 20 EMA 47369.57 | RSI 47.3\n  Vol 1.0\u00d7 MA20 | O 46600.00 H 47200.00 L 47200.00\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *PRSF* @ Rs 12.73 | P/L -0.2%\n  Entered Rs 12.75 on 2026-08-17\n  Reason: Close below 20 EMA (12.83)\n\n_Scanned 356 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
