@@ -16,5 +16,11 @@
     "entry_price": 345.9,
     "supertrend": 294.21,
     "atr": 14.36
+  },
+  "UHEWA": {
+    "entry_date": "2026-08-26",
+    "entry_price": 667.0,
+    "supertrend": 542.05,
+    "atr": 45.08
   }
 }
