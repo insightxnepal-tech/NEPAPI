@@ -1,8 +1,11 @@
 import asyncio
 import csv
+from pathlib import Path
 from nepse import AsyncNepse
 import tqdm.asyncio
 from datetime import date
+
+from floorsheet_paths import copy_floorsheet_to_downloads
 
 async def fetch_floorsheet():
     print("Initializing AsyncNepse...")
@@ -39,6 +42,11 @@ async def main():
             writer.writeheader()
             writer.writerows(data)
         print("Updated floorsheet.csv")
+
+        copy_floorsheet_to_downloads(
+            [Path(csv_filename), Path("floorsheet.csv")],
+            log=print,
+        )
     else:
         print("No data to save.")
 

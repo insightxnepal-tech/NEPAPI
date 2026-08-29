@@ -35,6 +35,8 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import List, Optional
 
+from floorsheet_paths import copy_floorsheet_to_downloads, ensure_download_dir
+
 # ── third-party ───────────────────────────────────────────────────────────────
 try:
     from nepse import AsyncNepse
@@ -68,11 +70,9 @@ def _default_csv_name(date_str: str, symbol: Optional[str]) -> str:
     return f"floorsheet_{date_str}.csv"
 
 def _default_xlsx_path(date_str: str, symbol: Optional[str]) -> Path:
-    """Return the full Path where the XLSX file should be saved.
-    Files are stored under ~/Downloads/floorsheet/ with a name
-    matching the CSV (but with .xlsx extension)."""
+    """XLSX copy for /Users/sanishtamang/Downloads/floorsheet (home fallback)."""
     base_name = _default_csv_name(date_str, symbol).replace('.csv', '.xlsx')
-    download_dir = Path.home() / 'Downloads' / 'floorsheet'
+    download_dir = ensure_download_dir() or (Path.home() / "Downloads" / "floorsheet")
     return download_dir / base_name
 
 
@@ -194,10 +194,8 @@ async def main(args: argparse.Namespace) -> int:
     else:
         csv_path = Path(_default_csv_name(date_label, symbol))
 
-    # Resolve XLSX path (always save here)
+    # Resolve XLSX path (Downloads folder; falls back to ~/Downloads/floorsheet)
     xlsx_path = _default_xlsx_path(date_label, symbol)
-    # Ensure the download directory exists
-    xlsx_path.parent.mkdir(parents=True, exist_ok=True)
 
     # ── Init NEPSE client ────────────────────────────────────────────────────
     _print("Initialising AsyncNepse client …")
@@ -229,21 +227,28 @@ async def main(args: argparse.Namespace) -> int:
     # ── Write CSV ────────────────────────────────────────────────────────────
     _write_csv(records, csv_path)
 
+    download_copies = [csv_path]
+
     # ── Write XLSX (always) ─────────────────────────────────────────────────────
     if HAS_PANDAS:
         try:
+            xlsx_path.parent.mkdir(parents=True, exist_ok=True)
             df = pd.DataFrame(records)
             df.to_excel(xlsx_path, index=False)
             _print(f"XLSX saved → {xlsx_path} ({len(records):,} rows)")
+            download_copies.append(xlsx_path)
         except Exception as exc:
             _print(f"[WARNING] Failed to write XLSX: {exc}")
     else:
         _print("[WARNING] pandas not installed – XLSX not saved.")
 
+    copy_floorsheet_to_downloads(download_copies, log=_print)
+
     # ── Optionally write JSON ────────────────────────────────────────────────
     if save_json:
         json_path = csv_path.with_suffix(".json")
         _write_json(records, json_path)
+        copy_floorsheet_to_downloads([json_path], log=_print)
 
     return 0
 
