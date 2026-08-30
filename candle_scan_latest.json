@@ -1,96 +1,83 @@
 {
-  "as_of": "2026-08-26",
-  "generated_at": "2026-08-27T21:08:07Z",
+  "as_of": "2026-08-27",
+  "generated_at": "2026-08-30T15:24:06Z",
   "scanned": 355,
   "skipped": 38,
   "entries": [],
   "exits": [
     {
       "signal": {
-        "symbol": "NBL",
-        "date": "2026-08-26",
-        "open": 274.8,
-        "high": 276.7,
-        "low": 271.3,
-        "close": 271.7,
-        "volume": 87211.0,
-        "ema20": 271.97,
-        "ema200": 262.71,
-        "rsi": 51.2,
-        "vol_ma20": 95424.0,
-        "atr": 5.49,
-        "above_200": true,
-        "rsi_dip": false,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (271.97)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-08-14",
-        "entry_price": 269.8,
-        "ema20": 268.31,
-        "ema200": 261.78,
-        "rsi": 54.2
-      }
-    },
-    {
-      "signal": {
-        "symbol": "PRSF",
-        "date": "2026-08-26",
-        "open": 12.75,
-        "high": 12.72,
-        "low": 12.6,
-        "close": 12.6,
-        "volume": 349498.0,
-        "ema20": 12.8,
-        "ema200": 12.17,
-        "rsi": 41.3,
-        "vol_ma20": 100572.0,
-        "atr": 0.15,
+        "symbol": "H8020",
+        "date": "2026-08-27",
+        "open": 11.96,
+        "high": 12.1,
+        "low": 11.64,
+        "close": 11.74,
+        "volume": 14670.0,
+        "ema20": 11.92,
+        "ema200": 11.64,
+        "rsi": 46.2,
+        "vol_ma20": 13517.0,
+        "atr": 0.25,
         "above_200": true,
         "rsi_dip": true,
         "green_near_20": false,
         "volume_ok": true,
         "entry": false,
         "exit_reasons": [
-          "Close below 20 EMA (12.80)"
+          "Close below 20 EMA (11.92)"
         ]
       },
       "position": {
-        "entry_date": "2026-08-25",
-        "entry_price": 12.75,
-        "ema20": 12.82,
-        "ema200": 12.16,
-        "rsi": 47.1
+        "entry_date": "2026-08-21",
+        "entry_price": 12.0,
+        "ema20": 11.9,
+        "ema200": 11.63,
+        "rsi": 52.4
+      }
+    },
+    {
+      "signal": {
+        "symbol": "SAGF",
+        "date": "2026-08-27",
+        "open": 10.1,
+        "high": 9.86,
+        "low": 9.81,
+        "close": 9.85,
+        "volume": 10250.0,
+        "ema20": 10.07,
+        "ema200": 9.98,
+        "rsi": 41.8,
+        "vol_ma20": 6278.0,
+        "atr": 0.18,
+        "above_200": false,
+        "rsi_dip": true,
+        "green_near_20": false,
+        "volume_ok": true,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (10.07)",
+          "Close below 200 EMA (9.98)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-08-24",
+        "entry_price": 10.0,
+        "ema20": 10.09,
+        "ema200": 9.98,
+        "rsi": 46.1
       }
     }
   ],
   "open_positions": {
-    "H8020": {
-      "entry_date": "2026-08-21",
-      "entry_price": 12.0,
-      "ema20": 11.9,
-      "ema200": 11.63,
-      "rsi": 52.4
-    },
     "PSF": {
       "entry_date": "2026-08-21",
       "entry_price": 11.9,
       "ema20": 11.92,
       "ema200": 11.65,
       "rsi": 49.2
-    },
-    "SAGF": {
-      "entry_date": "2026-08-24",
-      "entry_price": 10.0,
-      "ema20": 10.09,
-      "ema200": 9.98,
-      "rsi": 46.1
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-26*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *NBL* @ Rs 271.70 | P/L +0.7%\n  Entered Rs 269.8 on 2026-08-14\n  Reason: Close below 20 EMA (271.97)\n\n\u2022 *PRSF* @ Rs 12.60 | P/L -1.2%\n  Entered Rs 12.75 on 2026-08-25\n  Reason: Close below 20 EMA (12.80)\n\n_Scanned 355 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-27*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *H8020* @ Rs 11.74 | P/L -2.2%\n  Entered Rs 12.0 on 2026-08-21\n  Reason: Close below 20 EMA (11.92)\n\n\u2022 *SAGF* @ Rs 9.85 | P/L -1.5%\n  Entered Rs 10.0 on 2026-08-24\n  Reason: Close below 20 EMA (10.07); Close below 200 EMA (9.98)\n\n_Scanned 355 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
