@@ -16,6 +16,7 @@ import sys
 import time
 from dataclasses import asdict, dataclass
 from datetime import date, datetime, timezone
+from pathlib import Path
 from typing import Optional
 
 import pandas as pd
@@ -52,6 +53,58 @@ class SupertrendSignal:
         if self.flipped_down:
             return "EXIT"
         return "BULL" if self.direction == 1 else "BEAR"
+
+
+def load_floorsheet_ohlcv(path: str | Path) -> dict[str, dict]:
+    """Build one daily OHLCV bar per symbol from a floorsheet CSV."""
+    df = pd.read_csv(path)
+    if df.empty:
+        return {}
+    df["contractRate"] = pd.to_numeric(df["contractRate"], errors="coerce")
+    df["contractQuantity"] = pd.to_numeric(df["contractQuantity"], errors="coerce")
+    if "tradeTime" in df.columns:
+        df["tradeTime"] = pd.to_datetime(df["tradeTime"], errors="coerce")
+        df = df.sort_values("tradeTime")
+    else:
+        df = df.sort_values("contractId")
+    g = df.groupby("stockSymbol")
+    ohlc = g["contractRate"].agg(open="first", high="max", low="min", close="last")
+    vol = g["contractQuantity"].sum().rename("volume")
+    bdate = str(df["businessDate"].iloc[0])[:10]
+    out = ohlc.join(vol).reset_index()
+    rows: dict[str, dict] = {}
+    for _, r in out.iterrows():
+        rows[str(r["stockSymbol"]).upper()] = {
+            "businessDate": pd.Timestamp(bdate),
+            "open": float(r["open"]),
+            "high": float(r["high"]),
+            "low": float(r["low"]),
+            "close": float(r["close"]),
+            "volume": float(r["volume"] or 0),
+        }
+    return rows
+
+
+def apply_as_of(
+    df: pd.DataFrame,
+    as_of: date,
+    overlay: Optional[dict] = None,
+) -> pd.DataFrame:
+    """Keep history before as_of and append the overlay bar for that day."""
+    out = df.copy()
+    out["businessDate"] = pd.to_datetime(out["businessDate"])
+    cutoff = pd.Timestamp(as_of)
+    out = out[out["businessDate"] < cutoff]
+    if overlay:
+        out = pd.concat([out, pd.DataFrame([overlay])], ignore_index=True)
+    return out.sort_values("businessDate").drop_duplicates("businessDate", keep="last")
+
+
+def last_bar_on(df: pd.DataFrame, as_of: date) -> bool:
+    if df is None or df.empty:
+        return False
+    last = pd.to_datetime(df["businessDate"].iloc[-1]).date()
+    return last == as_of
 
 
 def compute_supertrend(
@@ -175,6 +228,7 @@ def scan_ohlcv_map(
         if raw is None or len(raw) < MIN_HISTORY:
             skipped += 1
             continue
+        raw = raw.sort_values("businessDate").reset_index(drop=True)
         try:
             signal = evaluate_latest(raw, symbol=symbol, period=period, multiplier=multiplier)
         except Exception as e:
@@ -265,6 +319,8 @@ def run_scan(
     persist: bool = True,
     period: int = ATR_PERIOD,
     multiplier: float = ATR_MULTIPLIER,
+    as_of: Optional[date] = None,
+    floorsheet: Optional[str] = None,
 ) -> dict:
     sys.setrecursionlimit(10000)
     from nepse import Nepse
@@ -273,17 +329,27 @@ def run_scan(
     n = Nepse()
     n.setTLSVerification(False)
 
+    as_of = as_of or date.today()
+    overlay_map: dict[str, dict] = {}
+    sheet_path = floorsheet or f"floorsheet_{as_of.isoformat()}.csv"
+    if Path(sheet_path).exists():
+        overlay_map = load_floorsheet_ohlcv(sheet_path)
+        print(f"  Overlaying {len(overlay_map)} floorsheet bars from {sheet_path}")
+
     universe = cs.resolve_symbols(n, scan_all=scan_all, only=symbols)
+    if overlay_map and scan_all:
+        extra = [s for s in overlay_map if s not in universe]
+        universe.extend(extra)
     print(
         f"📈 Supertrend scan: {len(universe)} symbols "
-        f"(ATR {period}, x{multiplier:g})"
+        f"(ATR {period}, x{multiplier:g}, as-of {as_of.isoformat()})"
     )
     cid_map = n.getSecurityIDKeyMap() or {}
 
     ohlcv_by_symbol: dict[str, pd.DataFrame] = {}
     for i, symbol in enumerate(universe):
         if i and i % 10 == 0:
-            print(f"    Progress: {i}/{len(universe)}")
+            print(f"    Progress: {i}/{len(universe)}", flush=True)
         cid = cid_map.get(symbol)
         if not cid:
             print(f"  {symbol}: no security id")
@@ -292,7 +358,16 @@ def run_scan(
             rows = cs.fetch_symbol_history(n, cid)
             if not rows:
                 continue
-            ohlcv_by_symbol[symbol] = cs.history_to_ohlcv(rows)
+            hist = cs.history_to_ohlcv(rows)
+            overlay = overlay_map.get(symbol)
+            if overlay is not None:
+                hist = apply_as_of(hist, as_of, overlay)
+            else:
+                hist["businessDate"] = pd.to_datetime(hist["businessDate"])
+                hist = hist[hist["businessDate"] <= pd.Timestamp(as_of)]
+            if hist.empty or not last_bar_on(hist, as_of):
+                continue
+            ohlcv_by_symbol[symbol] = hist
         except Exception as e:
             print(f"  {symbol}: history error {e}")
         time.sleep(cs.SLEEP_BETWEEN_SYMBOLS)
@@ -300,11 +375,7 @@ def run_scan(
     entries, exits, bulls, bears, skipped = scan_ohlcv_map(
         ohlcv_by_symbol, period=period, multiplier=multiplier
     )
-    as_of = date.today().isoformat()
-    for group in (entries, exits, bulls, bears):
-        if group:
-            as_of = group[0].date
-            break
+    as_of_label = as_of.isoformat()
 
     msg = format_telegram(
         entries,
@@ -312,7 +383,7 @@ def run_scan(
         bulls,
         bears,
         scanned=len(ohlcv_by_symbol),
-        as_of=as_of,
+        as_of=as_of_label,
         skipped=skipped,
         period=period,
         multiplier=multiplier,
@@ -320,7 +391,7 @@ def run_scan(
     print("\n" + msg)
 
     payload = {
-        "as_of": as_of,
+        "as_of": as_of_label,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "period": period,
         "multiplier": multiplier,
@@ -364,9 +435,23 @@ def main(argv: Optional[list[str]] = None) -> int:
     )
     parser.add_argument("--no-telegram", action="store_true")
     parser.add_argument("--no-persist", action="store_true")
+    parser.add_argument(
+        "--as-of",
+        type=str,
+        default="",
+        metavar="YYYY-MM-DD",
+        help="Evaluate Supertrend on this business date (default: today)",
+    )
+    parser.add_argument(
+        "--floorsheet",
+        type=str,
+        default="",
+        help="Floorsheet CSV used to overlay that day's OHLCV",
+    )
     args = parser.parse_args(argv)
 
     only = [s for s in args.symbols.split(",") if s.strip()] or None
+    as_of_date = date.fromisoformat(args.as_of) if args.as_of else None
     payload = run_scan(
         scan_all=args.all,
         symbols=only,
@@ -374,6 +459,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         persist=not args.no_persist,
         period=args.period,
         multiplier=args.multiplier,
+        as_of=as_of_date,
+        floorsheet=args.floorsheet or None,
     )
     if not args.no_telegram and not payload.get("telegram_ok", False):
         print("Telegram delivery failed.")

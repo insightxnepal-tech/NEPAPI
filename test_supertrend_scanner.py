@@ -118,5 +118,44 @@ class TestFlips(unittest.TestCase):
         self.assertIn("ATR 10", msg)
 
 
+class TestAsOfOverlay(unittest.TestCase):
+    def test_floorsheet_ohlcv_uses_first_last_trade(self):
+        import tempfile
+        from pathlib import Path
+
+        csv = (
+            "contractId,stockSymbol,contractQuantity,contractRate,businessDate,tradeTime\n"
+            "1,API,10,320,2026-08-31,2026-08-31T11:00:00\n"
+            "2,API,20,330,2026-08-31,2026-08-31T15:00:00\n"
+            "3,API,5,325,2026-08-31,2026-08-31T12:00:00\n"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "floorsheet_2026-08-31.csv"
+            path.write_text(csv)
+            bars = st.load_floorsheet_ohlcv(path)
+        self.assertEqual(bars["API"]["open"], 320)
+        self.assertEqual(bars["API"]["close"], 330)
+        self.assertEqual(bars["API"]["high"], 330)
+        self.assertEqual(bars["API"]["low"], 320)
+        self.assertEqual(bars["API"]["volume"], 35)
+
+    def test_apply_as_of_replaces_last_day(self):
+        from datetime import date
+
+        df = make_ohlcv(n=50)
+        df.loc[df.index[-1], "businessDate"] = pd.Timestamp("2026-08-30")
+        overlay = {
+            "businessDate": pd.Timestamp("2026-08-31"),
+            "open": 200.0,
+            "high": 210.0,
+            "low": 199.0,
+            "close": 205.0,
+            "volume": 999.0,
+        }
+        out = st.apply_as_of(df, date(2026, 8, 31), overlay)
+        self.assertTrue(st.last_bar_on(out, date(2026, 8, 31)))
+        self.assertAlmostEqual(float(out.iloc[-1]["close"]), 205.0)
+
+
 if __name__ == "__main__":
     unittest.main()
