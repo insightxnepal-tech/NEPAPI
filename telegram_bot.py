@@ -137,6 +137,7 @@ async def cmd_start(chat_id):
         "/strategy   — Pre-market strategy report\n"
         "/sniper     — Sniper BUY/SELL signals\n"
         "/candle     — Daily 200/20 EMA entry & exit\n"
+        "/supertrend — Daily Supertrend entry & exit\n"
         "/top5       — Top 5 stocks by turnover\n"
         "/whale      — Largest block trades\n"
         "/broker     — Smart money positions\n"
@@ -283,6 +284,36 @@ async def cmd_candle(chat_id):
         f"🛑 EXIT FOUND: {n_exit}",
     )
 
+async def cmd_supertrend(chat_id):
+    path = os.path.join(DATA_DIR, "supertrend_scan_latest.json")
+    if not os.path.exists(path):
+        await send_message(
+            chat_id,
+            "📈 *Supertrend Scan*\n\n"
+            "No scan yet. After market close the job Telegrams "
+            "🟢 ENTRY FOUND / 🛑 EXIT FOUND on Supertrend flips (ATR 10 × 3).",
+        )
+        return
+    try:
+        with open(path) as f:
+            latest = json.load(f)
+    except Exception as e:
+        await send_message(chat_id, f"❌ Could not read last Supertrend scan: {e}")
+        return
+    msg = latest.get("message")
+    if msg:
+        await send_message(chat_id, msg)
+        return
+    as_of = latest.get("as_of", "?")
+    n_entry = len(latest.get("entries") or [])
+    n_exit = len(latest.get("exits") or [])
+    await send_message(
+        chat_id,
+        f"📈 *Supertrend Scan — {as_of}*\n\n"
+        f"🟢 ENTRY FOUND: {n_entry}\n"
+        f"🛑 EXIT FOUND: {n_exit}",
+    )
+
 # ── Router ────────────────────────────────────────────────────────
 COMMANDS = {
     "/start":      cmd_start,
@@ -291,6 +322,7 @@ COMMANDS = {
     "/strategy":   cmd_strategy,
     "/sniper":     cmd_sniper,
     "/candle":     cmd_candle,
+    "/supertrend": cmd_supertrend,
     "/top5":       cmd_top5,
     "/whale":      cmd_whale,
     "/broker":     cmd_broker,
