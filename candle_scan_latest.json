@@ -1,19 +1,72 @@
 {
   "as_of": "2026-08-31",
-  "generated_at": "2026-08-31T18:04:06Z",
+  "generated_at": "2026-09-01T15:35:17Z",
   "scanned": 355,
   "skipped": 38,
-  "entries": [],
-  "exits": [],
+  "entries": [
+    {
+      "symbol": "SFEF",
+      "date": "2026-08-31",
+      "open": 9.65,
+      "high": 9.85,
+      "low": 9.65,
+      "close": 9.85,
+      "volume": 300400.0,
+      "ema20": 9.83,
+      "ema200": 9.81,
+      "rsi": 49.7,
+      "vol_ma20": 36408.0,
+      "atr": 0.19,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
+    }
+  ],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "PSF",
+        "date": "2026-08-31",
+        "open": 12.17,
+        "high": 12.22,
+        "low": 11.87,
+        "close": 11.91,
+        "volume": 4750.0,
+        "ema20": 11.97,
+        "ema200": 11.6,
+        "rsi": 47.9,
+        "vol_ma20": 63382.0,
+        "atr": 0.21,
+        "above_200": true,
+        "rsi_dip": true,
+        "green_near_20": false,
+        "volume_ok": false,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (11.97)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-08-21",
+        "entry_price": 11.9,
+        "ema20": 11.92,
+        "ema200": 11.65,
+        "rsi": 49.2
+      }
+    }
+  ],
   "open_positions": {
-    "PSF": {
-      "entry_date": "2026-08-21",
-      "entry_price": 11.9,
-      "ema20": 11.92,
-      "ema200": 11.65,
-      "rsi": 49.2
+    "SFEF": {
+      "entry_date": "2026-08-31",
+      "entry_price": 9.85,
+      "ema20": 9.83,
+      "ema200": 9.81,
+      "rsi": 49.7
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-31*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-08-31*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *SFEF* @ Rs 9.85\n  200 EMA 9.81 | 20 EMA 9.83 | RSI 49.7\n  Vol 8.3\u00d7 MA20 | O 9.65 H 9.85 L 9.65\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *PSF* @ Rs 11.91 | P/L +0.1%\n  Entered Rs 11.9 on 2026-08-21\n  Reason: Close below 20 EMA (11.97)\n\n_Scanned 355 stocks (38 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
