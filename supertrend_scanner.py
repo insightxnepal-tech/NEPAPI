@@ -45,8 +45,16 @@ ST_MULTIPLIER = 3.0
 MIN_HISTORY = 30
 SLEEP_BETWEEN_SYMBOLS = 0.25
 HISTORY_CALENDAR_DAYS = 500
-SKIP_NAME_TOKENS = ("Mutual Fund", "Debenture", "Bond", "Promoter", "Preference")
-SKIP_SECTORS = {"Promoter Share"}
+SKIP_NAME_TOKENS = (
+    "Mutual Fund",
+    "Debenture",
+    "Bond",
+    "Promoter",
+    "Preference",
+    "Fund",
+    "Scheme",
+)
+SKIP_SECTORS = {"Promoter Share", "Mutual Fund"}
 PORTFOLIO_FILE = os.getenv("PORTFOLIO_FILE", "portfolio_data.json")
 STOCKMAP_FILE = os.getenv("STOCKMAP_FILE", "stockmap.json")
 
@@ -252,7 +260,7 @@ def evaluate_latest(
     return SupertrendRow(
         symbol=symbol,
         name=name or symbol,
-        sector=sector or "",
+        sector=sector or "Unknown",
         date=date_str,
         open=round(float(last["open"]), 2),
         high=round(float(last["high"]), 2),
@@ -796,7 +804,18 @@ def write_excel(
     return path
 
 
+def filter_latest_session(rows: list[SupertrendRow]) -> tuple[list[SupertrendRow], list[SupertrendRow], str]:
+    """Keep bars from the latest session so stale symbols do not mix into today."""
+    if not rows:
+        return [], [], date.today().isoformat()
+    as_of = max(r.date for r in rows)
+    live = [r for r in rows if r.date == as_of]
+    stale = [r for r in rows if r.date != as_of]
+    return live, stale, as_of
+
+
 def default_output_path(as_of: str) -> str:
+    return f"supertrend_scan_{as_of}.xlsx"
     return f"supertrend_scan_{as_of}.xlsx"
 
 
@@ -834,7 +853,10 @@ def run_scan(
     rows, skipped = scan_ohlcv_map(
         ohlcv_map, stockmap, portfolio, period=period, multiplier=multiplier
     )
-    as_of = rows[0].date if rows else date.today().isoformat()
+    rows, stale, as_of = filter_latest_session(rows)
+    skipped += len(stale)
+    if stale:
+        print(f"  Dropped {len(stale)} symbols with no trade on {as_of}")
     falling = [r for r in rows if r.below_supertrend]
     sell_flips = [r for r in rows if r.sell_flip]
     buy_flips = [r for r in rows if r.buy_flip]

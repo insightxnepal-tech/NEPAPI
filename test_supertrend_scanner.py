@@ -110,10 +110,19 @@ class ScanAndExcelTests(unittest.TestCase):
         self.assertTrue(by_sym["BEAR"].below_supertrend)
         self.assertTrue(by_sym["BEAR"].in_portfolio)
 
-    def test_skips_debenture_from_stockmap(self):
+    def test_skips_growth_fund_from_stockmap(self):
         rows, skipped = st.scan_ohlcv_map(
-            {"ADBLD83": make_ohlcv()},
-            stockmap={"ADBLD83": {"name": "10.35% Agricultural Bank Debenture 2083", "sector": "Commercial Banks"}},
+            {"NICGF2": make_ohlcv()},
+            stockmap={"NICGF2": {"name": "NIC ASIA Growth Fund-2", "sector": "Commercial Banks"}},
+            portfolio=set(),
+        )
+        self.assertEqual(rows, [])
+        self.assertEqual(skipped, 1)
+
+    def test_skips_mutual_fund_sector(self):
+        rows, skipped = st.scan_ohlcv_map(
+            {"SAGF": make_ohlcv()},
+            stockmap={"SAGF": {"name": "Sanima Growth Fund", "sector": "Mutual Fund"}},
             portfolio=set(),
         )
         self.assertEqual(rows, [])
@@ -151,6 +160,16 @@ class ScanAndExcelTests(unittest.TestCase):
             all_sheet = wb["All Scanned"]
             self.assertEqual(all_sheet.max_row, 3)  # header + 2
             self.assertEqual(wb["Summary"]["A1"].value, "NEPSE Supertrend Scan Report")
+
+    def test_filter_latest_session_drops_stale(self):
+        live = st.evaluate_latest(make_ohlcv(trend=0.5, crash=True), "LIVE")
+        stale = st.evaluate_latest(make_ohlcv(trend=0.5, crash=True), "OLD")
+        live.date = "2026-09-02"
+        stale.date = "2026-08-01"
+        kept, dropped, as_of = st.filter_latest_session([live, stale])
+        self.assertEqual([r.symbol for r in kept], ["LIVE"])
+        self.assertEqual([r.symbol for r in dropped], ["OLD"])
+        self.assertEqual(as_of, live.date)
 
     def test_rows_to_dataframe_puts_sell_first(self):
         bull = st.evaluate_latest(make_ohlcv(trend=0.5), "BULL")
