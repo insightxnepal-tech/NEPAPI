@@ -81,6 +81,7 @@ class SupertrendRow:
     change_1d_pct: float
     change_5d_pct: float
     vol_ma20: float
+    ema21: float = 0.0
     in_portfolio: bool = False
 
     @property
@@ -216,6 +217,7 @@ def compute_supertrend(
     rs = _rma(gain, 14) / _rma(loss, 14).replace(0, 1e-10)
     out["rsi"] = 100.0 - (100.0 / (1.0 + rs))
     out["vol_ma20"] = out["volume"].rolling(20, min_periods=1).mean()
+    out["ema21"] = close.ewm(span=21, adjust=False).mean()
     return out
 
 
@@ -277,8 +279,83 @@ def evaluate_latest(
         change_1d_pct=round((close - prev_close) / prev_close * 100.0, 2) if prev_close else 0.0,
         change_5d_pct=round((close - close_5) / close_5 * 100.0, 2) if close_5 else 0.0,
         vol_ma20=round(float(last["vol_ma20"]) if pd.notna(last["vol_ma20"]) else 0.0, 0),
+        ema21=round(float(last["ema21"]) if "ema21" in indicated.columns and pd.notna(last["ema21"]) else close, 2),
         in_portfolio=in_portfolio,
     )
+
+
+@dataclass
+class SetupGrade:
+    label: str
+    kind: str  # buy / sell / none
+    score: int
+    max_score: int
+    missing: list[str]
+    notes: str = ""
+
+
+BREADTH_BUY_MIN = 45.0  # % of universe above Supertrend required for BEST BUY
+PULLBACK_MAX_DIST = 2.0
+FRESH_SELL_DAYS = 5
+
+
+def classify_setup(row: SupertrendRow, breadth_pct: float | None = None) -> SetupGrade:
+    """
+    Grade a Supertrend bar into BEST BUY / WATCH BUY / BEST SELL / none.
+
+    NEPSE evidence (Jun–Sep 2026 floorsheets): Supertrend (10,3) as a *filter*
+    beat buy-and-hold; raw BUY flips lost money. Best long is a pullback to a
+    still-green Supertrend, and only when market breadth is not risk-off.
+    """
+    green = row.close > row.open
+    red = row.close < row.open
+    near_st = 0.0 <= row.distance_pct <= PULLBACK_MAX_DIST
+    vol_ok = row.vol_ratio >= 1.2
+    rsi_buy = 40.0 <= row.rsi <= 65.0
+    rsi_sell = row.rsi < 50.0
+    above_ema = row.ema21 > 0 and row.close > row.ema21
+    below_ema = row.ema21 > 0 and row.close < row.ema21
+    established = row.days_in_trend >= 2
+    fresh_sell = row.sell_flip or (row.below_supertrend and row.days_in_trend <= FRESH_SELL_DAYS)
+    breadth_ok = breadth_pct is None or breadth_pct >= BREADTH_BUY_MIN
+
+    if row.trend == 1:
+        checks = [
+            ("ST bullish", True),
+            ("close > EMA21", above_ema),
+            (f"pullback ≤{PULLBACK_MAX_DIST:g}% above ST", near_st),
+            ("volume ≥ 1.2× MA20", vol_ok),
+            ("RSI 40–65", rsi_buy),
+            ("green candle", green),
+        ]
+        score = sum(1 for _, ok in checks if ok)
+        missing = [name for name, ok in checks if not ok]
+        if not established:
+            missing.append("not a first-day flip (wait for pullback)")
+        if not breadth_ok:
+            missing.append(f"market breadth {breadth_pct:.0f}% < {BREADTH_BUY_MIN:.0f}%")
+        if score == len(checks) and established and breadth_ok:
+            return SetupGrade("BEST BUY", "buy", score, len(checks), [], "Pullback to green Supertrend")
+        if score >= 4 and above_ema:
+            return SetupGrade("WATCH BUY", "buy", score, len(checks), missing, "Incomplete long setup")
+        return SetupGrade(row.signal, "none", score, len(checks), missing)
+
+    checks = [
+        ("ST bearish", True),
+        ("close < EMA21", below_ema),
+        ("volume ≥ 1.2× MA20", vol_ok),
+        ("RSI < 50", rsi_sell),
+        ("red candle", red),
+    ]
+    score = sum(1 for _, ok in checks if ok)
+    missing = [name for name, ok in checks if not ok]
+    if not fresh_sell:
+        missing.append(f"breakdown older than {FRESH_SELL_DAYS} sessions")
+    if score == len(checks) and fresh_sell:
+        return SetupGrade("BEST SELL", "sell", score, len(checks), [], "Fresh Supertrend breakdown")
+    if row.sell_flip:
+        return SetupGrade("NEW SELL", "sell", score, len(checks), missing, "Flip without full confirmation")
+    return SetupGrade(row.signal, "none", score, len(checks), missing)
 
 
 # ── Data loading ──────────────────────────────────────────────────
@@ -563,6 +640,64 @@ COLUMNS = [
 ]
 
 
+BEST_COLUMNS = [
+    ("Setup", 14),
+    ("Score", 10),
+    ("Symbol", 12),
+    ("Company", 42),
+    ("Sector", 22),
+    ("Date", 13),
+    ("Close", 12),
+    ("Supertrend", 13),
+    ("EMA21", 12),
+    ("Dist %", 11),
+    ("Trend days", 12),
+    ("1D %", 10),
+    ("RSI", 9),
+    ("Vol vs MA20", 13),
+    ("Portfolio", 12),
+    ("Missing", 55),
+]
+
+
+def market_breadth(rows: list[SupertrendRow]) -> float:
+    if not rows:
+        return 0.0
+    return 100.0 * sum(1 for r in rows if r.trend == 1) / len(rows)
+
+
+def best_setups_dataframe(rows: list[SupertrendRow], breadth_pct: float) -> pd.DataFrame:
+    records = []
+    for r in rows:
+        grade = classify_setup(r, breadth_pct)
+        if grade.label not in ("BEST BUY", "WATCH BUY", "BEST SELL"):
+            continue
+        records.append({
+            "Setup": grade.label,
+            "Score": f"{grade.score}/{grade.max_score}",
+            "Symbol": r.symbol,
+            "Company": r.name,
+            "Sector": r.sector,
+            "Date": r.date,
+            "Close": r.close,
+            "Supertrend": r.supertrend,
+            "EMA21": r.ema21,
+            "Dist %": r.distance_pct,
+            "Trend days": r.days_in_trend,
+            "1D %": r.change_1d_pct,
+            "RSI": r.rsi,
+            "Vol vs MA20": r.vol_ratio,
+            "Portfolio": "Yes" if r.in_portfolio else "",
+            "Missing": "; ".join(grade.missing) if grade.missing else grade.notes,
+        })
+    df = pd.DataFrame(records, columns=[c[0] for c in BEST_COLUMNS])
+    if df.empty:
+        return df
+    order = {"BEST SELL": 0, "BEST BUY": 1, "WATCH BUY": 2}
+    df["_ord"] = df["Setup"].map(order).fillna(9)
+    return df.sort_values(["_ord", "1D %"], ascending=[True, True]).drop(columns=["_ord"]).reset_index(drop=True)
+
+
 def rows_to_dataframe(rows: list[SupertrendRow]) -> pd.DataFrame:
     records = []
     for r in rows:
@@ -609,8 +744,9 @@ def _style_header(ws, row: int, ncol: int, fill_hex: str = NAVY):
     ws.row_dimensions[row].height = 22
 
 
-def _write_df_sheet(ws, df: pd.DataFrame, table_name: str, header_hex: str = NAVY):
-    ncol = len(COLUMNS)
+def _write_df_sheet(ws, df: pd.DataFrame, table_name: str, header_hex: str = NAVY, columns=None):
+    columns = columns or COLUMNS
+    ncol = len(columns)
     if df.empty:
         ws.cell(1, 1, "No stocks matched this filter.").font = Font(name="Calibri", italic=True, size=12)
         return
@@ -625,35 +761,40 @@ def _write_df_sheet(ws, df: pd.DataFrame, table_name: str, header_hex: str = NAV
     _style_header(ws, 1, ncol, header_hex)
 
     pct_cols = {"Dist %", "1D %", "5D %"}
-    num_cols = {"Close", "Supertrend", "Dist Rs", "RSI", "ATR", "Vol vs MA20", "Open", "High", "Low"}
+    num_cols = {"Close", "Supertrend", "Dist Rs", "RSI", "ATR", "Vol vs MA20", "Open", "High", "Low", "EMA21"}
     int_cols = {"Trend days", "Volume", "Turnover Rs"}
-    col_index = {name: i + 1 for i, (name, _) in enumerate(COLUMNS)}
+    col_index = {name: i + 1 for i, (name, _) in enumerate(columns)}
+    tag_col = "Setup" if "Setup" in col_index else "Signal"
 
     for r_idx in range(2, len(df) + 2):
-        signal = ws.cell(r_idx, col_index["Signal"]).value
-        if signal == "NEW SELL":
-            fill = PatternFill("solid", fgColor=LIGHT_AMBER)
-        elif signal == "BEARISH":
-            fill = PatternFill("solid", fgColor=LIGHT_RED)
-        elif signal == "NEW BUY":
+        signal = ws.cell(r_idx, col_index[tag_col]).value
+        if signal in ("NEW SELL", "BEST SELL", "BEARISH"):
+            fill = PatternFill("solid", fgColor=LIGHT_AMBER if "SELL" in str(signal) else LIGHT_RED)
+        elif signal in ("NEW BUY", "BEST BUY"):
             fill = PatternFill("solid", fgColor="D4EFDF")
+        elif signal == "WATCH BUY":
+            fill = PatternFill("solid", fgColor=LIGHT_AMBER)
         else:
             fill = PatternFill("solid", fgColor=LIGHT_GREEN if r_idx % 2 else WHITE)
         for c_idx in range(1, ncol + 1):
             ws.cell(r_idx, c_idx).fill = fill
 
         for name in pct_cols:
-            ws.cell(r_idx, col_index[name]).number_format = '0.00"%"'
-            ws.cell(r_idx, col_index[name]).alignment = Alignment(horizontal="right")
+            if name in col_index:
+                ws.cell(r_idx, col_index[name]).number_format = '0.00"%"'
+                ws.cell(r_idx, col_index[name]).alignment = Alignment(horizontal="right")
         for name in num_cols:
-            ws.cell(r_idx, col_index[name]).number_format = "#,##0.00"
+            if name in col_index:
+                ws.cell(r_idx, col_index[name]).number_format = "#,##0.00"
         for name in int_cols:
-            ws.cell(r_idx, col_index[name]).number_format = "#,##0"
-        ws.cell(r_idx, col_index["Symbol"]).font = Font(name="Calibri", bold=True, size=11)
-        if signal in ("NEW SELL", "BEARISH"):
-            ws.cell(r_idx, col_index["Signal"]).font = Font(name="Calibri", bold=True, color=RED, size=11)
-        elif signal in ("NEW BUY", "BULLISH"):
-            ws.cell(r_idx, col_index["Signal"]).font = Font(name="Calibri", bold=True, color=GREEN, size=11)
+            if name in col_index:
+                ws.cell(r_idx, col_index[name]).number_format = "#,##0"
+        if "Symbol" in col_index:
+            ws.cell(r_idx, col_index["Symbol"]).font = Font(name="Calibri", bold=True, size=11)
+        if signal in ("NEW SELL", "BEST SELL", "BEARISH"):
+            ws.cell(r_idx, col_index[tag_col]).font = Font(name="Calibri", bold=True, color=RED, size=11)
+        elif signal in ("NEW BUY", "BEST BUY", "BULLISH", "WATCH BUY"):
+            ws.cell(r_idx, col_index[tag_col]).font = Font(name="Calibri", bold=True, color=GREEN, size=11)
 
     last_row = len(df) + 1
     last_col = get_column_letter(ncol)
@@ -662,7 +803,7 @@ def _write_df_sheet(ws, df: pd.DataFrame, table_name: str, header_hex: str = NAV
     ws.add_table(table)
     ws.freeze_panes = "B2"
 
-    for i, (_, width) in enumerate(COLUMNS, start=1):
+    for i, (_, width) in enumerate(columns, start=1):
         ws.column_dimensions[get_column_letter(i)].width = width
     ws.sheet_properties.pageSetUpPr.fitToPage = True
     ws.page_setup.orientation = "landscape"
@@ -702,6 +843,8 @@ def write_excel(
     buy_flips = [r for r in rows if r.buy_flip]
     bullish = [r for r in rows if r.trend == 1]
     portfolio_hits = [r for r in falling if r.in_portfolio]
+    breadth = market_breadth(rows)
+    best_df = best_setups_dataframe(rows, breadth)
     by_sector = (
         pd.Series([r.sector or "Unknown" for r in falling]).value_counts().head(12)
         if falling else pd.Series(dtype=int)
@@ -724,23 +867,24 @@ def write_excel(
 
     _kpi_box(ws, 4, 1, "FALLING UNDER ST", len(falling), RED)
     _kpi_box(ws, 4, 2, "NEW SELL FLIPS", len(sell_flips), AMBER)
-    _kpi_box(ws, 4, 3, "NEW BUY FLIPS", len(buy_flips), GREEN)
+    _kpi_box(ws, 4, 3, "BEST SETUPS", int(len(best_df)), GREEN)
     _kpi_box(ws, 4, 4, "STILL BULLISH", len(bullish), NAVY)
-    _kpi_box(ws, 4, 5, "PORTFOLIO HITS", len(portfolio_hits), "6C3483")
+    _kpi_box(ws, 4, 5, f"BREADTH %", round(breadth, 1), "6C3483")
     _kpi_box(ws, 4, 6, "SCANNED", scanned, "2E86AB")
 
-    ws["A7"] = "How to read this report"
+    ws["A7"] = "Best Supertrend setup (NEPSE daily)"
     ws["A7"].font = SUB_FONT
     notes = [
-        f"Supertrend uses Wilder ATR({period}) × {multiplier:g} on daily bars (TradingView default).",
-        "FALLING UNDER = last close is below the Supertrend line (bearish / red Supertrend).",
-        "NEW SELL = Supertrend flipped from bullish to bearish on the latest session.",
-        "NEW BUY = Supertrend flipped from bearish to bullish on the latest session.",
-        "Dist % is (Close − Supertrend) / Supertrend. Negative means the stock is under the line.",
-        "Trend days counts consecutive sessions in the current Supertrend direction.",
-        f"Data source: {source}" + (f" ({files_used} floorsheet files)." if files_used else "."),
-        f"{skipped} symbols skipped (too little history, non-equity, or missing prices).",
-        "Not financial advice. Supertrend is a lagging trend filter, not a complete strategy.",
+        f"Use Supertrend({period}, {multiplier:g}) as a trend FILTER, not a buy-the-flip trigger.",
+        "BEST BUY = already-green Supertrend, pullback within 2% of the line, close > EMA21, vol ≥ 1.2× MA20, RSI 40–65, green candle, market breadth ≥ 45%.",
+        "Do not take fresh BUY flips while breadth is risk-off (Jun–Sep 2026 BUY flips averaged −6% over 5 days).",
+        "BEST SELL / exit = fresh breakdown (flip or ≤5 days), close < EMA21, vol ≥ 1.2× MA20, RSI < 50, red candle.",
+        "Stay long only while close > Supertrend. Exit (or stop adding) on a close below Supertrend.",
+        f"Today breadth is {breadth:.1f}% bullish — "
+        + ("risk-ON, longs allowed." if breadth >= BREADTH_BUY_MIN else "risk-OFF, skip new longs."),
+        f"Data source: {source}" + (f" ({files_used} floorsheet files)." if files_used else ".")
+        + f"  {skipped} symbols skipped.",
+        "Not financial advice. Sample covers ~65 NEPSE sessions; Supertrend is lagging.",
     ]
     for i, line in enumerate(notes):
         ws.cell(8 + i, 1, "• " + line).font = Font(name="Calibri", size=11, color="2C3E50")
@@ -789,6 +933,7 @@ def write_excel(
     ws.print_options.horizontalCentered = True
 
     sheets = [
+        ("Best Setups", None, GREEN, "BestSetups"),
         ("Falling Under ST", falling, RED, "FallingUnderST"),
         ("New SELL Flip", sell_flips, AMBER, "NewSellFlip"),
         ("New BUY Flip", buy_flips, GREEN, "NewBuyFlip"),
@@ -796,7 +941,10 @@ def write_excel(
     ]
     for title, subset, color, table in sheets:
         ws_s = wb.create_sheet(title)
-        _write_df_sheet(ws_s, rows_to_dataframe(subset), table, color)
+        if title == "Best Setups":
+            _write_df_sheet(ws_s, best_df, table, color, columns=BEST_COLUMNS)
+        else:
+            _write_df_sheet(ws_s, rows_to_dataframe(subset), table, color)
 
     path = str(Path(path))
     Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -815,7 +963,6 @@ def filter_latest_session(rows: list[SupertrendRow]) -> tuple[list[SupertrendRow
 
 
 def default_output_path(as_of: str) -> str:
-    return f"supertrend_scan_{as_of}.xlsx"
     return f"supertrend_scan_{as_of}.xlsx"
 
 
@@ -879,6 +1026,12 @@ def run_scan(
     print(f"  Falling under Supertrend: {len(falling)}")
     print(f"  New SELL flips: {len(sell_flips)}")
     print(f"  New BUY flips:  {len(buy_flips)}")
+    print(f"  Breadth: {market_breadth(rows):.1f}% bullish")
+    best_df = best_setups_dataframe(rows, market_breadth(rows))
+    if not best_df.empty:
+        print("  Best setups:")
+        for _, rec in best_df.iterrows():
+            print(f"    {rec['Setup']:10} {rec['Symbol']:8} {rec['Score']}  {rec['Missing']}")
     if sell_flips:
         print("  SELL today: " + ", ".join(r.symbol for r in sell_flips))
     print(f"  Excel: {out_path}")

@@ -151,7 +151,7 @@ class ScanAndExcelTests(unittest.TestCase):
             wb = load_workbook(path)
             self.assertEqual(
                 wb.sheetnames,
-                ["Summary", "Falling Under ST", "New SELL Flip", "New BUY Flip", "All Scanned"],
+                ["Summary", "Best Setups", "Falling Under ST", "New SELL Flip", "New BUY Flip", "All Scanned"],
             )
             falling = wb["Falling Under ST"]
             symbols = [falling.cell(r, 1).value for r in range(2, falling.max_row + 1)]
@@ -178,6 +178,33 @@ class ScanAndExcelTests(unittest.TestCase):
         self.assertEqual(df.iloc[0]["Symbol"], "BEAR")
         self.assertIn(df.iloc[0]["Signal"], ("NEW SELL", "BEARISH"))
         self.assertEqual(df.iloc[1]["Signal"], "BULLISH")
+
+    def test_classify_setup_best_buy_needs_breadth_and_pullback(self):
+        row = st.evaluate_latest(make_ohlcv(trend=0.5), "BULL")
+        row.ema21 = row.close - 1
+        row.vol_ma20 = row.volume / 1.5
+        row.rsi = 52.0
+        # distance_pct is a property from close/supertrend — pin close near ST
+        row.supertrend = row.close / 1.008
+        row.days_in_trend = 5
+        row.open = row.close - 1
+        weak = st.classify_setup(row, breadth_pct=30.0)
+        self.assertEqual(weak.label, "WATCH BUY")
+        strong = st.classify_setup(row, breadth_pct=50.0)
+        self.assertEqual(strong.label, "BEST BUY")
+
+    def test_classify_setup_best_sell_fresh_breakdown(self):
+        row = st.evaluate_latest(make_ohlcv(trend=0.5, crash=True), "BEAR")
+        row.ema21 = row.close + 10
+        row.vol_ma20 = max(row.volume / 1.5, 1)
+        row.rsi = 35.0
+        row.days_in_trend = 1
+        row.prev_trend = 1
+        row.trend = -1
+        row.open = row.close + 5
+        grade = st.classify_setup(row, breadth_pct=37.0)
+        self.assertEqual(grade.label, "BEST SELL")
+        self.assertEqual(grade.kind, "sell")
 
 
 if __name__ == "__main__":
