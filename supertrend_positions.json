@@ -1,1 +1,38 @@
-{}
+{
+  "ALBSL": {
+    "entry_date": "2026-09-03",
+    "entry_price": 1190.0,
+    "supertrend": 975.49,
+    "atr": 63.89
+  },
+  "CIT": {
+    "entry_date": "2026-09-03",
+    "entry_price": 1719.9,
+    "supertrend": 1611.17,
+    "atr": 25.44
+  },
+  "MKHC": {
+    "entry_date": "2026-09-03",
+    "entry_price": 269.6,
+    "supertrend": 227.44,
+    "atr": 11.49
+  },
+  "SBID89": {
+    "entry_date": "2026-09-03",
+    "entry_price": 1163.9,
+    "supertrend": 1126.34,
+    "atr": 7.7
+  },
+  "NICD88": {
+    "entry_date": "2026-09-03",
+    "entry_price": 1095.0,
+    "supertrend": 1077.77,
+    "atr": 6.41
+  },
+  "ULBSL": {
+    "entry_date": "2026-09-03",
+    "entry_price": 2926.0,
+    "supertrend": 2291.19,
+    "atr": 211.6
+  }
+}
