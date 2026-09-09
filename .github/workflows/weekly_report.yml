@@ -1,0 +1,67 @@
+name: Weekly NEPSE Portfolio Report
+
+on:
+  schedule:
+    # Friday 12:00 UTC ≈ 5:45 PM NPT — after Thu close + floorsheet ingest
+    - cron: '0 12 * * 5'
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Unique trading days to include'
+        required: true
+        default: '5'
+      end:
+        description: 'End date YYYY-MM-DD (blank = latest)'
+        required: false
+        default: ''
+
+jobs:
+  weekly-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests
+
+      - name: Run Weekly Report
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          DAYS="${{ github.event.inputs.days }}"
+          END="${{ github.event.inputs.end }}"
+          DAYS="${DAYS:-5}"
+          ARGS=(--days "$DAYS")
+          if [ -n "$END" ]; then
+            ARGS+=(--end "$END")
+          fi
+          python weekly_portfolio_report.py "${ARGS[@]}"
+
+      - name: Commit weekly report
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add weekly_report_*.md artifacts/weekly_report_*.md || true
+          if git diff --staged --quiet; then
+            echo "No weekly report file change."
+          else
+            git commit -m "📊 Weekly portfolio report $(date +'%Y-%m-%d')"
+            git push
+          fi
