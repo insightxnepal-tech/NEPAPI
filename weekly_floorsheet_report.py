@@ -97,18 +97,6 @@ def load_ltp(path: str) -> Dict[str, float]:
     return df.groupby("stockSymbol")["contractRate"].first().astype(float).to_dict()
 
 
-def day_stats(path: str) -> Dict[str, float]:
-    df = pd.read_csv(
-        path,
-        usecols=["contractAmount", "contractQuantity", "contractId"],
-    )
-    return {
-        "turnover": float(df["contractAmount"].sum()),
-        "volume": float(df["contractQuantity"].sum()),
-        "trades": float(len(df)),
-    }
-
-
 def analyze_week(week: List[Tuple[str, str, str]]) -> Dict[str, Any]:
     """Aggregate floorsheet metrics across unique trading days."""
     frames = []
