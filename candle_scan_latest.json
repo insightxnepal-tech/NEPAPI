@@ -1,128 +1,53 @@
 {
   "as_of": "2026-09-07",
-  "generated_at": "2026-09-08T15:09:51Z",
+  "generated_at": "2026-09-09T08:14:20Z",
   "scanned": 355,
   "skipped": 37,
   "entries": [
     {
-      "symbol": "API",
+      "symbol": "NBF2",
       "date": "2026-09-07",
-      "open": 326.1,
-      "high": 331.8,
-      "low": 326.7,
-      "close": 329.0,
-      "volume": 172177.0,
-      "ema20": 329.61,
-      "ema200": 324.46,
-      "rsi": 47.7,
-      "vol_ma20": 136834.0,
-      "atr": 5.94,
+      "open": 9.8,
+      "high": 10.09,
+      "low": 9.82,
+      "close": 9.82,
+      "volume": 2760.0,
+      "ema20": 9.83,
+      "ema200": 9.82,
+      "rsi": 48.2,
+      "vol_ma20": 2093.0,
+      "atr": 0.13,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
       "volume_ok": true,
       "entry": true,
       "exit_reasons": [
-        "Close below 20 EMA (329.61)"
+        "Close below 20 EMA (9.83)"
       ]
-    }
-  ],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "SBID89",
-        "date": "2026-09-07",
-        "open": 1163.9,
-        "high": 1163.9,
-        "low": 1163.9,
-        "close": 1163.9,
-        "volume": 0.0,
-        "ema20": 1166.96,
-        "ema200": 1159.97,
-        "rsi": 45.9,
-        "vol_ma20": 41.0,
-        "atr": 7.01,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (1166.96)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-09-03",
-        "entry_price": 1163.9,
-        "ema20": 1167.29,
-        "ema200": 1159.56,
-        "rsi": 45.9
-      }
     },
     {
-      "signal": {
-        "symbol": "PRSF",
-        "date": "2026-09-07",
-        "open": 12.89,
-        "high": 12.9,
-        "low": 12.67,
-        "close": 12.7,
-        "volume": 22405.0,
-        "ema20": 12.77,
-        "ema200": 12.12,
-        "rsi": 46.8,
-        "vol_ma20": 117136.0,
-        "atr": 0.19,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (12.77)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-09-03",
-        "entry_price": 12.89,
-        "ema20": 12.78,
-        "ema200": 12.13,
-        "rsi": 54.9
-      }
-    },
-    {
-      "signal": {
-        "symbol": "SFEF",
-        "date": "2026-09-07",
-        "open": 9.86,
-        "high": 9.59,
-        "low": 9.59,
-        "close": 9.59,
-        "volume": 100.0,
-        "ema20": 9.81,
-        "ema200": 9.83,
-        "rsi": 38.8,
-        "vol_ma20": 62491.0,
-        "atr": 0.18,
-        "above_200": false,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (9.81)",
-          "Close below 200 EMA (9.83)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-08-31",
-        "entry_price": 9.85,
-        "ema20": 9.83,
-        "ema200": 9.81,
-        "rsi": 49.7
-      }
+      "symbol": "SHL",
+      "date": "2026-09-07",
+      "open": 502.0,
+      "high": 503.0,
+      "low": 488.0,
+      "close": 502.5,
+      "volume": 27156.0,
+      "ema20": 502.36,
+      "ema200": 499.82,
+      "rsi": 50.9,
+      "vol_ma20": 21001.0,
+      "atr": 10.46,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
     }
   ],
+  "exits": [],
   "open_positions": {
     "PSF": {
       "entry_date": "2026-09-01",
@@ -151,8 +76,22 @@
       "ema20": 329.61,
       "ema200": 324.46,
       "rsi": 47.7
+    },
+    "NBF2": {
+      "entry_date": "2026-09-07",
+      "entry_price": 9.82,
+      "ema20": 9.83,
+      "ema200": 9.82,
+      "rsi": 48.2
+    },
+    "SHL": {
+      "entry_date": "2026-09-07",
+      "entry_price": 502.5,
+      "ema20": 502.36,
+      "ema200": 499.82,
+      "rsi": 50.9
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-07*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *API* @ Rs 329.00\n  200 EMA 324.46 | 20 EMA 329.61 | RSI 47.7\n  Vol 1.3\u00d7 MA20 | O 326.10 H 331.80 L 326.70\n\n\ud83d\uded1 *EXIT FOUND (3)*\n\n\u2022 *SBID89* @ Rs 1163.90 | P/L +0.0%\n  Entered Rs 1163.9 on 2026-09-03\n  Reason: Close below 20 EMA (1166.96)\n\n\u2022 *PRSF* @ Rs 12.70 | P/L -1.5%\n  Entered Rs 12.89 on 2026-09-03\n  Reason: Close below 20 EMA (12.77)\n\n\u2022 *SFEF* @ Rs 9.59 | P/L -2.6%\n  Entered Rs 9.85 on 2026-08-31\n  Reason: Close below 20 EMA (9.81); Close below 200 EMA (9.83)\n\n_Scanned 355 stocks (37 skipped, need 200+ days)._\n_Not financial advice._\n",
-  "telegram_ok": true
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-07*\n\n\ud83d\udfe2 *ENTRY FOUND (2)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *NBF2* @ Rs 9.82\n  200 EMA 9.82 | 20 EMA 9.83 | RSI 48.2\n  Vol 1.3\u00d7 MA20 | O 9.80 H 10.09 L 9.82\n\n\u2022 *SHL* @ Rs 502.50\n  200 EMA 499.82 | 20 EMA 502.36 | RSI 50.9\n  Vol 1.3\u00d7 MA20 | O 502.00 H 503.00 L 488.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (37 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "telegram_ok": false
 }
