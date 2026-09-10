@@ -1,44 +1,64 @@
 {
-  "as_of": "2026-09-07",
-  "generated_at": "2026-09-09T15:10:00Z",
+  "as_of": "2026-09-09",
+  "generated_at": "2026-09-10T15:03:22Z",
   "scanned": 355,
-  "skipped": 37,
+  "skipped": 36,
   "entries": [
     {
-      "symbol": "NBF2",
-      "date": "2026-09-07",
-      "open": 9.8,
-      "high": 10.09,
-      "low": 9.82,
-      "close": 9.82,
-      "volume": 2760.0,
-      "ema20": 9.83,
-      "ema200": 9.82,
-      "rsi": 48.2,
-      "vol_ma20": 2093.0,
-      "atr": 0.13,
+      "symbol": "EBL",
+      "date": "2026-09-09",
+      "open": 716.0,
+      "high": 720.0,
+      "low": 714.0,
+      "close": 718.0,
+      "volume": 32334.0,
+      "ema20": 721.16,
+      "ema200": 697.13,
+      "rsi": 47.0,
+      "vol_ma20": 29100.0,
+      "atr": 9.42,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
       "volume_ok": true,
       "entry": true,
       "exit_reasons": [
-        "Close below 20 EMA (9.83)"
+        "Close below 20 EMA (721.16)"
       ]
     },
     {
-      "symbol": "SHL",
-      "date": "2026-09-07",
-      "open": 502.0,
-      "high": 503.0,
-      "low": 488.0,
-      "close": 502.5,
-      "volume": 27156.0,
-      "ema20": 502.36,
-      "ema200": 499.82,
-      "rsi": 50.9,
-      "vol_ma20": 21001.0,
-      "atr": 10.46,
+      "symbol": "PRSF",
+      "date": "2026-09-09",
+      "open": 12.7,
+      "high": 12.92,
+      "low": 12.65,
+      "close": 12.9,
+      "volume": 671300.0,
+      "ema20": 12.78,
+      "ema200": 12.14,
+      "rsi": 54.4,
+      "vol_ma20": 150231.0,
+      "atr": 0.2,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
+    },
+    {
+      "symbol": "SCB",
+      "date": "2026-09-09",
+      "open": 649.1,
+      "high": 654.9,
+      "low": 649.0,
+      "close": 651.1,
+      "volume": 9478.0,
+      "ema20": 648.66,
+      "ema200": 643.32,
+      "rsi": 52.7,
+      "vol_ma20": 7439.0,
+      "atr": 10.11,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
@@ -47,7 +67,70 @@
       "exit_reasons": []
     }
   ],
-  "exits": [],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "API",
+        "date": "2026-09-09",
+        "open": 329.0,
+        "high": 330.5,
+        "low": 325.0,
+        "close": 327.5,
+        "volume": 114456.0,
+        "ema20": 329.41,
+        "ema200": 321.3,
+        "rsi": 45.5,
+        "vol_ma20": 138445.0,
+        "atr": 5.97,
+        "above_200": true,
+        "rsi_dip": true,
+        "green_near_20": false,
+        "volume_ok": false,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (329.41)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-09-07",
+        "entry_price": 329.0,
+        "ema20": 329.61,
+        "ema200": 324.46,
+        "rsi": 47.7
+      }
+    },
+    {
+      "signal": {
+        "symbol": "SHL",
+        "date": "2026-09-09",
+        "open": 502.5,
+        "high": 508.0,
+        "low": 498.3,
+        "close": 501.8,
+        "volume": 14645.0,
+        "ema20": 502.31,
+        "ema200": 499.84,
+        "rsi": 49.8,
+        "vol_ma20": 20894.0,
+        "atr": 10.86,
+        "above_200": true,
+        "rsi_dip": false,
+        "green_near_20": false,
+        "volume_ok": false,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (502.31)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-09-07",
+        "entry_price": 502.5,
+        "ema20": 502.36,
+        "ema200": 499.82,
+        "rsi": 50.9
+      }
+    }
+  ],
   "open_positions": {
     "PSF": {
       "entry_date": "2026-09-01",
@@ -70,13 +153,6 @@
       "ema200": 245.6,
       "rsi": 40.7
     },
-    "API": {
-      "entry_date": "2026-09-07",
-      "entry_price": 329.0,
-      "ema20": 329.61,
-      "ema200": 324.46,
-      "rsi": 47.7
-    },
     "NBF2": {
       "entry_date": "2026-09-07",
       "entry_price": 9.82,
@@ -84,14 +160,28 @@
       "ema200": 9.82,
       "rsi": 48.2
     },
-    "SHL": {
-      "entry_date": "2026-09-07",
-      "entry_price": 502.5,
-      "ema20": 502.36,
-      "ema200": 499.82,
-      "rsi": 50.9
+    "EBL": {
+      "entry_date": "2026-09-09",
+      "entry_price": 718.0,
+      "ema20": 721.16,
+      "ema200": 697.13,
+      "rsi": 47.0
+    },
+    "PRSF": {
+      "entry_date": "2026-09-09",
+      "entry_price": 12.9,
+      "ema20": 12.78,
+      "ema200": 12.14,
+      "rsi": 54.4
+    },
+    "SCB": {
+      "entry_date": "2026-09-09",
+      "entry_price": 651.1,
+      "ema20": 648.66,
+      "ema200": 643.32,
+      "rsi": 52.7
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-07*\n\n\ud83d\udfe2 *ENTRY FOUND (2)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *NBF2* @ Rs 9.82\n  200 EMA 9.82 | 20 EMA 9.83 | RSI 48.2\n  Vol 1.3\u00d7 MA20 | O 9.80 H 10.09 L 9.82\n\n\u2022 *SHL* @ Rs 502.50\n  200 EMA 499.82 | 20 EMA 502.36 | RSI 50.9\n  Vol 1.3\u00d7 MA20 | O 502.00 H 503.00 L 488.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (37 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-09*\n\n\ud83d\udfe2 *ENTRY FOUND (3)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *EBL* @ Rs 718.00\n  200 EMA 697.13 | 20 EMA 721.16 | RSI 47.0\n  Vol 1.1\u00d7 MA20 | O 716.00 H 720.00 L 714.00\n\n\u2022 *PRSF* @ Rs 12.90\n  200 EMA 12.14 | 20 EMA 12.78 | RSI 54.4\n  Vol 4.5\u00d7 MA20 | O 12.70 H 12.92 L 12.65\n\n\u2022 *SCB* @ Rs 651.10\n  200 EMA 643.32 | 20 EMA 648.66 | RSI 52.7\n  Vol 1.3\u00d7 MA20 | O 649.10 H 654.90 L 649.00\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *API* @ Rs 327.50 | P/L -0.5%\n  Entered Rs 329.0 on 2026-09-07\n  Reason: Close below 20 EMA (329.41)\n\n\u2022 *SHL* @ Rs 501.80 | P/L -0.1%\n  Entered Rs 502.5 on 2026-09-07\n  Reason: Close below 20 EMA (502.31)\n\n_Scanned 355 stocks (36 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
