@@ -1,0 +1,12 @@
+# Dependencies for the MCP server (mcp_server.py), installed into a dedicated
+# virtualenv (.venv-mcp) that is separate from the main REST/WebSocket venv.
+#
+# Why a separate venv: mcp_server.py targets FastMCP v3 (it uses the unified
+# `on_duplicate` constructor kwarg). FastMCP v3 requires starlette>=1.6, which
+# is incompatible with the pinned fastapi==0.115.14 (needs starlette<0.47) that
+# the REST/WebSocket servers depend on. Isolating the MCP server avoids that
+# conflict without changing the application code or the main requirements.txt.
+#
+# FastMCP pulls its own httpx, python-dotenv, pydantic, starlette and uvicorn,
+# which cover everything mcp_server.py imports.
+fastmcp>=3.0,<4.0
