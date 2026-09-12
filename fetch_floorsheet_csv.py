@@ -72,8 +72,18 @@ def _default_csv_name(date_str: str, symbol: Optional[str]) -> str:
 
 
 def _downloads_floorsheet_dir() -> Path:
-    """CSV/XLSX output directory: ~/Downloads/floorsheet/"""
-    return Path.home() / "Downloads" / "floorsheet"
+    """CSV/XLSX output directory.
+
+    Prefer the local Mac path used by this project when it exists, otherwise
+    fall back to ~/Downloads/floorsheet/ (Cloud Agent / Linux).
+    """
+    preferred = Path("/Users/sanishtamang/Downloads/floorsheet")
+    if preferred.exists() or preferred.parent.exists():
+        preferred.mkdir(parents=True, exist_ok=True)
+        return preferred
+    fallback = Path.home() / "Downloads" / "floorsheet"
+    fallback.mkdir(parents=True, exist_ok=True)
+    return fallback
 
 
 def _default_csv_path(date_str: str, symbol: Optional[str]) -> Path:
