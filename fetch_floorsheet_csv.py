@@ -20,6 +20,9 @@ Usage examples:
   # Custom output path
   python fetch_floorsheet_csv.py --date 2026-04-14 --out /tmp/my_floorsheet.csv
 
+  # Default output is ~/Downloads/floorsheet/floorsheet_<date>.csv
+  # (also mirrored to the current working directory)
+
   # Also save a companion JSON file
   python fetch_floorsheet_csv.py --save-json
 """
@@ -67,18 +70,112 @@ def _default_csv_name(date_str: str, symbol: Optional[str]) -> str:
         return f"floorsheet_{symbol.upper()}_{date_str}.csv"
     return f"floorsheet_{date_str}.csv"
 
+
+def _downloads_floorsheet_dir() -> Path:
+    """CSV/XLSX output directory.
+
+    Prefer the local Mac path used by this project when it exists, otherwise
+    fall back to ~/Downloads/floorsheet/ (Cloud Agent / Linux).
+    """
+    preferred = Path("/Users/sanishtamang/Downloads/floorsheet")
+    if preferred.exists() or preferred.parent.exists():
+        preferred.mkdir(parents=True, exist_ok=True)
+        return preferred
+    fallback = Path.home() / "Downloads" / "floorsheet"
+    fallback.mkdir(parents=True, exist_ok=True)
+    return fallback
+
+
+def _default_csv_path(date_str: str, symbol: Optional[str]) -> Path:
+    """Default CSV path under ~/Downloads/floorsheet/."""
+    return _downloads_floorsheet_dir() / _default_csv_name(date_str, symbol)
+
+
 def _default_xlsx_path(date_str: str, symbol: Optional[str]) -> Path:
     """Return the full Path where the XLSX file should be saved.
     Files are stored under ~/Downloads/floorsheet/ with a name
     matching the CSV (but with .xlsx extension)."""
     base_name = _default_csv_name(date_str, symbol).replace('.csv', '.xlsx')
-    download_dir = Path.home() / 'Downloads' / 'floorsheet'
-    return download_dir / base_name
+    return _downloads_floorsheet_dir() / base_name
 
 
 def _print(msg: str) -> None:
     ts = datetime.now().strftime("%H:%M:%S")
     print(f"[{ts}] {msg}", flush=True)
+
+
+def _filter_matching_business_date(
+    records: List[dict],
+    business_date: Optional[str],
+) -> List[dict]:
+    """Keep only rows whose businessDate matches the requested date.
+
+    NEPSE sometimes ignores businessDate and returns the latest session.
+    """
+    if not business_date or not records:
+        return records
+    matched = [
+        r for r in records
+        if str(r.get("businessDate", "")).startswith(business_date)
+    ]
+    if not matched:
+        _print(
+            f"[WARNING] API returned {len(records):,} rows but none match "
+            f"businessDate={business_date} (got "
+            f"{sorted({str(r.get('businessDate')) for r in records[:50]})})."
+        )
+    elif len(matched) < len(records):
+        _print(
+            f"[WARNING] Dropped {len(records) - len(matched):,} rows "
+            f"with mismatched businessDate."
+        )
+    return matched
+
+
+def _fetch_from_archive_csv(business_date: str) -> List[dict]:
+    """Fallback: pull historical floorsheet CSV from public archive CDN."""
+    import urllib.request
+
+    url = (
+        "https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/"
+        f"data/floorsheet/floorsheet_{business_date}.csv"
+    )
+    _print(f"Trying archive fallback: {url}")
+    try:
+        with urllib.request.urlopen(url, timeout=60) as resp:
+            text = resp.read().decode("utf-8")
+    except Exception as exc:
+        _print(f"[WARNING] Archive fetch failed: {exc}")
+        return []
+
+    import io
+
+    reader = csv.DictReader(io.StringIO(text))
+    rows: List[dict] = []
+    for r in reader:
+        date_val = (r.get("date") or "").strip()
+        if date_val != business_date:
+            continue
+        rows.append(
+            {
+                "contractId": (r.get("contract_no") or "").strip(),
+                "stockSymbol": (r.get("stock_symbol") or "").strip(),
+                "buyerMemberId": (r.get("buyer") or "").strip(),
+                "sellerMemberId": (r.get("seller") or "").strip(),
+                "contractQuantity": (r.get("quantity") or "").replace(",", "").strip(),
+                "contractRate": (r.get("rate") or "").replace(",", "").strip(),
+                "contractAmount": (r.get("amount") or "").replace(",", "").strip(),
+                "businessDate": date_val,
+                "tradeBookId": "",
+                "stockId": "",
+                "buyerBrokerName": "",
+                "sellerBrokerName": "",
+                "tradeTime": "",
+                "securityName": "",
+            }
+        )
+    _print(f"Archive returned {len(rows):,} rows for {business_date}")
+    return rows
 
 
 # ── core fetch ────────────────────────────────────────────────────────────────
@@ -188,15 +285,16 @@ async def main(args: argparse.Namespace) -> int:
 
     date_label = business_date or _today_str()
 
-    # Resolve CSV output path (original behavior retained for backward compatibility)
+    # Resolve CSV output path — default: ~/Downloads/floorsheet/
     if out_path:
         csv_path = Path(out_path)
     else:
-        csv_path = Path(_default_csv_name(date_label, symbol))
+        csv_path = _default_csv_path(date_label, symbol)
 
     # Resolve XLSX path (always save here)
     xlsx_path = _default_xlsx_path(date_label, symbol)
     # Ensure the download directory exists
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
     xlsx_path.parent.mkdir(parents=True, exist_ok=True)
 
     # ── Init NEPSE client ────────────────────────────────────────────────────
@@ -208,14 +306,13 @@ async def main(args: argparse.Namespace) -> int:
     try:
         if symbol:
             records = await _fetch_symbol_floorsheet(nepse, symbol)
-            # If a specific date was requested, filter by it (API may not support date+symbol)
-            if business_date and records:
-                records = [
-                    r for r in records
-                    if str(r.get("businessDate", "")).startswith(business_date)
-                ]
+            records = _filter_matching_business_date(records, business_date)
         else:
             records = await _fetch_full_floorsheet(nepse, business_date)
+            records = _filter_matching_business_date(records, business_date)
+            # Historical fallback when NEPSE ignores businessDate
+            if business_date and not records:
+                records = _fetch_from_archive_csv(business_date)
     except Exception as exc:
         _print(f"[ERROR] Fetch failed: {exc}")
         return 1
@@ -228,6 +325,11 @@ async def main(args: argparse.Namespace) -> int:
 
     # ── Write CSV ────────────────────────────────────────────────────────────
     _write_csv(records, csv_path)
+
+    # Also mirror into the repo cwd when writing to Downloads (keeps git dataset in sync)
+    cwd_mirror = Path(_default_csv_name(date_label, symbol))
+    if csv_path.resolve() != cwd_mirror.resolve():
+        _write_csv(records, cwd_mirror)
 
     # ── Write XLSX (always) ─────────────────────────────────────────────────────
     if HAS_PANDAS:
