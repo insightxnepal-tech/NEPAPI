@@ -28,6 +28,13 @@ def load_floorsheets(data_dir="."):
     data['contractQuantity'] = pd.to_numeric(data['contractQuantity'], errors='coerce')
     data['contractRate']     = pd.to_numeric(data['contractRate'],     errors='coerce')
     data['businessDate']     = pd.to_datetime(data['businessDate'])
+    # Deduplicate weekend/holiday file copies that reuse the same businessDate
+    data = data.drop_duplicates(
+        subset=['contractId', 'businessDate'], keep='first'
+    ).reset_index(drop=True)
+    for col in ('buyerBrokerName', 'sellerBrokerName'):
+        if col in data.columns:
+            data[col] = data[col].fillna('').astype(str).replace({'nan': ''})
     return data, files
 
 # ═══════════════════════════════════════════════════════════════════
@@ -424,7 +431,13 @@ def generate_report(data_dir="."):
     lines.append("|------|-------|-----|-------|--------|-------|--------|")
     wt = whale_trades(data, top_n=8)
     for _, r in wt.iterrows():
-        lines.append(f"| {r['businessDate'].date()} | **{r['stockSymbol']}** | {int(r['contractQuantity']):,} | Rs {r['contractRate']:.0f} | Rs {r['contractAmount']/1e6:.1f}M | {r['buyerBrokerName'][:22]} | {r['sellerBrokerName'][:22]} |")
+        buyer = str(r.get('buyerBrokerName') or r.get('buyerMemberId') or '')[:22]
+        seller = str(r.get('sellerBrokerName') or r.get('sellerMemberId') or '')[:22]
+        if buyer in ('nan', 'None'):
+            buyer = str(r.get('buyerMemberId', ''))[:22]
+        if seller in ('nan', 'None'):
+            seller = str(r.get('sellerMemberId', ''))[:22]
+        lines.append(f"| {r['businessDate'].date()} | **{r['stockSymbol']}** | {int(r['contractQuantity']):,} | Rs {r['contractRate']:.0f} | Rs {r['contractAmount']/1e6:.1f}M | {buyer} | {seller} |")
     lines.append("")
 
     # ── STRATEGY SUMMARY ─────────────────────────────────────────────
