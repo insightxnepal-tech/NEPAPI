@@ -2,7 +2,7 @@
 """
 NEPSE Telegram Bot — Polling mode (runs via GitHub Actions every 5 min)
 No server needed. Reads new messages, responds, saves offset.
-Commands: /start /help /floorsheet /strategy /sniper /top5 /whale /broker
+Commands: /start /help /floorsheet /strategy /sniper /candle /supertrend /top5 /whale /broker
 """
 
 import os, glob, json, urllib.request, urllib.parse
@@ -162,6 +162,7 @@ def handle_start(chat_id):
         "/strategy   — Pre-market strategy report\n"
         "/sniper     — Sniper BUY/SELL signals\n"
         "/candle     — Daily 200/20 EMA entry & exit\n"
+        "/supertrend — Daily SuperTrend ATR entry & exit\n"
         "/top5       — Top 5 stocks by turnover\n"
         "/whale      — Largest block trades\n"
         "/broker     — Smart money positions\n"
@@ -310,6 +311,40 @@ def handle_candle(chat_id):
     )
 
 
+def handle_supertrend(chat_id):
+    """Replay the latest daily SuperTrend ATR scan from disk."""
+    path = os.path.join(DATA_DIR, "supertrend_scan_latest.json")
+    if not os.path.exists(path):
+        send(
+            chat_id,
+            "📡 *SuperTrend Scan*\n\n"
+            "No scan yet. After market close the job Telegrams "
+            "🟢 ENTRY FOUND / 🛑 EXIT FOUND automatically.",
+        )
+        return
+    try:
+        with open(path) as f:
+            latest = json.load(f)
+    except Exception as e:
+        send(chat_id, f"❌ Could not read last SuperTrend scan: {e}")
+        return
+    msg = latest.get("message")
+    if msg:
+        send(chat_id, msg)
+        return
+    as_of = latest.get("as_of", "?")
+    n_entry = len(latest.get("entries") or [])
+    n_exit = len(latest.get("exits") or [])
+    n_up = len(latest.get("uptrend") or [])
+    send(
+        chat_id,
+        f"📡 *SuperTrend Scan — {as_of}*\n\n"
+        f"🟢 ENTRY FOUND: {n_entry}\n"
+        f"🛑 EXIT FOUND: {n_exit}\n"
+        f"📈 In uptrend: {n_up}",
+    )
+
+
 COMMANDS = {
     "/start":      handle_start,
     "/help":       handle_start,
@@ -317,6 +352,7 @@ COMMANDS = {
     "/strategy":   handle_strategy,
     "/sniper":     handle_sniper,
     "/candle":     handle_candle,
+    "/supertrend": handle_supertrend,
     "/top5":       handle_top5,
     "/whale":      handle_whale,
     "/broker":     handle_broker,

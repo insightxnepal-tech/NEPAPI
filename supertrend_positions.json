@@ -1,0 +1,26 @@
+{
+  "SMHL": {
+    "entry_date": "2026-08-20",
+    "entry_price": 522.9,
+    "supertrend": 476.66,
+    "atr": 11.43
+  },
+  "USHEC": {
+    "entry_date": "2026-08-20",
+    "entry_price": 511.0,
+    "supertrend": 471.2,
+    "atr": 11.82
+  },
+  "PMHPL": {
+    "entry_date": "2026-08-21",
+    "entry_price": 345.9,
+    "supertrend": 294.21,
+    "atr": 14.36
+  },
+  "UHEWA": {
+    "entry_date": "2026-08-26",
+    "entry_price": 667.0,
+    "supertrend": 542.05,
+    "atr": 45.08
+  }
+}

@@ -1,0 +1,43 @@
+name: Send SuperTrend Backtest Report to Telegram
+
+on:
+  push:
+    paths:
+      - 'supertrend_backtest_report.md'
+  workflow_dispatch:
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Send summary + report document
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ ! -f supertrend_backtest_report.md ]; then
+            echo "No report file found."; exit 1
+          fi
+
+          # Plain-text summary: header + Aggregate section
+          SUMMARY=$(awk '/^# /{print; next} /^## Aggregate/{flag=1; next} /^## /{flag=0} flag' supertrend_backtest_report.md | sed 's/\*\*//g' | head -30)
+          TEXT="🧪 SuperTrend Backtest Report
+          ${SUMMARY}
+
+          Full per-symbol table attached."
+
+          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${TEXT}" | tee /tmp/msg.json
+          grep -q '"ok":true' /tmp/msg.json
+
+          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument" \
+            -F "chat_id=${TELEGRAM_CHAT_ID}" \
+            -F "document=@supertrend_backtest_report.md" \
+            -F "caption=SuperTrend backtest — full per-symbol report" | tee /tmp/doc.json
+          grep -q '"ok":true' /tmp/doc.json
