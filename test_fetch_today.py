@@ -14,8 +14,9 @@ import fetch_today
 class FakeNepse:
     """Stands in for AsyncNepse: replays a scripted sequence of pages/errors."""
 
-    def __init__(self, outcomes):
+    def __init__(self, outcomes, total=None):
         self.outcomes = list(outcomes)
+        self.total = total
         self.calls = 0
 
     def setTLSVerification(self, verify):
@@ -52,12 +53,19 @@ class SessionDateTests(unittest.TestCase):
 
 class FetchRetryTests(unittest.TestCase):
     def _run(self, fake):
-        original = fetch_today.AsyncNepse
+        original_client = fetch_today.AsyncNepse
+        original_total = fetch_today.reported_total
+
+        async def total(client):
+            return client.total
+
         fetch_today.AsyncNepse = lambda: fake
+        fetch_today.reported_total = total
         try:
             return asyncio.run(fetch_today.fetch_floorsheet())
         finally:
-            fetch_today.AsyncNepse = original
+            fetch_today.AsyncNepse = original_client
+            fetch_today.reported_total = original_total
 
     def test_retries_a_transient_failure(self):
         fake = FakeNepse([TimeoutError(""), [row("2026-09-17")]])
@@ -69,6 +77,27 @@ class FetchRetryTests(unittest.TestCase):
         with self.assertRaises(TimeoutError):
             self._run(fake)
         self.assertEqual(fake.calls, fetch_today.FETCH_ATTEMPTS)
+
+    def test_refetches_when_pages_were_silently_dropped(self):
+        """getFloorSheet() returns [] for a failed page, so short is not an error."""
+        short = [row("2026-09-17", "1"), row("2026-09-17", "2")]
+        full = short + [row("2026-09-17", "3")]
+        fake = FakeNepse([short, full], total=3)
+        self.assertEqual(self._run(fake), full)
+        self.assertEqual(fake.calls, 2)
+
+    def test_raises_when_every_fetch_is_short(self):
+        short = [row("2026-09-17", "1")]
+        fake = FakeNepse([short] * fetch_today.FETCH_ATTEMPTS, total=3)
+        with self.assertRaises(fetch_today.IncompleteFloorsheet):
+            self._run(fake)
+
+    def test_accepts_extra_rows_from_a_live_session(self):
+        """The expected count is read first, so trades landing mid-fetch are fine."""
+        rows = [row("2026-09-17", str(i)) for i in range(5)]
+        fake = FakeNepse([rows], total=3)
+        self.assertEqual(self._run(fake), rows)
+        self.assertEqual(fake.calls, 1)
 
 
 class ExitCodeTests(unittest.TestCase):
