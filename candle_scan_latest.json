@@ -1,107 +1,10 @@
 {
-  "as_of": "2026-09-18",
-  "generated_at": "2026-09-20T14:39:53Z",
+  "as_of": "2026-09-21",
+  "generated_at": "2026-09-21T16:58:56Z",
   "scanned": 354,
   "skipped": 30,
-  "entries": [
-    {
-      "symbol": "CFCL",
-      "date": "2026-09-18",
-      "open": 570.0,
-      "high": 587.0,
-      "low": 555.0,
-      "close": 580.0,
-      "volume": 90109.0,
-      "ema20": 589.77,
-      "ema200": 564.79,
-      "rsi": 44.8,
-      "vol_ma20": 82256.0,
-      "atr": 37.24,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": [
-        "Close below 20 EMA (589.77)"
-      ]
-    },
-    {
-      "symbol": "RIDI",
-      "date": "2026-09-18",
-      "open": 346.0,
-      "high": 352.9,
-      "low": 344.0,
-      "close": 347.0,
-      "volume": 322671.0,
-      "ema20": 351.55,
-      "ema200": 320.63,
-      "rsi": 45.0,
-      "vol_ma20": 287523.0,
-      "atr": 10.89,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": [
-        "Close below 20 EMA (351.55)"
-      ]
-    },
-    {
-      "symbol": "SANIMA",
-      "date": "2026-09-18",
-      "open": 364.3,
-      "high": 371.0,
-      "low": 358.0,
-      "close": 370.0,
-      "volume": 186356.0,
-      "ema20": 368.05,
-      "ema200": 354.4,
-      "rsi": 53.0,
-      "vol_ma20": 129126.0,
-      "atr": 8.76,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": []
-    }
-  ],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "EBL",
-        "date": "2026-09-18",
-        "open": 691.0,
-        "high": 701.0,
-        "low": 687.1,
-        "close": 701.0,
-        "volume": 55918.0,
-        "ema20": 717.85,
-        "ema200": 698.41,
-        "rsi": 39.4,
-        "vol_ma20": 38816.0,
-        "atr": 14.05,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": true,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (717.85)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-09-09",
-        "entry_price": 718.0,
-        "ema20": 721.16,
-        "ema200": 697.13,
-        "rsi": 47.0
-      }
-    }
-  ],
+  "entries": [],
+  "exits": [],
   "open_positions": {
     "H8020": {
       "entry_date": "2026-09-03",
@@ -181,6 +84,6 @@
       "rsi": 53.0
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-18*\n\n\ud83d\udfe2 *ENTRY FOUND (3)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *CFCL* @ Rs 580.00\n  200 EMA 564.79 | 20 EMA 589.77 | RSI 44.8\n  Vol 1.1\u00d7 MA20 | O 570.00 H 587.00 L 555.00\n\n\u2022 *RIDI* @ Rs 347.00\n  200 EMA 320.63 | 20 EMA 351.55 | RSI 45.0\n  Vol 1.1\u00d7 MA20 | O 346.00 H 352.90 L 344.00\n\n\u2022 *SANIMA* @ Rs 370.00\n  200 EMA 354.40 | 20 EMA 368.05 | RSI 53.0\n  Vol 1.4\u00d7 MA20 | O 364.30 H 371.00 L 358.00\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *EBL* @ Rs 701.00 | P/L -2.4%\n  Entered Rs 718.0 on 2026-09-09\n  Reason: Close below 20 EMA (717.85)\n\n_Scanned 354 stocks (30 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-21*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (30 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
