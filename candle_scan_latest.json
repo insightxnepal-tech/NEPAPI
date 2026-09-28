@@ -1,29 +1,29 @@
 {
   "as_of": "2026-09-24",
-  "generated_at": "2026-09-27T15:43:06Z",
+  "generated_at": "2026-09-28T18:36:26Z",
   "scanned": 354,
   "skipped": 30,
   "entries": [
     {
-      "symbol": "KKHC",
+      "symbol": "CFCL",
       "date": "2026-09-24",
-      "open": 275.0,
-      "high": 281.8,
-      "low": 274.0,
-      "close": 275.1,
-      "volume": 150269.0,
-      "ema20": 278.27,
-      "ema200": 267.41,
-      "rsi": 46.9,
-      "vol_ma20": 136885.0,
-      "atr": 10.34,
+      "open": 567.0,
+      "high": 567.9,
+      "low": 558.0,
+      "close": 567.9,
+      "volume": 94930.0,
+      "ema20": 584.82,
+      "ema200": 567.74,
+      "rsi": 41.3,
+      "vol_ma20": 86585.0,
+      "atr": 37.39,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
       "volume_ok": true,
       "entry": true,
       "exit_reasons": [
-        "Close below 20 EMA (278.27)"
+        "Close below 20 EMA (584.82)"
       ]
     }
   ],
@@ -77,8 +77,15 @@
       "ema20": 278.27,
       "ema200": 267.41,
       "rsi": 46.9
+    },
+    "CFCL": {
+      "entry_date": "2026-09-24",
+      "entry_price": 567.9,
+      "ema20": 584.82,
+      "ema200": 567.74,
+      "rsi": 41.3
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-24*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *KKHC* @ Rs 275.10\n  200 EMA 267.41 | 20 EMA 278.27 | RSI 46.9\n  Vol 1.1\u00d7 MA20 | O 275.00 H 281.80 L 274.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (30 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-09-24*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *CFCL* @ Rs 567.90\n  200 EMA 567.74 | 20 EMA 584.82 | RSI 41.3\n  Vol 1.1\u00d7 MA20 | O 567.00 H 567.90 L 558.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (30 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
