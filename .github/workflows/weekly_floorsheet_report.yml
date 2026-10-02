@@ -1,0 +1,82 @@
+name: Weekly Floorsheet + Financial PDF Report
+
+on:
+  schedule:
+    # Friday 12:15 UTC ≈ 6:00 PM NPT — after floorsheet ingest
+    - cron: '15 12 * * 5'
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Unique trading days to include'
+        required: true
+        default: '5'
+      end:
+        description: 'End date YYYY-MM-DD (blank = latest)'
+        required: false
+        default: ''
+      pdf:
+        description: 'Also render PDF via Chromium'
+        required: false
+        default: 'true'
+
+jobs:
+  weekly-floorsheet-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 20
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pandas requests
+
+      - name: Install Chromium (for PDF)
+        if: ${{ github.event.inputs.pdf != 'false' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium || true
+
+      - name: Run Weekly Floorsheet Report
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          DAYS="${{ github.event.inputs.days }}"
+          END="${{ github.event.inputs.end }}"
+          PDF_FLAG="${{ github.event.inputs.pdf }}"
+          DAYS="${DAYS:-5}"
+          ARGS=(--days "$DAYS" --html)
+          if [ -n "$END" ]; then
+            ARGS+=(--end "$END")
+          fi
+          if [ "$PDF_FLAG" != "false" ]; then
+            ARGS+=(--pdf)
+          fi
+          python weekly_floorsheet_report.py "${ARGS[@]}"
+
+      - name: Commit weekly report
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add weekly_floorsheet_report_*.md artifacts/weekly_floorsheet_report_* || true
+          if git diff --staged --quiet; then
+            echo "No weekly report file change."
+          else
+            git commit -m "📊 Weekly floorsheet report $(date +'%Y-%m-%d')"
+            git push
+          fi
