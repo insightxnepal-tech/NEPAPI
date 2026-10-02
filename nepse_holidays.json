@@ -1,0 +1,4 @@
+{
+  "holidays": [],
+  "note": "Add NEPSE closed dates as YYYY-MM-DD strings. Scanner also skips Fri/Sat and duplicate as_of scans via market status + last scan file."
+}
