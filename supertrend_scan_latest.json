@@ -1,0 +1,140 @@
+{
+  "as_of": "2026-09-03",
+  "generated_at": "2026-09-06T04:09:51Z",
+  "scanned": 354,
+  "skipped_symbols": 6,
+  "buys": [
+    {
+      "symbol": "ALBSL",
+      "date": "2026-09-03",
+      "open": 1098.9,
+      "high": 1190.0,
+      "low": 1060.0,
+      "close": 1190.0,
+      "volume": 13128.0,
+      "atr": 63.89,
+      "supertrend": 975.49,
+      "direction": 1,
+      "prev_direction": -1,
+      "buy_flip": true,
+      "sell_flip": false
+    },
+    {
+      "symbol": "CIT",
+      "date": "2026-09-03",
+      "open": 1656.7,
+      "high": 1722.0,
+      "low": 1653.0,
+      "close": 1719.9,
+      "volume": 11654.0,
+      "atr": 25.44,
+      "supertrend": 1611.17,
+      "direction": 1,
+      "prev_direction": -1,
+      "buy_flip": true,
+      "sell_flip": false
+    },
+    {
+      "symbol": "MKHC",
+      "date": "2026-09-03",
+      "open": 250.0,
+      "high": 269.8,
+      "low": 254.0,
+      "close": 269.6,
+      "volume": 64064.0,
+      "atr": 11.49,
+      "supertrend": 227.44,
+      "direction": 1,
+      "prev_direction": -1,
+      "buy_flip": true,
+      "sell_flip": false
+    },
+    {
+      "symbol": "SBID89",
+      "date": "2026-09-03",
+      "open": 1130.0,
+      "high": 1163.9,
+      "low": 1135.0,
+      "close": 1163.9,
+      "volume": 103.0,
+      "atr": 7.7,
+      "supertrend": 1126.34,
+      "direction": 1,
+      "prev_direction": -1,
+      "buy_flip": true,
+      "sell_flip": false
+    },
+    {
+      "symbol": "NICD88",
+      "date": "2026-09-03",
+      "open": 1067.0,
+      "high": 1099.0,
+      "low": 1095.0,
+      "close": 1095.0,
+      "volume": 50.0,
+      "atr": 6.41,
+      "supertrend": 1077.77,
+      "direction": 1,
+      "prev_direction": -1,
+      "buy_flip": true,
+      "sell_flip": false
+    },
+    {
+      "symbol": "ULBSL",
+      "date": "2026-09-03",
+      "open": 2790.0,
+      "high": 2926.0,
+      "low": 2926.0,
+      "close": 2926.0,
+      "volume": 10.0,
+      "atr": 211.6,
+      "supertrend": 2291.19,
+      "direction": 1,
+      "prev_direction": -1,
+      "buy_flip": true,
+      "sell_flip": false
+    }
+  ],
+  "sells": [],
+  "open_positions": {
+    "ALBSL": {
+      "entry_date": "2026-09-03",
+      "entry_price": 1190.0,
+      "supertrend": 975.49,
+      "atr": 63.89
+    },
+    "CIT": {
+      "entry_date": "2026-09-03",
+      "entry_price": 1719.9,
+      "supertrend": 1611.17,
+      "atr": 25.44
+    },
+    "MKHC": {
+      "entry_date": "2026-09-03",
+      "entry_price": 269.6,
+      "supertrend": 227.44,
+      "atr": 11.49
+    },
+    "SBID89": {
+      "entry_date": "2026-09-03",
+      "entry_price": 1163.9,
+      "supertrend": 1126.34,
+      "atr": 7.7
+    },
+    "NICD88": {
+      "entry_date": "2026-09-03",
+      "entry_price": 1095.0,
+      "supertrend": 1077.77,
+      "atr": 6.41
+    },
+    "ULBSL": {
+      "entry_date": "2026-09-03",
+      "entry_price": 2926.0,
+      "supertrend": 2291.19,
+      "atr": 211.6
+    }
+  },
+  "message": "\ud83d\udcc8 *Supertrend Scan \u2014 2026-09-03*\n_ATR 10 \u00d7 3_\n\n\ud83d\udfe2 *BUY (6)* \u2014 new bullish flip\n\n\u2022 *ALBSL* @ Rs 1190.00\n  ST 975.49 | ATR 63.89 | O 1098.90 H 1190.00 L 1060.00\n\n\u2022 *CIT* @ Rs 1719.90\n  ST 1611.17 | ATR 25.44 | O 1656.70 H 1722.00 L 1653.00\n\n\u2022 *MKHC* @ Rs 269.60\n  ST 227.44 | ATR 11.49 | O 250.00 H 269.80 L 254.00\n\n\u2022 *SBID89* @ Rs 1163.90\n  ST 1126.34 | ATR 7.70 | O 1130.00 H 1163.90 L 1135.00\n\n\u2022 *NICD88* @ Rs 1095.00\n  ST 1077.77 | ATR 6.41 | O 1067.00 H 1099.00 L 1095.00\n\n\u2022 *ULBSL* @ Rs 2926.00\n  ST 2291.19 | ATR 211.60 | O 2790.00 H 2926.00 L 2926.00\n\n\ud83d\uded1 *SELL:* none\n\n_Scanned 354 stocks (6 skipped, need 30+ days)._\n_Not financial advice._\n",
+  "skipped": false,
+  "telegram_ok": true
+}
