@@ -1,0 +1,44 @@
+name: Post-Market Floorsheet Telegram Report
+
+on:
+  schedule:
+    # 4:20 PM NPT = 10:35 AM UTC, after daily floorsheet fetch (10:15 UTC)
+    - cron: '35 10 * * 0-4'
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pandas numpy
+
+      - name: Analyze floorsheet and send Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DATA_DIR: ${{ github.workspace }}
+        run: python postmarket_floorsheet_report.py
+
+      - name: Commit markdown report
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if ls floorsheet_report_*.md 1>/dev/null 2>&1; then
+            git add floorsheet_report_*.md
+            git diff --quiet && git diff --staged --quiet || \
+              (git commit -m "📊 Floorsheet report $(date +'%Y-%m-%d')" && git push)
+          fi
