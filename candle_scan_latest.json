@@ -1,9 +1,32 @@
 {
   "as_of": "2026-10-06",
-  "generated_at": "2026-10-06T17:16:31Z",
+  "generated_at": "2026-10-07T17:52:44Z",
   "scanned": 354,
   "skipped": 29,
-  "entries": [],
+  "entries": [
+    {
+      "symbol": "SAGAR",
+      "date": "2026-10-06",
+      "open": 1553.2,
+      "high": 1585.0,
+      "low": 1550.1,
+      "close": 1585.0,
+      "volume": 10434.0,
+      "ema20": 1585.11,
+      "ema200": 1528.49,
+      "rsi": 49.4,
+      "vol_ma20": 6547.0,
+      "atr": 60.26,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (1585.11)"
+      ]
+    }
+  ],
   "exits": [],
   "open_positions": {
     "SCB": {
@@ -26,8 +49,15 @@
       "ema20": 792.85,
       "ema200": 784.66,
       "rsi": 52.0
+    },
+    "SAGAR": {
+      "entry_date": "2026-10-06",
+      "entry_price": 1585.0,
+      "ema20": 1585.11,
+      "ema200": 1528.49,
+      "rsi": 49.4
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-06*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-06*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *SAGAR* @ Rs 1585.00\n  200 EMA 1528.49 | 20 EMA 1585.11 | RSI 49.4\n  Vol 1.6\u00d7 MA20 | O 1553.20 H 1585.00 L 1550.10\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
