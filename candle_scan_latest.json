@@ -1,84 +1,62 @@
 {
-  "as_of": "2026-10-07",
-  "generated_at": "2026-10-08T17:56:07Z",
+  "as_of": "2026-10-09",
+  "generated_at": "2026-10-11T16:43:43Z",
   "scanned": 354,
   "skipped": 29,
   "entries": [
     {
-      "symbol": "CFCL",
-      "date": "2026-10-07",
-      "open": 564.9,
-      "high": 599.0,
-      "low": 551.0,
-      "close": 574.9,
-      "volume": 131035.0,
-      "ema20": 575.54,
-      "ema200": 566.18,
-      "rsi": 47.4,
-      "vol_ma20": 78956.0,
-      "atr": 26.65,
+      "symbol": "BHCL",
+      "date": "2026-10-09",
+      "open": 519.4,
+      "high": 544.0,
+      "low": 510.4,
+      "close": 538.0,
+      "volume": 99899.0,
+      "ema20": 539.71,
+      "ema200": 525.58,
+      "rsi": 49.6,
+      "vol_ma20": 57663.0,
+      "atr": 25.15,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
       "volume_ok": true,
       "entry": true,
       "exit_reasons": [
-        "Close below 20 EMA (575.54)"
-      ]
-    },
-    {
-      "symbol": "CZBIL",
-      "date": "2026-10-07",
-      "open": 201.6,
-      "high": 203.9,
-      "low": 199.2,
-      "close": 203.9,
-      "volume": 103751.0,
-      "ema20": 206.7,
-      "ema200": 203.13,
-      "rsi": 46.6,
-      "vol_ma20": 93171.0,
-      "atr": 7.77,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": [
-        "Close below 20 EMA (206.70)"
+        "Close below 20 EMA (539.71)"
       ]
     }
   ],
   "exits": [
     {
       "signal": {
-        "symbol": "SAGAR",
-        "date": "2026-10-07",
-        "open": 1585.0,
-        "high": 1580.0,
-        "low": 1545.0,
-        "close": 1579.0,
-        "volume": 1924.0,
-        "ema20": 1584.53,
-        "ema200": 1529.0,
-        "rsi": 48.5,
-        "vol_ma20": 6450.0,
-        "atr": 57.55,
+        "symbol": "CFCL",
+        "date": "2026-10-09",
+        "open": 575.0,
+        "high": 592.0,
+        "low": 558.0,
+        "close": 570.0,
+        "volume": 22538.0,
+        "ema20": 574.97,
+        "ema200": 566.69,
+        "rsi": 45.1,
+        "vol_ma20": 62582.0,
+        "atr": 28.14,
         "above_200": true,
         "rsi_dip": true,
         "green_near_20": false,
         "volume_ok": false,
         "entry": false,
         "exit_reasons": [
-          "Close below 20 EMA (1584.53)"
+          "Close below 20 EMA (574.97)"
         ]
       },
       "position": {
-        "entry_date": "2026-10-06",
-        "entry_price": 1585.0,
-        "ema20": 1585.11,
-        "ema200": 1528.49,
-        "rsi": 49.4
+        "entry_date": "2026-10-07",
+        "entry_price": 574.9,
+        "ema20": 575.54,
+        "ema200": 566.18,
+        "rsi": 47.4
       }
     }
   ],
@@ -104,21 +82,21 @@
       "ema200": 784.66,
       "rsi": 52.0
     },
-    "CFCL": {
-      "entry_date": "2026-10-07",
-      "entry_price": 574.9,
-      "ema20": 575.54,
-      "ema200": 566.18,
-      "rsi": 47.4
-    },
     "CZBIL": {
       "entry_date": "2026-10-07",
       "entry_price": 203.9,
       "ema20": 206.7,
       "ema200": 203.13,
       "rsi": 46.6
+    },
+    "BHCL": {
+      "entry_date": "2026-10-09",
+      "entry_price": 538.0,
+      "ema20": 539.71,
+      "ema200": 525.58,
+      "rsi": 49.6
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-07*\n\n\ud83d\udfe2 *ENTRY FOUND (2)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *CFCL* @ Rs 574.90\n  200 EMA 566.18 | 20 EMA 575.54 | RSI 47.4\n  Vol 1.7\u00d7 MA20 | O 564.90 H 599.00 L 551.00\n\n\u2022 *CZBIL* @ Rs 203.90\n  200 EMA 203.13 | 20 EMA 206.70 | RSI 46.6\n  Vol 1.1\u00d7 MA20 | O 201.60 H 203.90 L 199.20\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *SAGAR* @ Rs 1579.00 | P/L -0.4%\n  Entered Rs 1585.0 on 2026-10-06\n  Reason: Close below 20 EMA (1584.53)\n\n_Scanned 354 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-09*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *BHCL* @ Rs 538.00\n  200 EMA 525.58 | 20 EMA 539.71 | RSI 49.6\n  Vol 1.7\u00d7 MA20 | O 519.40 H 544.00 L 510.40\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *CFCL* @ Rs 570.00 | P/L -0.9%\n  Entered Rs 574.9 on 2026-10-07\n  Reason: Close below 20 EMA (574.97)\n\n_Scanned 354 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
