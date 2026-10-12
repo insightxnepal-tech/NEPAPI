@@ -1,65 +1,31 @@
 {
   "as_of": "2026-10-09",
-  "generated_at": "2026-10-11T16:43:43Z",
+  "generated_at": "2026-10-12T20:19:08Z",
   "scanned": 354,
   "skipped": 29,
   "entries": [
     {
-      "symbol": "BHCL",
+      "symbol": "LBBL",
       "date": "2026-10-09",
-      "open": 519.4,
-      "high": 544.0,
-      "low": 510.4,
-      "close": 538.0,
-      "volume": 99899.0,
-      "ema20": 539.71,
-      "ema200": 525.58,
-      "rsi": 49.6,
-      "vol_ma20": 57663.0,
-      "atr": 25.15,
+      "open": 477.9,
+      "high": 487.0,
+      "low": 473.0,
+      "close": 484.0,
+      "volume": 36054.0,
+      "ema20": 480.04,
+      "ema200": 481.77,
+      "rsi": 54.0,
+      "vol_ma20": 31687.0,
+      "atr": 11.46,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
       "volume_ok": true,
       "entry": true,
-      "exit_reasons": [
-        "Close below 20 EMA (539.71)"
-      ]
+      "exit_reasons": []
     }
   ],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "CFCL",
-        "date": "2026-10-09",
-        "open": 575.0,
-        "high": 592.0,
-        "low": 558.0,
-        "close": 570.0,
-        "volume": 22538.0,
-        "ema20": 574.97,
-        "ema200": 566.69,
-        "rsi": 45.1,
-        "vol_ma20": 62582.0,
-        "atr": 28.14,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (574.97)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-10-07",
-        "entry_price": 574.9,
-        "ema20": 575.54,
-        "ema200": 566.18,
-        "rsi": 47.4
-      }
-    }
-  ],
+  "exits": [],
   "open_positions": {
     "SCB": {
       "entry_date": "2026-09-09",
@@ -95,8 +61,15 @@
       "ema20": 539.71,
       "ema200": 525.58,
       "rsi": 49.6
+    },
+    "LBBL": {
+      "entry_date": "2026-10-09",
+      "entry_price": 484.0,
+      "ema20": 480.04,
+      "ema200": 481.77,
+      "rsi": 54.0
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-09*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *BHCL* @ Rs 538.00\n  200 EMA 525.58 | 20 EMA 539.71 | RSI 49.6\n  Vol 1.7\u00d7 MA20 | O 519.40 H 544.00 L 510.40\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *CFCL* @ Rs 570.00 | P/L -0.9%\n  Entered Rs 574.9 on 2026-10-07\n  Reason: Close below 20 EMA (574.97)\n\n_Scanned 354 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-09*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *LBBL* @ Rs 484.00\n  200 EMA 481.77 | 20 EMA 480.04 | RSI 54.0\n  Vol 1.1\u00d7 MA20 | O 477.90 H 487.00 L 473.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
