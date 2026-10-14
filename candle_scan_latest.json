@@ -1,95 +1,10 @@
 {
-  "as_of": "2026-10-12",
-  "generated_at": "2026-10-13T18:08:10Z",
+  "as_of": "2026-10-14",
+  "generated_at": "2026-10-14T15:54:07Z",
   "scanned": 354,
   "skipped": 28,
-  "entries": [
-    {
-      "symbol": "GBIME",
-      "date": "2026-10-12",
-      "open": 245.2,
-      "high": 250.0,
-      "low": 240.0,
-      "close": 245.4,
-      "volume": 487189.0,
-      "ema20": 245.15,
-      "ema200": 241.78,
-      "rsi": 49.2,
-      "vol_ma20": 240522.0,
-      "atr": 6.17,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": []
-    }
-  ],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "BHCL",
-        "date": "2026-10-12",
-        "open": 538.0,
-        "high": 534.0,
-        "low": 512.0,
-        "close": 524.4,
-        "volume": 82908.0,
-        "ema20": 538.26,
-        "ema200": 524.42,
-        "rsi": 44.4,
-        "vol_ma20": 60890.0,
-        "atr": 25.23,
-        "above_200": false,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": true,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (538.26)",
-          "Close below 200 EMA (524.42)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-10-09",
-        "entry_price": 538.0,
-        "ema20": 539.71,
-        "ema200": 525.58,
-        "rsi": 49.6
-      }
-    },
-    {
-      "signal": {
-        "symbol": "KBL",
-        "date": "2026-10-12",
-        "open": 231.0,
-        "high": 238.0,
-        "low": 230.0,
-        "close": 236.2,
-        "volume": 1068987.0,
-        "ema20": 224.82,
-        "ema200": 211.07,
-        "rsi": 73.4,
-        "vol_ma20": 463615.0,
-        "atr": 7.39,
-        "above_200": true,
-        "rsi_dip": false,
-        "green_near_20": false,
-        "volume_ok": true,
-        "entry": false,
-        "exit_reasons": [
-          "RSI overbought (73.4 >= 70)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-09-11",
-        "entry_price": 215.0,
-        "ema20": 214.19,
-        "ema200": 207.35,
-        "rsi": 51.0
-      }
-    }
-  ],
+  "entries": [],
+  "exits": [],
   "open_positions": {
     "SCB": {
       "entry_date": "2026-09-09",
@@ -127,6 +42,6 @@
       "rsi": 49.2
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-12*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *GBIME* @ Rs 245.40\n  200 EMA 241.78 | 20 EMA 245.15 | RSI 49.2\n  Vol 2.0\u00d7 MA20 | O 245.20 H 250.00 L 240.00\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *BHCL* @ Rs 524.40 | P/L -2.5%\n  Entered Rs 538.0 on 2026-10-09\n  Reason: Close below 20 EMA (538.26); Close below 200 EMA (524.42)\n\n\u2022 *KBL* @ Rs 236.20 | P/L +9.9%\n  Entered Rs 215.0 on 2026-09-11\n  Reason: RSI overbought (73.4 >= 70)\n\n_Scanned 354 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-14*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 354 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
