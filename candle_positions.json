@@ -1,11 +1,4 @@
 {
-  "SCB": {
-    "entry_date": "2026-09-09",
-    "entry_price": 651.1,
-    "ema20": 648.66,
-    "ema200": 643.32,
-    "rsi": 52.7
-  },
   "TRH": {
     "entry_date": "2026-09-14",
     "entry_price": 799.0,
