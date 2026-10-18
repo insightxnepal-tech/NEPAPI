@@ -1,42 +1,33 @@
 {
-  "as_of": "2026-10-14",
-  "generated_at": "2026-10-15T15:40:34Z",
+  "as_of": "2026-10-16",
+  "generated_at": "2026-10-18T14:30:18Z",
   "scanned": 355,
-  "skipped": 29,
-  "entries": [],
-  "exits": [
+  "skipped": 28,
+  "entries": [
     {
-      "signal": {
-        "symbol": "SCB",
-        "date": "2026-10-14",
-        "open": 670.0,
-        "high": 676.9,
-        "low": 670.0,
-        "close": 676.5,
-        "volume": 18077.0,
-        "ema20": 661.73,
-        "ema200": 647.25,
-        "rsi": 71.9,
-        "vol_ma20": 14661.0,
-        "atr": 9.28,
-        "above_200": true,
-        "rsi_dip": false,
-        "green_near_20": true,
-        "volume_ok": true,
-        "entry": false,
-        "exit_reasons": [
-          "RSI overbought (71.9 >= 70)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-09-09",
-        "entry_price": 651.1,
-        "ema20": 648.66,
-        "ema200": 643.32,
-        "rsi": 52.7
-      }
+      "symbol": "CYCL",
+      "date": "2026-10-16",
+      "open": 1477.9,
+      "high": 1548.0,
+      "low": 1430.0,
+      "close": 1488.0,
+      "volume": 13584.0,
+      "ema20": 1499.03,
+      "ema200": 1484.42,
+      "rsi": 48.4,
+      "vol_ma20": 13131.0,
+      "atr": 96.35,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (1499.03)"
+      ]
     }
   ],
+  "exits": [],
   "open_positions": {
     "TRH": {
       "entry_date": "2026-09-14",
@@ -65,8 +56,15 @@
       "ema20": 245.15,
       "ema200": 241.78,
       "rsi": 49.2
+    },
+    "CYCL": {
+      "entry_date": "2026-10-16",
+      "entry_price": 1488.0,
+      "ema20": 1499.03,
+      "ema200": 1484.42,
+      "rsi": 48.4
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-14*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *SCB* @ Rs 676.50 | P/L +3.9%\n  Entered Rs 651.1 on 2026-09-09\n  Reason: RSI overbought (71.9 >= 70)\n\n_Scanned 355 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-16*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *CYCL* @ Rs 1488.00\n  200 EMA 1484.42 | 20 EMA 1499.03 | RSI 48.4\n  Vol 1.0\u00d7 MA20 | O 1477.90 H 1548.00 L 1430.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
