@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-10-21",
-  "generated_at": "2026-10-21T15:59:43Z",
+  "as_of": "2026-10-22",
+  "generated_at": "2026-10-22T15:59:48Z",
   "scanned": 355,
   "skipped": 28,
   "entries": [],
@@ -42,6 +42,6 @@
       "rsi": 48.4
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-21*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-22*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
