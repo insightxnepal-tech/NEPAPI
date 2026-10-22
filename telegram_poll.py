@@ -61,7 +61,7 @@ def send_file(chat_id, filepath, caption=""):
         f"{API}/sendDocument", data=body,
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
+        with urllib.request.urlopen(req, timeout=180) as r:
             return json.loads(r.read())
     except Exception as e:
         print(f"File send error: {e}")

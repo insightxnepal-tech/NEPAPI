@@ -35,7 +35,7 @@ async def send_message(chat_id, text, parse_mode="Markdown"):
                 print(f"Send error: {e}")
 
 async def send_document(chat_id, file_path, caption=""):
-    async with httpx.AsyncClient(timeout=30) as client:
+    async with httpx.AsyncClient(timeout=180) as client:
         try:
             with open(file_path, "rb") as f:
                 await client.post(f"{TELEGRAM_API}/sendDocument",
