@@ -4,6 +4,7 @@ __*
 !__main__.py
 !.gitignore
 !.github/
+!.cursor/
 build/
 nepse.egg-info/
 .vercel
