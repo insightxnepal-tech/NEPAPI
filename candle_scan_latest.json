@@ -1,10 +1,73 @@
 {
   "as_of": "2026-10-26",
-  "generated_at": "2026-10-26T17:20:21Z",
+  "generated_at": "2026-10-27T16:23:20Z",
   "scanned": 355,
   "skipped": 28,
   "entries": [],
-  "exits": [],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "CYCL",
+        "date": "2026-10-26",
+        "open": 1488.0,
+        "high": 1494.0,
+        "low": 1445.0,
+        "close": 1494.0,
+        "volume": 7596.0,
+        "ema20": 1498.56,
+        "ema200": 1491.21,
+        "rsi": 49.4,
+        "vol_ma20": 13224.0,
+        "atr": 90.87,
+        "above_200": true,
+        "rsi_dip": true,
+        "green_near_20": true,
+        "volume_ok": false,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (1498.56)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-10-16",
+        "entry_price": 1488.0,
+        "ema20": 1499.03,
+        "ema200": 1484.42,
+        "rsi": 48.4
+      }
+    },
+    {
+      "signal": {
+        "symbol": "LBBL",
+        "date": "2026-10-26",
+        "open": 485.4,
+        "high": 487.2,
+        "low": 479.5,
+        "close": 483.0,
+        "volume": 6436.0,
+        "ema20": 482.83,
+        "ema200": 485.7,
+        "rsi": 50.5,
+        "vol_ma20": 26180.0,
+        "atr": 9.15,
+        "above_200": false,
+        "rsi_dip": false,
+        "green_near_20": false,
+        "volume_ok": false,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 200 EMA (485.70)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-10-09",
+        "entry_price": 484.0,
+        "ema20": 480.04,
+        "ema200": 481.77,
+        "rsi": 54.0
+      }
+    }
+  ],
   "open_positions": {
     "TRH": {
       "entry_date": "2026-09-14",
@@ -20,28 +83,14 @@
       "ema200": 203.13,
       "rsi": 46.6
     },
-    "LBBL": {
-      "entry_date": "2026-10-09",
-      "entry_price": 484.0,
-      "ema20": 480.04,
-      "ema200": 481.77,
-      "rsi": 54.0
-    },
     "GBIME": {
       "entry_date": "2026-10-12",
       "entry_price": 245.4,
       "ema20": 245.15,
       "ema200": 241.78,
       "rsi": 49.2
-    },
-    "CYCL": {
-      "entry_date": "2026-10-16",
-      "entry_price": 1488.0,
-      "ema20": 1499.03,
-      "ema200": 1484.42,
-      "rsi": 48.4
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-26*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-10-26*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *CYCL* @ Rs 1494.00 | P/L +0.4%\n  Entered Rs 1488.0 on 2026-10-16\n  Reason: Close below 20 EMA (1498.56)\n\n\u2022 *LBBL* @ Rs 483.00 | P/L -0.2%\n  Entered Rs 484.0 on 2026-10-09\n  Reason: Close below 200 EMA (485.70)\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
