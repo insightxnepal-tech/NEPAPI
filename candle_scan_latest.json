@@ -1,33 +1,88 @@
 {
-  "as_of": "2026-11-03",
-  "generated_at": "2026-11-04T18:36:26Z",
+  "as_of": "2026-11-04",
+  "generated_at": "2026-11-05T18:39:34Z",
   "scanned": 355,
   "skipped": 28,
   "entries": [
     {
-      "symbol": "GBBL",
-      "date": "2026-11-03",
-      "open": 413.1,
-      "high": 416.0,
-      "low": 411.0,
-      "close": 416.0,
-      "volume": 68604.0,
-      "ema20": 417.04,
-      "ema200": 413.2,
-      "rsi": 47.5,
-      "vol_ma20": 61699.0,
-      "atr": 6.01,
+      "symbol": "EBL",
+      "date": "2026-11-04",
+      "open": 710.0,
+      "high": 714.5,
+      "low": 707.0,
+      "close": 711.0,
+      "volume": 68622.0,
+      "ema20": 713.35,
+      "ema200": 696.59,
+      "rsi": 48.5,
+      "vol_ma20": 36891.0,
+      "atr": 12.79,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
       "volume_ok": true,
       "entry": true,
       "exit_reasons": [
-        "Close below 20 EMA (417.04)"
+        "Close below 20 EMA (713.35)"
+      ]
+    },
+    {
+      "symbol": "RIDI",
+      "date": "2026-11-04",
+      "open": 334.4,
+      "high": 338.0,
+      "low": 333.3,
+      "close": 336.9,
+      "volume": 178588.0,
+      "ema20": 338.87,
+      "ema200": 326.22,
+      "rsi": 45.9,
+      "vol_ma20": 174014.0,
+      "atr": 7.89,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": [
+        "Close below 20 EMA (338.87)"
       ]
     }
   ],
-  "exits": [],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "GBBL",
+        "date": "2026-11-04",
+        "open": 416.0,
+        "high": 417.0,
+        "low": 411.5,
+        "close": 412.2,
+        "volume": 59689.0,
+        "ema20": 416.58,
+        "ema200": 412.69,
+        "rsi": 44.3,
+        "vol_ma20": 58604.0,
+        "atr": 6.13,
+        "above_200": false,
+        "rsi_dip": true,
+        "green_near_20": false,
+        "volume_ok": true,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (416.58)",
+          "Close below 200 EMA (412.69)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-11-03",
+        "entry_price": 416.0,
+        "ema20": 417.04,
+        "ema200": 413.2,
+        "rsi": 47.5
+      }
+    }
+  ],
   "open_positions": {
     "CZBIL": {
       "entry_date": "2026-10-07",
@@ -43,14 +98,21 @@
       "ema200": 566.5,
       "rsi": 51.5
     },
-    "GBBL": {
-      "entry_date": "2026-11-03",
-      "entry_price": 416.0,
-      "ema20": 417.04,
-      "ema200": 413.2,
-      "rsi": 47.5
+    "EBL": {
+      "entry_date": "2026-11-04",
+      "entry_price": 711.0,
+      "ema20": 713.35,
+      "ema200": 696.59,
+      "rsi": 48.5
+    },
+    "RIDI": {
+      "entry_date": "2026-11-04",
+      "entry_price": 336.9,
+      "ema20": 338.87,
+      "ema200": 326.22,
+      "rsi": 45.9
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-03*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *GBBL* @ Rs 416.00\n  200 EMA 413.20 | 20 EMA 417.04 | RSI 47.5\n  Vol 1.1\u00d7 MA20 | O 413.10 H 416.00 L 411.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-04*\n\n\ud83d\udfe2 *ENTRY FOUND (2)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *EBL* @ Rs 711.00\n  200 EMA 696.59 | 20 EMA 713.35 | RSI 48.5\n  Vol 1.9\u00d7 MA20 | O 710.00 H 714.50 L 707.00\n\n\u2022 *RIDI* @ Rs 336.90\n  200 EMA 326.22 | 20 EMA 338.87 | RSI 45.9\n  Vol 1.0\u00d7 MA20 | O 334.40 H 338.00 L 333.30\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *GBBL* @ Rs 412.20 | P/L -0.9%\n  Entered Rs 416.0 on 2026-11-03\n  Reason: Close below 20 EMA (416.58); Close below 200 EMA (412.69)\n\n_Scanned 355 stocks (28 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
