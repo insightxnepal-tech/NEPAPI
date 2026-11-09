@@ -1,94 +1,10 @@
 {
-  "as_of": "2026-11-06",
-  "generated_at": "2026-11-08T17:05:52Z",
+  "as_of": "2026-11-09",
+  "generated_at": "2026-11-09T21:27:32Z",
   "scanned": 356,
   "skipped": 29,
-  "entries": [
-    {
-      "symbol": "UNL",
-      "date": "2026-11-06",
-      "open": 47910.0,
-      "high": 48800.0,
-      "low": 48400.0,
-      "close": 48500.0,
-      "volume": 340.0,
-      "ema20": 48431.59,
-      "ema200": 47428.01,
-      "rsi": 51.1,
-      "vol_ma20": 51.0,
-      "atr": 695.64,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": []
-    }
-  ],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "EBL",
-        "date": "2026-11-06",
-        "open": 712.5,
-        "high": 714.0,
-        "low": 710.1,
-        "close": 712.0,
-        "volume": 23023.0,
-        "ema20": 713.15,
-        "ema200": 696.4,
-        "rsi": 49.4,
-        "vol_ma20": 32915.0,
-        "atr": 12.14,
-        "above_200": true,
-        "rsi_dip": false,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (713.15)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-11-04",
-        "entry_price": 711.0,
-        "ema20": 713.35,
-        "ema200": 696.59,
-        "rsi": 48.5
-      }
-    },
-    {
-      "signal": {
-        "symbol": "RIDI",
-        "date": "2026-11-06",
-        "open": 333.0,
-        "high": 334.9,
-        "low": 330.7,
-        "close": 333.7,
-        "volume": 101912.0,
-        "ema20": 337.87,
-        "ema200": 326.05,
-        "rsi": 42.8,
-        "vol_ma20": 168408.0,
-        "atr": 8.26,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": true,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (337.87)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-11-04",
-        "entry_price": 336.9,
-        "ema20": 338.87,
-        "ema200": 326.22,
-        "rsi": 45.9
-      }
-    }
-  ],
+  "entries": [],
+  "exits": [],
   "open_positions": {
     "CZBIL": {
       "entry_date": "2026-10-07",
@@ -112,6 +28,6 @@
       "rsi": 51.1
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-06*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *UNL* @ Rs 48500.00\n  200 EMA 47428.01 | 20 EMA 48431.59 | RSI 51.1\n  Vol 6.7\u00d7 MA20 | O 47910.00 H 48800.00 L 48400.00\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *EBL* @ Rs 712.00 | P/L +0.1%\n  Entered Rs 711.0 on 2026-11-04\n  Reason: Close below 20 EMA (713.15)\n\n\u2022 *RIDI* @ Rs 333.70 | P/L -0.9%\n  Entered Rs 336.9 on 2026-11-04\n  Reason: Close below 20 EMA (337.87)\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-09*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
