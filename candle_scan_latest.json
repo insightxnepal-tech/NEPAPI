@@ -1,18 +1,43 @@
 {
-  "as_of": "2026-11-12",
-  "generated_at": "2026-11-12T18:54:10Z",
+  "as_of": "2026-11-13",
+  "generated_at": "2026-11-15T17:45:50Z",
   "scanned": 356,
   "skipped": 29,
   "entries": [],
-  "exits": [],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "CZBIL",
+        "date": "2026-11-13",
+        "open": 219.0,
+        "high": 222.0,
+        "low": 215.2,
+        "close": 217.9,
+        "volume": 70171.0,
+        "ema20": 218.08,
+        "ema200": 204.53,
+        "rsi": 52.3,
+        "vol_ma20": 200728.0,
+        "atr": 7.8,
+        "above_200": true,
+        "rsi_dip": false,
+        "green_near_20": false,
+        "volume_ok": false,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (218.08)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-10-07",
+        "entry_price": 203.9,
+        "ema20": 206.7,
+        "ema200": 203.13,
+        "rsi": 46.6
+      }
+    }
+  ],
   "open_positions": {
-    "CZBIL": {
-      "entry_date": "2026-10-07",
-      "entry_price": 203.9,
-      "ema20": 206.7,
-      "ema200": 203.13,
-      "rsi": 46.6
-    },
     "CFCL": {
       "entry_date": "2026-10-27",
       "entry_price": 576.0,
@@ -28,6 +53,6 @@
       "rsi": 51.1
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-12*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-13*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *CZBIL* @ Rs 217.90 | P/L +6.9%\n  Entered Rs 203.9 on 2026-10-07\n  Reason: Close below 20 EMA (218.08)\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
