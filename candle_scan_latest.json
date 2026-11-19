@@ -1,96 +1,10 @@
 {
-  "as_of": "2026-11-18",
-  "generated_at": "2026-11-18T19:27:54Z",
+  "as_of": "2026-11-19",
+  "generated_at": "2026-11-19T19:33:11Z",
   "scanned": 356,
   "skipped": 29,
-  "entries": [
-    {
-      "symbol": "LEC",
-      "date": "2026-11-18",
-      "open": 228.0,
-      "high": 240.0,
-      "low": 220.0,
-      "close": 235.0,
-      "volume": 372133.0,
-      "ema20": 237.51,
-      "ema200": 225.61,
-      "rsi": 46.4,
-      "vol_ma20": 347136.0,
-      "atr": 10.23,
-      "above_200": true,
-      "rsi_dip": true,
-      "green_near_20": true,
-      "volume_ok": true,
-      "entry": true,
-      "exit_reasons": [
-        "Close below 20 EMA (237.51)"
-      ]
-    }
-  ],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "CFCL",
-        "date": "2026-11-18",
-        "open": 630.0,
-        "high": 640.0,
-        "low": 589.9,
-        "close": 589.9,
-        "volume": 307576.0,
-        "ema20": 590.98,
-        "ema200": 569.3,
-        "rsi": 50.4,
-        "vol_ma20": 116550.0,
-        "atr": 29.92,
-        "above_200": true,
-        "rsi_dip": false,
-        "green_near_20": false,
-        "volume_ok": true,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (590.98)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-10-27",
-        "entry_price": 576.0,
-        "ema20": 569.59,
-        "ema200": 566.5,
-        "rsi": 51.5
-      }
-    },
-    {
-      "signal": {
-        "symbol": "UNL",
-        "date": "2026-11-18",
-        "open": 48750.0,
-        "high": 48750.0,
-        "low": 47900.0,
-        "close": 47900.0,
-        "volume": 43.0,
-        "ema20": 48421.53,
-        "ema200": 47455.88,
-        "rsi": 45.7,
-        "vol_ma20": 50.0,
-        "atr": 670.29,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (48421.53)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-11-06",
-        "entry_price": 48500.0,
-        "ema20": 48431.59,
-        "ema200": 47428.01,
-        "rsi": 51.1
-      }
-    }
-  ],
+  "entries": [],
+  "exits": [],
   "open_positions": {
     "LEC": {
       "entry_date": "2026-11-18",
@@ -100,6 +14,6 @@
       "rsi": 46.4
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-18*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *LEC* @ Rs 235.00\n  200 EMA 225.61 | 20 EMA 237.51 | RSI 46.4\n  Vol 1.1\u00d7 MA20 | O 228.00 H 240.00 L 220.00\n\n\ud83d\uded1 *EXIT FOUND (2)*\n\n\u2022 *CFCL* @ Rs 589.90 | P/L +2.4%\n  Entered Rs 576.0 on 2026-10-27\n  Reason: Close below 20 EMA (590.98)\n\n\u2022 *UNL* @ Rs 47900.00 | P/L -1.2%\n  Entered Rs 48500.0 on 2026-11-06\n  Reason: Close below 20 EMA (48421.53)\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-19*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
