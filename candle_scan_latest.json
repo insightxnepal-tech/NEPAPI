@@ -1,43 +1,11 @@
 {
-  "as_of": "2026-11-20",
-  "generated_at": "2026-11-22T18:24:24Z",
+  "as_of": "2026-11-23",
+  "generated_at": "2026-11-23T22:35:05Z",
   "scanned": 356,
   "skipped": 29,
   "entries": [],
-  "exits": [
-    {
-      "signal": {
-        "symbol": "LEC",
-        "date": "2026-11-20",
-        "open": 230.3,
-        "high": 233.0,
-        "low": 226.1,
-        "close": 227.0,
-        "volume": 141646.0,
-        "ema20": 235.89,
-        "ema200": 225.37,
-        "rsi": 39.3,
-        "vol_ma20": 335934.0,
-        "atr": 9.64,
-        "above_200": true,
-        "rsi_dip": true,
-        "green_near_20": false,
-        "volume_ok": false,
-        "entry": false,
-        "exit_reasons": [
-          "Close below 20 EMA (235.89)"
-        ]
-      },
-      "position": {
-        "entry_date": "2026-11-18",
-        "entry_price": 235.0,
-        "ema20": 237.51,
-        "ema200": 225.61,
-        "rsi": 46.4
-      }
-    }
-  ],
+  "exits": [],
   "open_positions": {},
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-20*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *LEC* @ Rs 227.00 | P/L -3.4%\n  Entered Rs 235.0 on 2026-11-18\n  Reason: Close below 20 EMA (235.89)\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-23*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
