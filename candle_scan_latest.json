@@ -1,11 +1,40 @@
 {
   "as_of": "2026-11-24",
-  "generated_at": "2026-11-24T21:12:27Z",
+  "generated_at": "2026-11-25T20:34:12Z",
   "scanned": 356,
   "skipped": 29,
-  "entries": [],
+  "entries": [
+    {
+      "symbol": "UNL",
+      "date": "2026-11-24",
+      "open": 47551.0,
+      "high": 48800.0,
+      "low": 48599.0,
+      "close": 48600.0,
+      "volume": 72.0,
+      "ema20": 48307.97,
+      "ema200": 47517.29,
+      "rsi": 52.6,
+      "vol_ma20": 71.0,
+      "atr": 618.07,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
+    }
+  ],
   "exits": [],
-  "open_positions": {},
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-24*\n\n\ud83d\udfe2 *ENTRY FOUND:* none\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "open_positions": {
+    "UNL": {
+      "entry_date": "2026-11-24",
+      "entry_price": 48600.0,
+      "ema20": 48307.97,
+      "ema200": 47517.29,
+      "rsi": 52.6
+    }
+  },
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-24*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *UNL* @ Rs 48600.00\n  200 EMA 47517.29 | 20 EMA 48307.97 | RSI 52.6\n  Vol 1.0\u00d7 MA20 | O 47551.00 H 48800.00 L 48599.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
