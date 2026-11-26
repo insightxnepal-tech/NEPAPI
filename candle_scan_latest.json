@@ -1,22 +1,62 @@
 {
-  "as_of": "2026-11-24",
-  "generated_at": "2026-11-25T20:34:12Z",
+  "as_of": "2026-11-25",
+  "generated_at": "2026-11-26T20:11:34Z",
   "scanned": 356,
   "skipped": 29,
   "entries": [
     {
-      "symbol": "UNL",
-      "date": "2026-11-24",
-      "open": 47551.0,
-      "high": 48800.0,
-      "low": 48599.0,
-      "close": 48600.0,
-      "volume": 72.0,
-      "ema20": 48307.97,
-      "ema200": 47517.29,
-      "rsi": 52.6,
-      "vol_ma20": 71.0,
-      "atr": 618.07,
+      "symbol": "GLH",
+      "date": "2026-11-25",
+      "open": 258.0,
+      "high": 268.7,
+      "low": 258.7,
+      "close": 267.6,
+      "volume": 72254.0,
+      "ema20": 262.91,
+      "ema200": 263.14,
+      "rsi": 54.9,
+      "vol_ma20": 63945.0,
+      "atr": 7.72,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
+    },
+    {
+      "symbol": "RIDI",
+      "date": "2026-11-25",
+      "open": 327.5,
+      "high": 338.6,
+      "low": 327.0,
+      "close": 336.1,
+      "volume": 235705.0,
+      "ema20": 332.39,
+      "ema200": 326.87,
+      "rsi": 52.2,
+      "vol_ma20": 151603.0,
+      "atr": 7.06,
+      "above_200": true,
+      "rsi_dip": true,
+      "green_near_20": true,
+      "volume_ok": true,
+      "entry": true,
+      "exit_reasons": []
+    },
+    {
+      "symbol": "UHEWA",
+      "date": "2026-11-25",
+      "open": 591.2,
+      "high": 599.9,
+      "low": 589.6,
+      "close": 598.0,
+      "volume": 24093.0,
+      "ema20": 593.34,
+      "ema200": 594.32,
+      "rsi": 54.8,
+      "vol_ma20": 10273.0,
+      "atr": 9.76,
       "above_200": true,
       "rsi_dip": true,
       "green_near_20": true,
@@ -25,16 +65,63 @@
       "exit_reasons": []
     }
   ],
-  "exits": [],
+  "exits": [
+    {
+      "signal": {
+        "symbol": "UNL",
+        "date": "2026-11-25",
+        "open": 48600.0,
+        "high": 47800.0,
+        "low": 47500.1,
+        "close": 47500.1,
+        "volume": 310.0,
+        "ema20": 48231.03,
+        "ema200": 47517.11,
+        "rsi": 44.2,
+        "vol_ma20": 84.0,
+        "atr": 696.64,
+        "above_200": false,
+        "rsi_dip": true,
+        "green_near_20": false,
+        "volume_ok": true,
+        "entry": false,
+        "exit_reasons": [
+          "Close below 20 EMA (48231.03)",
+          "Close below 200 EMA (47517.11)"
+        ]
+      },
+      "position": {
+        "entry_date": "2026-11-24",
+        "entry_price": 48600.0,
+        "ema20": 48307.97,
+        "ema200": 47517.29,
+        "rsi": 52.6
+      }
+    }
+  ],
   "open_positions": {
-    "UNL": {
-      "entry_date": "2026-11-24",
-      "entry_price": 48600.0,
-      "ema20": 48307.97,
-      "ema200": 47517.29,
-      "rsi": 52.6
+    "GLH": {
+      "entry_date": "2026-11-25",
+      "entry_price": 267.6,
+      "ema20": 262.91,
+      "ema200": 263.14,
+      "rsi": 54.9
+    },
+    "RIDI": {
+      "entry_date": "2026-11-25",
+      "entry_price": 336.1,
+      "ema20": 332.39,
+      "ema200": 326.87,
+      "rsi": 52.2
+    },
+    "UHEWA": {
+      "entry_date": "2026-11-25",
+      "entry_price": 598.0,
+      "ema20": 593.34,
+      "ema200": 594.32,
+      "rsi": 54.8
     }
   },
-  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-24*\n\n\ud83d\udfe2 *ENTRY FOUND (1)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *UNL* @ Rs 48600.00\n  200 EMA 47517.29 | 20 EMA 48307.97 | RSI 52.6\n  Vol 1.0\u00d7 MA20 | O 47551.00 H 48800.00 L 48599.00\n\n\ud83d\uded1 *EXIT FOUND:* none\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
+  "message": "\ud83d\udd6f\ufe0f *Daily Candle Scan \u2014 2026-11-25*\n\n\ud83d\udfe2 *ENTRY FOUND (3)*\n_Price > 200 EMA \u00b7 RSI 38\u201348 \u00b7 green 20 EMA bounce \u00b7 vol > MA20_\n\n\u2022 *GLH* @ Rs 267.60\n  200 EMA 263.14 | 20 EMA 262.91 | RSI 54.9\n  Vol 1.1\u00d7 MA20 | O 258.00 H 268.70 L 258.70\n\n\u2022 *RIDI* @ Rs 336.10\n  200 EMA 326.87 | 20 EMA 332.39 | RSI 52.2\n  Vol 1.6\u00d7 MA20 | O 327.50 H 338.60 L 327.00\n\n\u2022 *UHEWA* @ Rs 598.00\n  200 EMA 594.32 | 20 EMA 593.34 | RSI 54.8\n  Vol 2.3\u00d7 MA20 | O 591.20 H 599.90 L 589.60\n\n\ud83d\uded1 *EXIT FOUND (1)*\n\n\u2022 *UNL* @ Rs 47500.10 | P/L -2.3%\n  Entered Rs 48600.0 on 2026-11-24\n  Reason: Close below 20 EMA (48231.03); Close below 200 EMA (47517.11)\n\n_Scanned 356 stocks (29 skipped, need 200+ days)._\n_Not financial advice._\n",
   "telegram_ok": true
 }
